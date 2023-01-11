@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ac.product.mapper.ProductMapper">
+
+    <sql id="ProductDTO_Column">
+        t.id,
+        t.product_name,
+        t.stock,
+        t.sellNum,
+        t.cost_price,
+        t.sell_price,
+        t.discount_price,
+        t.publish_state,
+        t.image_url,
+        t.remark
+    </sql>
+
+    <select id="listProduct" resultType="com.ac.product.dto.ProductDTO">
+        select
+            <include refid="ProductDTO_Column"></include>
+        from
+            t_product t
+        <where>
+            t.deleted = 0
+            <if test="qry.productName!=null and qry.productName!=''">
+                and t.product_name like concat('%', #{qry.productName}, '%')
+            </if>
+        </where>
+        order by t.create_time desc
+    </select>
+</mapper>

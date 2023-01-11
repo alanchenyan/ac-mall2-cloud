@@ -1,0 +1,29 @@
+package com.ac.member.entity;
+
+import com.ac.common.base.BaseEntity;
+import com.ac.member.enums.MemberSexEnum;
+import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+import java.time.LocalDate;
+
+@Data
+@TableName("t_member")
+public class Member extends BaseEntity {
+
+    @ApiModelProperty("ID")
+    private Long id;
+
+    @ApiModelProperty("用户姓名")
+    private String memberName;
+
+    @ApiModelProperty("手机号")
+    private String mobile;
+
+    @ApiModelProperty("性别")
+    private MemberSexEnum sex;
+
+    @ApiModelProperty("生日")
+    private LocalDate birthday;
+}
