@@ -24,7 +24,7 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 swagger:
-  enabled: true
+  enabled2: true
   title: 用户服务
   basePackage: com.ac.member.controller
   version: 1.0
