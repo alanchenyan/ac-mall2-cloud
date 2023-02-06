@@ -2,6 +2,13 @@ server:
   port: 8080
 
 spring:
+  application:
+    name: mall-member
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://192.168.100.51:3306/ac_db?serverTimezone=Asia/Shanghai&useUnicode=true&tinyInt1isBit=false&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
