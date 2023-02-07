@@ -6,7 +6,6 @@
     <modules>
         <module>../mall-member</module>
         <module>../mall-product</module>
-        <module>../mall-product</module>
         <module>../mall-common</module>
     </modules>
 
@@ -21,12 +20,12 @@
     <properties>
         <mall.version>1.0-SNAPSHOT</mall.version>
         <java.version>1.8</java.version>
-        <spring-cloud.version>Greenwich.SR1</spring-cloud.version>
+        <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
         <mysql.version>8.0.17</mysql.version>
         <mybatis.plus.version>3.2.0</mybatis.plus.version>
         <druid.version>1.1.10</druid.version>
-        <boot.version>2.2.4.RELEASE</boot.version>
-        <alibaba.cloud.version>2.1.0.RELEASE</alibaba.cloud.version>
+        <spring-boot.version>2.3.6.RELEASE</spring-boot.version>
+        <alibaba.cloud.version>2.2.3.RELEASE</alibaba.cloud.version>
         <lombok.version>1.18.6</lombok.version>
         <org.mapstruct.version>1.3.0.Final</org.mapstruct.version>
         <org.projectlombok.version>1.18.6</org.projectlombok.version>
@@ -45,7 +44,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-parent</artifactId>
-                <version>${boot.version}</version>
+                <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -69,12 +68,18 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
-                <version>${boot.version}</version>
+                <version>${spring-boot.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+                <version>${alibaba.cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
                 <version>${alibaba.cloud.version}</version>
             </dependency>
 
@@ -161,7 +166,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-parent</artifactId>
-            <version>${boot.version}</version>
+            <version>${spring-boot.version}</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
@@ -190,6 +195,11 @@
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
 
         <dependency>
@@ -262,7 +272,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${boot.version}</version>
+                <version>${spring-boot.version}</version>
             </plugin>
         </plugins>
     </build>
