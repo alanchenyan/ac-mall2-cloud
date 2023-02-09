@@ -22,7 +22,7 @@ public class OrderController {
     private OrderService orderServiceImpl;
 
     @ApiOperation(value = "分页查询订单")
-    @GetMapping
+    @GetMapping("page")
     public IPage<OrderDTO> pageOrder(@Valid OrderPageQry qry) {
         return orderServiceImpl.pageOrder(qry);
     }
