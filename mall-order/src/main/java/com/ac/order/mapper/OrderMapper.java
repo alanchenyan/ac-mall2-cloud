@@ -1,5 +1,6 @@
 package com.ac.order.mapper;
 
+import com.ac.order.dto.OrderDTO;
 import com.ac.order.entity.Order;
 import com.ac.order.qry.OrderPageQry;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -21,5 +22,5 @@ public interface OrderMapper extends BaseMapper<Order> {
      * @param qry  查询参数
      * @return
      */
-    IPage<Order> pageOrder(Page page, @Param("qry") OrderPageQry qry);
+    IPage<OrderDTO> pageOrder(Page page, @Param("qry") OrderPageQry qry);
 }

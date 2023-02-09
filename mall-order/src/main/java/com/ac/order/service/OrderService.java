@@ -1,5 +1,6 @@
 package com.ac.order.service;
 
+import com.ac.order.dto.OrderDTO;
 import com.ac.order.dto.OrderDetailDTO;
 import com.ac.order.entity.Order;
 import com.ac.order.qry.OrderPageQry;
@@ -26,5 +27,5 @@ public interface OrderService {
      * @param qry
      * @return
      */
-    IPage<Order> pageOrder(OrderPageQry qry);
+    IPage<OrderDTO> pageOrder(OrderPageQry qry);
 }

@@ -1,6 +1,7 @@
 package com.ac.order.dao.impl;
 
 import com.ac.order.dao.OrderDao;
+import com.ac.order.dto.OrderDTO;
 import com.ac.order.entity.Order;
 import com.ac.order.mapper.OrderMapper;
 import com.ac.order.qry.OrderPageQry;
@@ -19,7 +20,7 @@ public class OrderDaoImpl extends ServiceImpl<OrderMapper, Order> implements Ord
     private OrderMapper orderMapper;
 
     @Override
-    public IPage<Order> pageOrder(OrderPageQry qry) {
+    public IPage<OrderDTO> pageOrder(OrderPageQry qry) {
         return orderMapper.pageOrder(qry, qry);
     }
 }

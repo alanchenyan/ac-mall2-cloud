@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ac.order.mapper.OrderMapper">
+
+    <sql id="OrderDTO_Column">
+        t.id,
+        t.order_no,
+        t.pay_channel,
+        t.order_state,
+        t.order_time,
+        t.pay_time,
+        t.refund_time,
+        t.member_id,
+        t.member_name,
+        t.mobile,
+        t.product_amount,
+        t.pay_amount
+    </sql>
+
+    <select id="pageOrder" resultType="com.ac.order.dto.OrderDTO">
+        select
+            <include refid="OrderDTO_Column"></include>
+        from
+            t_order t
+        <where>
+            t.deleted = 0
+            <if test="qry.memberId!=null">
+                and t.member_id=#{qry.memberId}
+            </if>
+
+            <if test="qry.orderNo!=null and qry.orderNo!=''">
+                and t.order_no=#{qry.orderNo}
+            </if>
+
+            <if test="qry.memberName!=null and qry.memberName!=''">
+                and t.member_name like concat('%', #{qry.memberName}, '%')
+            </if>
+
+            <if test="qry.mobile!=null and qry.mobile!=''">
+                and t.mobile = #{qry.mobile}
+            </if>
+        </where>
+        order by t.create_time desc
+    </select>
+</mapper>

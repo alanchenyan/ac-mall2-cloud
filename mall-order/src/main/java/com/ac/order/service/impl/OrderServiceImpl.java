@@ -1,8 +1,8 @@
 package com.ac.order.service.impl;
 
 import com.ac.order.dao.OrderDao;
+import com.ac.order.dto.OrderDTO;
 import com.ac.order.dto.OrderDetailDTO;
-import com.ac.order.entity.Order;
 import com.ac.order.qry.OrderPageQry;
 import com.ac.order.service.OrderService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -24,7 +24,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public IPage<Order> pageOrder(OrderPageQry qry) {
+    public IPage<OrderDTO> pageOrder(OrderPageQry qry) {
         return orderDaoImpl.pageOrder(qry);
     }
 }

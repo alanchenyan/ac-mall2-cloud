@@ -7,11 +7,11 @@ import lombok.Data;
 @Data
 public class OrderPageQry extends Page {
 
-    @ApiModelProperty("订单号")
-    private String orderNo;
-
     @ApiModelProperty("用户ID")
     private Long memberId;
+
+    @ApiModelProperty("订单号")
+    private String orderNo;
 
     @ApiModelProperty("用户姓名")
     private String memberName;
