@@ -42,8 +42,11 @@ public class Order {
     @ApiModelProperty("手机号(冗余)")
     private String mobile;
 
-    @ApiModelProperty("商品金额")
+    @ApiModelProperty("商品总金额")
     private BigDecimal productAmount;
+
+    @ApiModelProperty("优惠总金额")
+    private BigDecimal discountAmount;
 
     @ApiModelProperty("支付金额")
     private BigDecimal payAmount;

@@ -37,8 +37,11 @@ public class OrderDTO {
     @ApiModelProperty("用户姓名(冗余)")
     private String memberName;
 
-    @ApiModelProperty("商品金额")
+    @ApiModelProperty("商品总金额")
     private BigDecimal productAmount;
+
+    @ApiModelProperty("优惠总金额")
+    private BigDecimal discountAmount;
 
     @ApiModelProperty("支付金额")
     private BigDecimal payAmount;

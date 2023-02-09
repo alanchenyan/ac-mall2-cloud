@@ -2,8 +2,8 @@ package com.ac.order.service;
 
 import com.ac.order.dto.OrderDTO;
 import com.ac.order.dto.OrderDetailDTO;
-import com.ac.order.entity.Order;
 import com.ac.order.qry.OrderPageQry;
+import com.ac.order.vo.OrderAddVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
 /**
@@ -28,4 +28,12 @@ public interface OrderService {
      * @return
      */
     IPage<OrderDTO> pageOrder(OrderPageQry qry);
+
+    /**
+     * 新增订单
+     *
+     * @param addVO
+     * @return
+     */
+    Long createOrder(OrderAddVO addVO);
 }
