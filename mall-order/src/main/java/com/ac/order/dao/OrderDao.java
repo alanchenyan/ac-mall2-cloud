@@ -1,6 +1,8 @@
 package com.ac.order.dao;
 
 import com.ac.order.entity.Order;
+import com.ac.order.qry.OrderPageQry;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -10,4 +12,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface OrderDao extends IService<Order> {
 
+    /**
+     * 分页查询订单
+     *
+     * @param qry
+     * @return
+     */
+    IPage<Order> pageOrder(OrderPageQry qry);
 }

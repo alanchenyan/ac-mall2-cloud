@@ -19,23 +19,23 @@ import java.util.List;
 public class ProductController {
 
     @Resource
-    private ProductService productService;
+    private ProductService productServiceImpl;
 
     @ApiOperation(value = "通过ID查询")
     @GetMapping("{id}")
     public Product findById(@PathVariable Long id) {
-        return productService.findById(id);
+        return productServiceImpl.findById(id);
     }
 
     @ApiOperation(value = "新增产品")
     @PostMapping
     public Boolean addProduct(@RequestBody @Valid ProductEditVO editVO) {
-        return productService.addProduct(editVO);
+        return productServiceImpl.addProduct(editVO);
     }
 
     @ApiOperation(value = "查询产品列表")
     @GetMapping("list")
     public List<ProductDTO> listMember(@Valid ProductQry qry) {
-        return productService.listProduct(qry);
+        return productServiceImpl.listProduct(qry);
     }
 }

@@ -3,6 +3,8 @@ package com.ac.order.dao.impl;
 import com.ac.order.dao.OrderDao;
 import com.ac.order.entity.Order;
 import com.ac.order.mapper.OrderMapper;
+import com.ac.order.qry.OrderPageQry;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -16,4 +18,8 @@ public class OrderDaoImpl extends ServiceImpl<OrderMapper, Order> implements Ord
     @Resource
     private OrderMapper orderMapper;
 
+    @Override
+    public IPage<Order> pageOrder(OrderPageQry qry) {
+        return orderMapper.pageOrder(qry, qry);
+    }
 }

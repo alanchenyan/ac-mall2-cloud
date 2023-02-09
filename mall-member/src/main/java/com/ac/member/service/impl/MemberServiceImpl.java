@@ -19,21 +19,21 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberService {
 
     @Resource
-    private MemberDao memberDao;
+    private MemberDao memberDaoImpl;
 
     @Override
     public Member findById(Long id) {
-        return Optional.ofNullable(memberDao.getById(id)).orElseThrow(() -> new RuntimeException("数据不存在"));
+        return Optional.ofNullable(memberDaoImpl.getById(id)).orElseThrow(() -> new RuntimeException("数据不存在"));
     }
 
     @Override
     public Boolean addMember(MemberEditVO editVO) {
         Member entity = MemberConvert.instance.editVoToEntity(editVO);
-        return memberDao.save(entity);
+        return memberDaoImpl.save(entity);
     }
 
     @Override
     public List<MemberDTO> listMember(MemberQry qry) {
-        return memberDao.listMember(qry);
+        return memberDaoImpl.listMember(qry);
     }
 }

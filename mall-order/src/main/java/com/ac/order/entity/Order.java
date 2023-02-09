@@ -39,6 +39,9 @@ public class Order {
     @ApiModelProperty("用户姓名(冗余)")
     private String memberName;
 
+    @ApiModelProperty("手机号(冗余)")
+    private String mobile;
+
     @ApiModelProperty("商品金额")
     private BigDecimal productAmount;
 

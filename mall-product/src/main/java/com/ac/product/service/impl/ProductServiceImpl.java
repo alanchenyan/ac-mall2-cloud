@@ -19,21 +19,21 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
 
     @Resource
-    private ProductDao productDao;
+    private ProductDao productDaoImpl;
 
     @Override
     public Product findById(Long id) {
-        return Optional.ofNullable(productDao.getById(id)).orElseThrow(() -> new RuntimeException("数据不存在"));
+        return Optional.ofNullable(productDaoImpl.getById(id)).orElseThrow(() -> new RuntimeException("数据不存在"));
     }
 
     @Override
     public Boolean addProduct(ProductEditVO editVO) {
         Product entity = ProductConvert.instance.editVoToEntity(editVO);
-        return productDao.save(entity);
+        return productDaoImpl.save(entity);
     }
 
     @Override
     public List<ProductDTO> listProduct(ProductQry qry) {
-        return productDao.listProduct(qry);
+        return productDaoImpl.listProduct(qry);
     }
 }

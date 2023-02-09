@@ -1,6 +1,9 @@
 package com.ac.order.service;
 
 import com.ac.order.dto.OrderDetailDTO;
+import com.ac.order.entity.Order;
+import com.ac.order.qry.OrderPageQry;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 
 /**
  * @author Alan Chen
@@ -16,4 +19,12 @@ public interface OrderService {
      * @return
      */
     OrderDetailDTO findOrderDetail(Long id);
+
+    /**
+     * 分页查询订单
+     *
+     * @param qry
+     * @return
+     */
+    IPage<Order> pageOrder(OrderPageQry qry);
 }
