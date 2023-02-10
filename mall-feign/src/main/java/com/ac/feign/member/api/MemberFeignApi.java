@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface MemberFeignApi {
 
     @ApiOperation(value = "获取用户")
-    @GetMapping("/member/{id}")
+    @GetMapping("member/{id}")
     MemberDTO findMember(@PathVariable("id") Long id);
 
 }
