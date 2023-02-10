@@ -24,6 +24,4 @@ public class OrderController {
     public MemberDTO test(@PathVariable Long id) {
         return memberFeignApi.findMember(id);
     }
-
-
 }
