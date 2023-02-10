@@ -27,6 +27,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public MemberDTO findMember(Long id) {
+        return MemberConvert.instance.entityToDto(findById(id));
+    }
+
+    @Override
     public Boolean addMember(MemberEditVO editVO) {
         Member entity = MemberConvert.instance.editVoToEntity(editVO);
         return memberDaoImpl.save(entity);

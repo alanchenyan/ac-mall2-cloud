@@ -1,6 +1,8 @@
 package com.ac.order.service.impl;
 
 import cn.hutool.core.util.RandomUtil;
+import com.ac.feign.member.api.MemberFeignApi;
+import com.ac.feign.member.dto.MemberDTO;
 import com.ac.order.dao.OrderDao;
 import com.ac.order.dto.OrderDTO;
 import com.ac.order.dto.OrderDetailDTO;
@@ -24,6 +26,9 @@ public class OrderServiceImpl implements OrderService {
     @Resource
     private OrderDao orderDaoImpl;
 
+    @Resource
+    private MemberFeignApi memberFeignApi;
+
     @Override
     public OrderDetailDTO findOrderDetail(Long id) {
         return null;
@@ -42,10 +47,11 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderState(OrderStateEnum.UN_PAY);
         order.setOrderTime(LocalDateTime.now());
 
-        //TODO 用户信息
+        //取用户信息
+        MemberDTO member = memberFeignApi.findMember(1L);
         order.setMemberId(addVO.getMemberId());
-        order.setMemberName("");
-        order.setMobile("");
+        order.setMemberName(member.getMemberName());
+        order.setMobile(member.getMobile());
 
         orderDaoImpl.save(order);
         return order.getId();

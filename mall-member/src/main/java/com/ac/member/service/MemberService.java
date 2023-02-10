@@ -23,6 +23,14 @@ public interface MemberService {
     Member findById(Long id);
 
     /**
+     * 获取用户
+     *
+     * @param id
+     * @return
+     */
+    MemberDTO findMember(Long id);
+
+    /**
      * 新增用户
      *
      * @param editVO

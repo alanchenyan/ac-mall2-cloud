@@ -1,5 +1,6 @@
 package com.ac.member.convert;
 
+import com.ac.member.dto.MemberDTO;
 import com.ac.member.entity.Member;
 import com.ac.member.vo.MemberEditVO;
 import org.mapstruct.Mapper;
@@ -17,4 +18,12 @@ public interface MemberConvert {
      * @return
      */
     Member editVoToEntity(MemberEditVO editVO);
+
+    /**
+     * entity转DTO
+     *
+     * @param member
+     * @return
+     */
+    MemberDTO entityToDto(Member member);
 }

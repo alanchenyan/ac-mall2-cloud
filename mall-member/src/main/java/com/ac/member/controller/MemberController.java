@@ -21,10 +21,10 @@ public class MemberController {
     @Resource
     private MemberService memberServiceImpl;
 
-    @ApiOperation(value = "通过ID查询")
+    @ApiOperation(value = "获取用户")
     @GetMapping("{id}")
-    public Member findById(@PathVariable Long id) {
-        return memberServiceImpl.findById(id);
+    public MemberDTO findMember(@PathVariable Long id) {
+        return memberServiceImpl.findMember(id);
     }
 
     @ApiOperation(value = "新增用户")

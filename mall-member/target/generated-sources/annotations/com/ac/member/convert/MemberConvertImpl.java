@@ -1,12 +1,13 @@
 package com.ac.member.convert;
 
+import com.ac.member.dto.MemberDTO;
 import com.ac.member.entity.Member;
 import com.ac.member.vo.MemberEditVO;
 import javax.annotation.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-02-07T15:56:51+0800",
+    date = "2023-02-10T17:49:57+0800",
     comments = "version: 1.3.0.Final, compiler: javac, environment: Java 1.8.0_131 (Oracle Corporation)"
 )
 public class MemberConvertImpl implements MemberConvert {
@@ -25,5 +26,22 @@ public class MemberConvertImpl implements MemberConvert {
         member.setBirthday( editVO.getBirthday() );
 
         return member;
+    }
+
+    @Override
+    public MemberDTO entityToDto(Member member) {
+        if ( member == null ) {
+            return null;
+        }
+
+        MemberDTO memberDTO = new MemberDTO();
+
+        memberDTO.setId( member.getId() );
+        memberDTO.setMemberName( member.getMemberName() );
+        memberDTO.setMobile( member.getMobile() );
+        memberDTO.setSex( member.getSex() );
+        memberDTO.setBirthday( member.getBirthday() );
+
+        return memberDTO;
     }
 }
