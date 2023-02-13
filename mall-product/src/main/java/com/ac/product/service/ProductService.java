@@ -23,6 +23,14 @@ public interface ProductService {
     Product findById(Long id);
 
     /**
+     * 获取产品
+     *
+     * @param id
+     * @return
+     */
+    ProductDTO findProduct(Long id);
+
+    /**
      * 新增产品
      *
      * @param editVO

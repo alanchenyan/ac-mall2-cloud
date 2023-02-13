@@ -27,6 +27,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductDTO findProduct(Long id) {
+        return ProductConvert.instance.entityToDto(findById(id));
+    }
+
+    @Override
     public Boolean addProduct(ProductEditVO editVO) {
         Product entity = ProductConvert.instance.editVoToEntity(editVO);
         return productDaoImpl.save(entity);

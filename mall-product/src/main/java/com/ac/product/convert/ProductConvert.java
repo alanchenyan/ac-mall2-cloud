@@ -1,5 +1,6 @@
 package com.ac.product.convert;
 
+import com.ac.product.dto.ProductDTO;
 import com.ac.product.entity.Product;
 import com.ac.product.vo.ProductEditVO;
 import org.mapstruct.Mapper;
@@ -17,4 +18,12 @@ public interface ProductConvert {
      * @return
      */
     Product editVoToEntity(ProductEditVO editVO);
+
+    /**
+     * entity转DTO
+     *
+     * @param entity
+     * @return
+     */
+    ProductDTO entityToDto(Product entity);
 }

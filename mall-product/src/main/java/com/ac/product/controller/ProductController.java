@@ -23,8 +23,8 @@ public class ProductController {
 
     @ApiOperation(value = "通过ID查询")
     @GetMapping("{id}")
-    public Product findById(@PathVariable Long id) {
-        return productServiceImpl.findById(id);
+    public ProductDTO findProduct(@PathVariable Long id) {
+        return productServiceImpl.findProduct(id);
     }
 
     @ApiOperation(value = "新增产品")
