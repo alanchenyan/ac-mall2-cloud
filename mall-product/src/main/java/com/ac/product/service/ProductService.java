@@ -39,6 +39,14 @@ public interface ProductService {
     Boolean addProduct(ProductEditVO editVO);
 
     /**
+     * 修改
+     *
+     * @param editVO
+     * @return
+     */
+    Boolean updateProduct(ProductEditVO editVO);
+
+    /**
      * 查询产品列表
      *
      * @param qry

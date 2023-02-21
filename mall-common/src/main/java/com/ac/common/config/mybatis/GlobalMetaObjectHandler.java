@@ -60,7 +60,7 @@ public class GlobalMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void updateFill(MetaObject metaObject) {
         try {
-            setFieldValByName(updateTimeFieldName, new Date(), metaObject);
+            setFieldValByName(updateTimeFieldName, LocalDateTime.now(), metaObject);
             setFieldValByName(updateUserIdFieldName, getUserId(), metaObject);
         } catch (Exception e) {
             logger.warn(e.getMessage(), e);

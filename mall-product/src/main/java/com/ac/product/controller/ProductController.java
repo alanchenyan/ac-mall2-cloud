@@ -33,6 +33,12 @@ public class ProductController {
         return productServiceImpl.addProduct(editVO);
     }
 
+    @ApiOperation(value = "修改产品")
+    @PutMapping
+    public Boolean updateProduct(@RequestBody @Valid ProductEditVO editVO) {
+        return productServiceImpl.updateProduct(editVO);
+    }
+
     @ApiOperation(value = "查询产品列表")
     @GetMapping("list")
     public List<ProductDTO> listMember(@Valid ProductQry qry) {

@@ -38,6 +38,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Boolean updateProduct(ProductEditVO editVO) {
+        Product entity = ProductConvert.instance.editVoToEntity(editVO);
+        return productDaoImpl.updateById(entity);
+    }
+
+    @Override
     public List<ProductDTO> listProduct(ProductQry qry) {
         return productDaoImpl.listProduct(qry);
     }
