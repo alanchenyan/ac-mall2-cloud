@@ -23,6 +23,7 @@ public class OrderItemServiceImpl implements OrderItemService {
 
     @Override
     public OrderItem addOrderItem(Long orderId, OrderItemAddVO orderItemAdd) {
+        //通过feign取产品信息
         ProductDTO product = productFeignApi.findProduct(orderItemAdd.getProductId());
 
         OrderItem entity = new OrderItem();

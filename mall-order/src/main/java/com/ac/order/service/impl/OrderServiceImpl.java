@@ -55,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderState(OrderStateEnum.UN_PAY);
         order.setOrderTime(LocalDateTime.now());
 
-        //取用户信息
+        //通过feign取用户信息
         MemberDTO member = memberFeignApi.findMember(addVO.getMemberId());
         order.setMemberId(addVO.getMemberId());
         order.setMemberName(member.getMemberName());
