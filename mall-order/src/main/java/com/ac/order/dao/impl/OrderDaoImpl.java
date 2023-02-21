@@ -6,6 +6,7 @@ import com.ac.order.entity.Order;
 import com.ac.order.mapper.OrderMapper;
 import com.ac.order.qry.OrderPageQry;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
