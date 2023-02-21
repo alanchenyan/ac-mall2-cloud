@@ -67,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
         //存订单项信息
         for (OrderItemAddVO orderItemAdd : addVO.getOrderItemList()) {
             OrderItem orderItem = orderItemServiceImpl.addOrderItem(order.getId(), orderItemAdd);
-            productAmount.add(orderItem.getBuyPrice().multiply(new BigDecimal(orderItem.getBuyNum())));
+            productAmount = productAmount.add(orderItem.getBuyPrice().multiply(new BigDecimal(orderItem.getBuyNum())));
         }
 
         //更新订单金额信息
