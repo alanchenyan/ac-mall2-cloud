@@ -1,5 +1,6 @@
 package com.ac.order.entity;
 
+import com.ac.common.base.BaseEntity;
 import com.ac.order.enums.OrderStateEnum;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Data
 @TableName("t_order")
-public class Order {
+public class Order extends BaseEntity {
 
     @ApiModelProperty("ID")
     private Long id;

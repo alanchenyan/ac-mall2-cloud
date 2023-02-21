@@ -1,5 +1,6 @@
 package com.ac.order.entity;
 
+import com.ac.common.base.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -8,7 +9,7 @@ import java.math.BigDecimal;
 
 @Data
 @TableName("t_order_item")
-public class OrderItem {
+public class OrderItem extends BaseEntity {
 
     @ApiModelProperty("ID")
     private Long id;
