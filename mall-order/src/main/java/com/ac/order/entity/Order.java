@@ -9,6 +9,11 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * @author Alan Chen
+ * @description 订单
+ * @date 2023/02/22
+ */
 @Data
 @TableName("t_order")
 public class Order extends BaseEntity {

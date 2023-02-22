@@ -8,6 +8,11 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
+/**
+ * @author Alan Chen
+ * @description 产品
+ * @date 2023/02/22
+ */
 @Data
 @TableName("t_product")
 public class Product extends BaseEntity {

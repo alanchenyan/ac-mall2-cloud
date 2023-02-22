@@ -8,6 +8,11 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
+/**
+ * @author Alan Chen
+ * @description 用户
+ * @date 2023/02/22
+ */
 @Data
 @TableName("t_member")
 public class Member extends BaseEntity {
