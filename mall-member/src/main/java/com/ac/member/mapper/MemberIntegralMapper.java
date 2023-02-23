@@ -2,6 +2,7 @@ package com.ac.member.mapper;
 
 import com.ac.member.entity.MemberIntegral;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author Alan Chen
@@ -10,4 +11,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface MemberIntegralMapper extends BaseMapper<MemberIntegral> {
 
+    /**
+     * 刷新用户总积分
+     *
+     * @param memberId
+     */
+    void freshTotalIntegral(@Param("memberId") Long memberId);
 }

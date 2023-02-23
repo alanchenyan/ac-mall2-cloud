@@ -22,4 +22,7 @@ public class MemberIntegralLog extends BaseEntity {
 
     @ApiModelProperty("积分来源类型(下单奖励积分/签到积分)")
     private String sourceType;
+
+    @ApiModelProperty("积分来源描述（2023-02-23下单获得积分）")
+    private String sourceRemark;
 }

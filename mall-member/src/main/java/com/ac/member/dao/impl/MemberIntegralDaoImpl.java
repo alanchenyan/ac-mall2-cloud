@@ -15,4 +15,9 @@ public class MemberIntegralDaoImpl extends ServiceImpl<MemberIntegralMapper, Mem
 
     @Resource
     private MemberIntegralMapper memberIntegralMapper;
+
+    @Override
+    public void freshTotalIntegral(Long memberId) {
+        memberIntegralMapper.freshTotalIntegral(memberId);
+    }
 }

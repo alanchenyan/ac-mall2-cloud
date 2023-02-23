@@ -15,4 +15,5 @@ public class MemberIntegralLogDaoImpl extends ServiceImpl<MemberIntegralLogMappe
 
     @Resource
     private MemberIntegralLogMapper memberIntegralLogMapper;
+
 }

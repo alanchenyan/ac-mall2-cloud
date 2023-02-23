@@ -18,5 +18,5 @@ public class MemberIntegral extends BaseEntity {
     private Long memberId;
 
     @ApiModelProperty("用户总积分")
-    private Long integral;
+    private Long totalIntegral;
 }

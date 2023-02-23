@@ -10,4 +10,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface MemberIntegralDao extends IService<MemberIntegral> {
 
+    /**
+     * 刷新用户总积分
+     *
+     * @param memberId
+     */
+    void freshTotalIntegral(Long memberId);
 }

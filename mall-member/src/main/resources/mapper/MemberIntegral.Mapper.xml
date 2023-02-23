@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ac.member.mapper.MemberIntegralMapper">
+
+    <select id="freshTotalIntegral">
+        update
+            t_member_integral t
+        set
+            t.total_integral =
+		(
+		    select
+                IFNULL(sum(integral),0) total_integral
+            from
+                t_member_integral_log
+            where
+                member_id = #{memberId}
+        )
+        where
+            t.member_id = #{memberId}
+    </select>
+</mapper>
