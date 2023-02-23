@@ -22,6 +22,7 @@ public class MemberIntegralLogServiceImpl implements MemberIntegralLogService {
         entity.setMemberId(logEditVO.getMemberId());
         entity.setIntegral(logEditVO.getIntegral());
         entity.setSourceType(logEditVO.getSourceType());
+        entity.setSourceRemark(logEditVO.getSourceRemark());
         memberIntegralLogDaoImpl.save(entity);
     }
 }
