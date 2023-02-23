@@ -28,7 +28,4 @@ public class Member extends BaseEntity {
 
     @ApiModelProperty("生日")
     private LocalDate birthday;
-
-    @ApiModelProperty("用户总积分")
-    private Long integral;
 }
