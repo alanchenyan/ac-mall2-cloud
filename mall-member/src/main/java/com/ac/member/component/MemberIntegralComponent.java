@@ -24,7 +24,9 @@ public class MemberIntegralComponent {
      */
     @Transactional
     public void recordIntegral(IntegralLogEditVO logEditVO) {
+        //记录积分明细
         memberIntegralLogServiceImpl.addIntegral(logEditVO);
+        //更新用户总积分
         memberIntegralServiceImpl.freshTotalIntegral(logEditVO.getMemberId());
     }
 }
