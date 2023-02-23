@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public enum IntegralSourceTypeEnum {
     AWARD_ORDER("AWARD_ORDER", "下单奖励"),
     AWARD_SIGN_IN("AWARD_SIGN_IN", "签到奖励"),
-    WOMEN("WOMEN", "女");
+    SUB_DRAW("SUB_DRAW", "抽奖扣减积分");
 
     @EnumValue
     @JsonValue

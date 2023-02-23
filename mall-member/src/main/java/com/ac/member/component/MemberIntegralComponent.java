@@ -22,11 +22,11 @@ public class MemberIntegralComponent {
      *
      * @param logEditVO
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void recordIntegral(IntegralLogEditVO logEditVO) {
         //记录积分明细
         memberIntegralLogServiceImpl.addIntegral(logEditVO);
         //更新用户总积分
-        memberIntegralServiceImpl.freshTotalIntegral(logEditVO.getMemberId());
+        memberIntegralServiceImpl.updateTotalIntegral(logEditVO.getMemberId());
     }
 }
