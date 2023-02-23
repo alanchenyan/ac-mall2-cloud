@@ -16,9 +16,6 @@ import java.math.BigDecimal;
 @TableName("t_order_item")
 public class OrderItem extends BaseEntity {
 
-    @ApiModelProperty("ID")
-    private Long id;
-
     @ApiModelProperty("订单ID")
     private Long orderId;
 

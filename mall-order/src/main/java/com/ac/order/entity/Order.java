@@ -18,9 +18,6 @@ import java.time.LocalDateTime;
 @TableName("t_order")
 public class Order extends BaseEntity {
 
-    @ApiModelProperty("ID")
-    private Long id;
-
     @ApiModelProperty("订单号")
     private String orderNo;
 

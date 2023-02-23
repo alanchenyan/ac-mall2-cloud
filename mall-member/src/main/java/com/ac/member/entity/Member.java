@@ -17,9 +17,6 @@ import java.time.LocalDate;
 @TableName("t_member")
 public class Member extends BaseEntity {
 
-    @ApiModelProperty("ID")
-    private Long id;
-
     @ApiModelProperty("用户姓名")
     private String memberName;
 
