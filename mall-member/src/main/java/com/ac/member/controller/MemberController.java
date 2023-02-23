@@ -1,9 +1,11 @@
 package com.ac.member.controller;
 
+import com.ac.member.component.MemberIntegralComponent;
 import com.ac.member.dto.MemberDTO;
 import com.ac.member.entity.Member;
 import com.ac.member.qry.MemberQry;
 import com.ac.member.service.MemberService;
+import com.ac.member.vo.IntegralLogEditVO;
 import com.ac.member.vo.MemberEditVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,6 +23,9 @@ public class MemberController {
     @Resource
     private MemberService memberServiceImpl;
 
+    @Resource
+    private MemberIntegralComponent memberIntegralComponent;
+
     @ApiOperation(value = "获取用户")
     @GetMapping("{id}")
     public MemberDTO findMember(@PathVariable Long id) {
@@ -37,5 +42,12 @@ public class MemberController {
     @GetMapping("list")
     public List<MemberDTO> listMember(@Valid MemberQry qry) {
         return memberServiceImpl.listMember(qry);
+    }
+
+    @ApiOperation(value = "记录积分")
+    @PostMapping
+    public Boolean recordIntegral(@RequestBody @Valid IntegralLogEditVO logEditVO) {
+        memberIntegralComponent.recordIntegral(logEditVO);
+        return true;
     }
 }
