@@ -29,148 +29,57 @@ public class RedisComponent {
     @Resource
     private RdsStringTool rdsStringTool;
 
-    /**
-     * 取字符串
-     *
-     * @param key
-     * @return
-     */
+    //============================第一：String start=============================
+
     public String getStr(String key) {
         return rdsStringTool.getStr(key);
     }
 
-    /**
-     * 普通缓存获取
-     *
-     * @param key 键
-     * @return 值
-     */
     public Object get(String key) {
         return rdsStringTool.get(key);
     }
 
-    /**
-     * 普通缓存放入-不过期
-     *
-     * @param key   键
-     * @param value 值
-     * @return true成功 false 失败
-     */
     public boolean set(String key, Object value) {
-        return rdsStringTool.set(key, value, 0, TimeUnit.SECONDS);
+        return rdsStringTool.set(key, value);
     }
 
-    /**
-     * 普通缓存放入并设置时间
-     *
-     * @param key   键
-     * @param value 值
-     * @param time  时间(秒) time要大于0 如果time小于等于0 将设置无限期
-     * @return true成功 false 失败
-     */
     public boolean set(String key, Object value, long time) {
-        return rdsStringTool.set(key, value, time, TimeUnit.SECONDS);
+        return rdsStringTool.set(key, value, time);
     }
 
-    /**
-     * 普通缓存放入并设置时间
-     *
-     * @param key   键
-     * @param value 值
-     * @param time  时间(指定的TimeUnit) time要大于0 如果time小于等于0 将设置无限期
-     * @return true成功 false 失败
-     */
     public boolean set(String key, Object value, long time, TimeUnit timeUnit) {
         return rdsStringTool.set(key, value, time, timeUnit);
     }
 
-    /**
-     * 普通缓存放入-不过期(只有在key不存在时设置key的值)
-     *
-     * @param key   键
-     * @param value 值
-     * @return true成功 false 失败
-     */
     public boolean setIfAbsent(String key, Object value) {
-        return rdsStringTool.setIfAbsent(key, value, 0, TimeUnit.SECONDS);
+        return rdsStringTool.setIfAbsent(key, value);
     }
 
-    /**
-     * 普通缓存放入并设置时间(只有在key不存在时设置key的值)
-     *
-     * @param key   键
-     * @param value 值
-     * @param time  时间(秒) time要大于0 如果time小于等于0 将设置无限期
-     * @return true成功 false 失败
-     */
     public boolean setIfAbsent(String key, Object value, long time) {
-        return rdsStringTool.setIfAbsent(key, value, time, TimeUnit.SECONDS);
+        return rdsStringTool.setIfAbsent(key, value, time);
     }
 
-    /**
-     * 普通缓存放入并设置时间(只有在key不存在时设置key的值)
-     *
-     * @param key   键
-     * @param value 值
-     * @param time  时间(指定的TimeUnit) time要大于0 如果time小于等于0 将设置无限期
-     * @return true成功 false 失败
-     */
     public boolean setIfAbsent(String key, Object value, long time, TimeUnit timeUnit) {
         return rdsStringTool.setIfAbsent(key, value, time, timeUnit);
     }
 
-    /**
-     * 递增 默认按 1 递增
-     *
-     * @param key 键
-     * @return
-     */
     public long incr(String key) {
-        return rdsStringTool.incr(key, 1);
+        return rdsStringTool.incr(key);
     }
 
-    /**
-     * 递增
-     *
-     * @param key   键
-     * @param delta 要增加几(大于0)
-     * @return
-     */
     public long incr(String key, long delta) {
         return rdsStringTool.incr(key, delta);
     }
 
-    /**
-     * 递减 按 1 递减
-     *
-     * @param key 键
-     * @return
-     */
     public long decr(String key) {
-        return rdsStringTool.decr(key, 1);
+        return rdsStringTool.decr(key);
     }
 
-    /**
-     * 递减
-     *
-     * @param key   键
-     * @param delta 要减少几(小于0)
-     * @return
-     */
     public long decr(String key, long delta) {
         return rdsStringTool.decr(key, delta);
     }
 
-
-
-
-
-
-
-
-
-
-
+    //============================第一：String end=============================
 
 
 
