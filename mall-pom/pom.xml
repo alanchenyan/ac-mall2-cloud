@@ -38,6 +38,7 @@
         <commons.version>3.9</commons.version>
         <mybatis.version>3.5.3</mybatis.version>
         <hutool.version>5.1.4</hutool.version>
+        <redis.version>3.0.2</redis.version>
     </properties>
 
     <!-- 管理子类所有的jar包的版本，这样的目的是方便去统一升级和维护 -->
@@ -166,6 +167,12 @@
                 <version>${hutool.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>${redis.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -276,6 +283,11 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
     </dependencies>
 

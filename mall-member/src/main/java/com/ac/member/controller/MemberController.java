@@ -2,7 +2,6 @@ package com.ac.member.controller;
 
 import com.ac.member.component.MemberIntegralComponent;
 import com.ac.member.dto.MemberDTO;
-import com.ac.member.entity.Member;
 import com.ac.member.qry.MemberQry;
 import com.ac.member.service.MemberService;
 import com.ac.member.vo.IntegralLogEditVO;
