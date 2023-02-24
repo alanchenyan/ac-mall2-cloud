@@ -15,10 +15,39 @@ public class RedisTestController {
     @Resource
     private RedisComponent redisComponent;
 
+    @ApiOperation(value = "删除key")
+    @GetMapping("del")
+    public Boolean del(@RequestParam String key) {
+        redisComponent.del(key);
+        return true;
+    }
+
+    @ApiOperation(value = "取-字符串")
+    @GetMapping("getStr")
+    public String getStr(@RequestParam String key) {
+        return redisComponent.getStr(key);
+    }
+
     @ApiOperation(value = "存-取-字符串")
     @GetMapping("testString")
     public String testString(@RequestParam String key, String value) {
         redisComponent.set(key, value);
         return redisComponent.getStr(key);
+    }
+
+    @ApiOperation(value = "存-取-Long")
+    @GetMapping("testLong")
+    public Long testLong(@RequestParam String key, Long value) {
+        redisComponent.set(key, value);
+        Object obj = redisComponent.get(key);
+        return Long.valueOf(obj.toString());
+    }
+
+    @ApiOperation(value = "Long-自增")
+    @GetMapping("testIncr")
+    public Long testIncr(@RequestParam String key) {
+        redisComponent.incr(key);
+        Object obj = redisComponent.get(key);
+        return Long.valueOf(obj.toString());
     }
 }
