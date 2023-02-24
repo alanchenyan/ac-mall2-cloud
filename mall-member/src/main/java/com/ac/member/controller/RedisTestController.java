@@ -1,6 +1,6 @@
 package com.ac.member.controller;
 
-import com.ac.common.util.RedisComponent;
+import com.ac.common.util.redis.RedisComponent;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +17,8 @@ public class RedisTestController {
 
     @ApiOperation(value = "存-取-字符串")
     @GetMapping("testString")
-    public String testString2(@RequestParam String value) {
-        String key = "memberName";
-        redisComponent.set(key,value,0);
-        Object result = redisComponent.get(key);
-        if (result != null) {
-            return result.toString();
-        }
-        return "";
+    public String testString(@RequestParam String key, String value) {
+        redisComponent.set(key, value);
+        return redisComponent.getStr(key);
     }
 }

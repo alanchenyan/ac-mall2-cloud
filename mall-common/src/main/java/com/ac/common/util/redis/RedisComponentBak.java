@@ -1,8 +1,7 @@
-package com.ac.common.util;
+package com.ac.common.util.redis;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.geo.*;
 import org.springframework.data.redis.connection.RedisGeoCommands;
@@ -21,161 +20,13 @@ import java.util.concurrent.TimeUnit;
  * @description Redis工具类
  * @date 2023/02/24
  */
-@Lazy
 @Component
-public class RedisComponent {
+public class RedisComponentBak {
 
     @Resource
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
-    /**
-     * 返回key集合
-     *
-     * @param key 键
-     * @return
-     */
-    public boolean hasKeys(String key) {
-        return keys(key).size() > 0;
-    }
-
-    /**
-     * 返回key集合
-     *
-     * @param key 键
-     * @return
-     */
-    public Set<String> keys(String key) {
-        try {
-            return redisTemplate.keys(key);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
-    }
-
-    /**
-     * 指定缓存失效时间(默认分钟)
-     *
-     * @param key  键
-     * @param time 时间(秒)
-     * @return
-     */
-    public boolean expire(String key, long time) {
-        return expire(key, time, TimeUnit.SECONDS);
-    }
-
-    /**
-     * 指定缓存失效时间
-     *
-     * @param key  键
-     * @param time 时间(秒)
-     * @return
-     */
-    public boolean expire(String key, long time, TimeUnit timeUnit) {
-        try {
-            if (time > 0) {
-                redisTemplate.expire(key, time, timeUnit);
-            }
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
-    }
-
-    /**
-     * 根据key 获取过期时间(TimeUnit.SECONDS)
-     *
-     * @param key 键 不能为null
-     * @return 时间(秒) 返回0代表为永久有效
-     */
-    public long getExpire(String key) {
-        return getExpire(key, TimeUnit.SECONDS);
-    }
-
-    /**
-     * 根据key 获取过期时间
-     *
-     * @param key 键 不能为null
-     * @return 时间(秒) 返回0代表为永久有效
-     */
-    public long getExpire(String key, TimeUnit timeUnit) {
-        try {
-            return redisTemplate.getExpire(key, TimeUnit.SECONDS);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1L;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
-    }
-
-    /**
-     * 判断key是否存在
-     *
-     * @param key 键
-     * @return true 存在 false不存在
-     */
-    public boolean hasKey(String key) {
-        try {
-            return redisTemplate.hasKey(key);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
-    }
-
-    /**
-     * 删除缓存
-     *
-     * @param key 可以传一个值 或多个
-     */
-    @SuppressWarnings("unchecked")
-    public Boolean del(String... key) {
-        try {
-            if (key != null && key.length > 0) {
-                if (key.length == 1) {
-                    return redisTemplate.delete(key[0]);
-                } else {
-                    return redisTemplate.delete(CollectionUtils.arrayToList(key)) > 0;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
-        return false;
-    }
-
-    /**
-     * 删除缓存
-     *
-     * @param keys key集合
-     */
-    @SuppressWarnings("unchecked")
-    public Long del(Collection<String> keys) {
-        try {
-            if (CollUtil.isNotEmpty(keys)) {
-                return redisTemplate.delete(keys);
-            }
-            return 0L;
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
-        return 0L;
-    }
-
-    //============================String=============================
+    //============================第一：String start=============================
 
     /**
      * 普通缓存获取
@@ -385,6 +236,182 @@ public class RedisComponent {
             RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
         }
     }
+
+
+//============================第一：String end=============================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * 返回key集合
+     *
+     * @param key 键
+     * @return
+     */
+    public boolean hasKeys(String key) {
+        return keys(key).size() > 0;
+    }
+
+    /**
+     * 返回key集合
+     *
+     * @param key 键
+     * @return
+     */
+    public Set<String> keys(String key) {
+        try {
+            return redisTemplate.keys(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
+    }
+
+    /**
+     * 指定缓存失效时间(默认分钟)
+     *
+     * @param key  键
+     * @param time 时间(秒)
+     * @return
+     */
+    public boolean expire(String key, long time) {
+        return expire(key, time, TimeUnit.SECONDS);
+    }
+
+    /**
+     * 指定缓存失效时间
+     *
+     * @param key  键
+     * @param time 时间(秒)
+     * @return
+     */
+    public boolean expire(String key, long time, TimeUnit timeUnit) {
+        try {
+            if (time > 0) {
+                redisTemplate.expire(key, time, timeUnit);
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
+    }
+
+    /**
+     * 根据key 获取过期时间(TimeUnit.SECONDS)
+     *
+     * @param key 键 不能为null
+     * @return 时间(秒) 返回0代表为永久有效
+     */
+    public long getExpire(String key) {
+        return getExpire(key, TimeUnit.SECONDS);
+    }
+
+    /**
+     * 根据key 获取过期时间
+     *
+     * @param key 键 不能为null
+     * @return 时间(秒) 返回0代表为永久有效
+     */
+    public long getExpire(String key, TimeUnit timeUnit) {
+        try {
+            return redisTemplate.getExpire(key, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1L;
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
+    }
+
+    /**
+     * 判断key是否存在
+     *
+     * @param key 键
+     * @return true 存在 false不存在
+     */
+    public boolean hasKey(String key) {
+        try {
+            return redisTemplate.hasKey(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
+    }
+
+    /**
+     * 删除缓存
+     *
+     * @param key 可以传一个值 或多个
+     */
+    @SuppressWarnings("unchecked")
+    public Boolean del(String... key) {
+        try {
+            if (key != null && key.length > 0) {
+                if (key.length == 1) {
+                    return redisTemplate.delete(key[0]);
+                } else {
+                    return redisTemplate.delete(CollectionUtils.arrayToList(key)) > 0;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
+        return false;
+    }
+
+    /**
+     * 删除缓存
+     *
+     * @param keys key集合
+     */
+    @SuppressWarnings("unchecked")
+    public Long del(Collection<String> keys) {
+        try {
+            if (CollUtil.isNotEmpty(keys)) {
+                return redisTemplate.delete(keys);
+            }
+            return 0L;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
+        return 0L;
+    }
+
+
 
     //================================Map=================================
 
