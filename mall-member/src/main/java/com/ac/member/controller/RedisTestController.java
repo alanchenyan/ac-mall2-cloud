@@ -22,12 +22,6 @@ public class RedisTestController {
         return true;
     }
 
-    @ApiOperation(value = "取-字符串")
-    @GetMapping("getStr")
-    public String getStr(@RequestParam String key) {
-        return redisComponent.getStr(key);
-    }
-
     @ApiOperation(value = "存-取-字符串")
     @GetMapping("testString")
     public String testString(@RequestParam String key, String value) {
