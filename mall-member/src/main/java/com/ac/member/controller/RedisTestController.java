@@ -22,6 +22,24 @@ public class RedisTestController {
         return true;
     }
 
+    @ApiOperation(value = "是否有key")
+    @GetMapping("hasKey")
+    public Boolean hasKey(@RequestParam String key) {
+        return redisComponent.hasKey(key);
+    }
+
+    @ApiOperation(value = "设置过期时间")
+    @GetMapping("expire")
+    public Boolean expire(@RequestParam String key, long time) {
+        return redisComponent.expire(key, time);
+    }
+
+    @ApiOperation(value = "获取过期时间")
+    @GetMapping("getExpire")
+    public Long getExpire(@RequestParam String key) {
+        return redisComponent.getExpire(key);
+    }
+
     @ApiOperation(value = "存-取-字符串")
     @GetMapping("testString")
     public String testString(@RequestParam String key, String value) {

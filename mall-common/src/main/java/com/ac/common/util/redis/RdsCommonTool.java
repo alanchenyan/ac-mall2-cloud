@@ -40,7 +40,7 @@ class RdsCommonTool {
     }
 
     /**
-     * 指定缓存失效时间(默认分钟)
+     * 指定缓存失效时间(默认秒)
      *
      * @param key  键
      * @param time 时间(秒)
