@@ -29,7 +29,7 @@ public class RedisComponent {
     @Resource
     private RdsStringTool rdsStringTool;
 
-    //============================第一：String start=============================
+    //============================第一部分：String start=============================
 
     public String getStr(String key) {
         return rdsStringTool.getStr(key);
@@ -79,7 +79,7 @@ public class RedisComponent {
         return rdsStringTool.decr(key, delta);
     }
 
-    //============================第一：String end=============================
+    //============================第一部分：String end=============================
 
 
 
