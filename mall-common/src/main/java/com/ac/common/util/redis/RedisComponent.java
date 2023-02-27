@@ -1,7 +1,6 @@
 package com.ac.common.util.redis;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.collection.CollUtil;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.geo.*;
 import org.springframework.data.redis.connection.RedisGeoCommands;
@@ -63,7 +62,7 @@ public class RedisComponent {
     }
 
     //============================第1部分：common end=============================
-    
+
     //============================第2部分：String start=============================
 
     public String getStr(String key) {
