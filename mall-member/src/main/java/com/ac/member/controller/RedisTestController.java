@@ -29,6 +29,13 @@ public class RedisTestController {
         return redisComponent.getStr(key);
     }
 
+    @ApiOperation(value = "存-取-字符串（只有在key不存在时设置key的值）")
+    @GetMapping("testStringIfAbsent")
+    public String testStringIfAbsent(@RequestParam String key, String value) {
+        redisComponent.setIfAbsent(key, value);
+        return redisComponent.getStr(key);
+    }
+
     @ApiOperation(value = "存-取-Long")
     @GetMapping("testLong")
     public Long testLong(@RequestParam String key, Long value) {
