@@ -1,11 +1,15 @@
 package com.ac.member.controller;
 
 import com.ac.common.util.redis.RedisComponent;
+import com.ac.member.dto.MemberDTO;
+import com.ac.member.enums.MemberSexEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
+import java.util.concurrent.TimeUnit;
 
 @Api(tags = "Redis测试")
 @RestController
@@ -15,6 +19,7 @@ public class RedisTestController {
     @Resource
     private RedisComponent redisComponent;
 
+    //============================第1部分：common start=============================
     @ApiOperation(value = "删除key")
     @GetMapping("del")
     public Boolean del(@RequestParam String key) {
@@ -40,6 +45,8 @@ public class RedisTestController {
         return redisComponent.getExpire(key);
     }
 
+
+    //============================第2部分：String start=============================
     @ApiOperation(value = "存-取-字符串")
     @GetMapping("testString")
     public String testString(@RequestParam String key, String value) {
@@ -68,5 +75,25 @@ public class RedisTestController {
         redisComponent.incr(key);
         Object obj = redisComponent.get(key);
         return Long.valueOf(obj.toString());
+    }
+
+    //================================第3部分：Hash start=================================
+    @ApiOperation(value = "Hash-对象存储")
+    @GetMapping("hmsetObj")
+    public MemberDTO hmsetObj(@RequestParam String key) {
+        MemberDTO member = new MemberDTO();
+        member.setId(1L);
+        member.setMemberName("AC");
+        member.setBirthday(LocalDate.now());
+        member.setMobile("134178191xx");
+        member.setSex(MemberSexEnum.MEN);
+
+        //存
+        redisComponent.hmSetObj(key, member);
+        redisComponent.hmSetObj(key, member,10);
+        redisComponent.hmSetObj(key, member,10, TimeUnit.MINUTES);
+
+        //取
+        return redisComponent.hmGetObj(key, MemberDTO.class);
     }
 }

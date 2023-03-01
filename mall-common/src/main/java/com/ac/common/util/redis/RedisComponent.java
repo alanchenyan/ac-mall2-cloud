@@ -119,53 +119,53 @@ public class RedisComponent {
     //============================第2部分：String end=============================
 
     //================================第3部分：Hash start=================================
-    public Object hget(String key, String item) {
-        return rdsHashTool.hget(key, item);
+    public Object hGet(String key, String item) {
+        return rdsHashTool.hGet(key, item);
     }
 
-    public <T> T hmgetObj(String key, Class<T> target) {
-        return rdsHashTool.hmgetObj(key, target);
+    public <T> T hmGetObj(String key, Class<T> target) {
+        return rdsHashTool.hmGetObj(key, target);
     }
 
-    public Boolean hmsetObj(String key, Object object) {
-        return rdsHashTool.hmsetObj(key, object);
+    public boolean hmSetObj(String key, Object object) {
+        return rdsHashTool.hmSetObj(key, object);
     }
 
-    public Boolean hmsetObj(String key, Object object, long time, TimeUnit timeUnit) {
-        return rdsHashTool.hmsetObj(key, object, time, timeUnit);
+    public boolean hmSetObj(String key, Object object, long time, TimeUnit timeUnit) {
+        return rdsHashTool.hmSetObj(key, object, time, timeUnit);
     }
 
-    public Boolean hmsetObj(String key, Object object, long time) {
-        return rdsHashTool.hmsetObj(key, object, time);
+    public boolean hmSetObj(String key, Object object, long time) {
+        return rdsHashTool.hmSetObj(key, object, time);
     }
 
-    public Map<Object, Object> hmget(String key) {
-        return rdsHashTool.hmget(key);
+    public Map<Object, Object> hmGet(String key) {
+        return rdsHashTool.hmGet(key);
     }
 
-    public boolean hmset(String key, Map<String, Object> map) {
-        return rdsHashTool.hmset(key, map);
+    public boolean hmSet(String key, Map<String, Object> map) {
+        return rdsHashTool.hmSet(key, map);
     }
 
-    public boolean hmset(String key, Map<String, Object> map, long time) {
-        return rdsHashTool.hmset(key, map, time);
+    public boolean hmSet(String key, Map<String, Object> map, long time) {
+        return rdsHashTool.hmSet(key, map, time);
     }
 
-    public boolean hset(String key, String item, Object value) {
-        return rdsHashTool.hset(key, item, value);
+    public boolean hSet(String key, String item, Object value) {
+        return rdsHashTool.hSet(key, item, value);
     }
 
-    public boolean hset(String key, String item, Object value, long time, TimeUnit timeUnit) {
-        return rdsHashTool.hset(key, item, value, time, timeUnit);
+    public boolean hSet(String key, String item, Object value, long time, TimeUnit timeUnit) {
+        return rdsHashTool.hSet(key, item, value, time, timeUnit);
     }
 
-    public boolean hset(String key, String item, Object value, long time) {
-        return rdsHashTool.hset(key, item, value, time);
+    public boolean hSet(String key, String item, Object value, long time) {
+        return rdsHashTool.hSet(key, item, value, time);
 
     }
 
-    public Long hdel(String key, Object... item) {
-        return rdsHashTool.hdel(key, item);
+    public Long hDel(String key, Object... item) {
+        return rdsHashTool.hDel(key, item);
     }
 
     public boolean hHasKey(String key, String item) {
@@ -176,12 +176,12 @@ public class RedisComponent {
         return rdsHashTool.hLen(key, item);
     }
 
-    public long hincr(String key, String item, long by) {
-        return rdsHashTool.hincr(key, item, by);
+    public long hIncr(String key, String item, long by) {
+        return rdsHashTool.hIncr(key, item, by);
     }
 
-    public double hdecr(String key, String item, double by) {
-        return rdsHashTool.hdecr(key, item, by);
+    public double hDecr(String key, String item, double by) {
+        return rdsHashTool.hDecr(key, item, by);
     }
 
     //================================第3部分：Hash end=================================

@@ -31,7 +31,7 @@ class RdsHashTool {
      * @param item 项 不能为null
      * @return 值
      */
-    public Object hget(String key, String item) {
+    public Object hGet(String key, String item) {
 
         try {
             return redisTemplate.opsForHash().get(key, item);
@@ -49,7 +49,7 @@ class RdsHashTool {
      * @param key 键
      * @return 对象
      */
-    public <T> T hmgetObj(String key, Class<T> target) {
+    public <T> T hmGetObj(String key, Class<T> target) {
         try {
             Map<Object, Object> hashMap = redisTemplate.opsForHash().entries(key);
             if (hashMap.size() == 0) {
@@ -70,7 +70,7 @@ class RdsHashTool {
      * @param key 键
      * @return 对象
      */
-    public Boolean hmsetObj(String key, Object object) {
+    public Boolean hmSetObj(String key, Object object) {
         Map<String, Object> map = BeanUtil.beanToMap(object);
         try {
             redisTemplate.opsForHash().putAll(key, map);
@@ -92,7 +92,7 @@ class RdsHashTool {
      * @param timeUnit
      * @return
      */
-    public Boolean hmsetObj(String key, Object object, long time, TimeUnit timeUnit) {
+    public Boolean hmSetObj(String key, Object object, long time, TimeUnit timeUnit) {
         Map<String, Object> map = BeanUtil.beanToMap(object);
         try {
             redisTemplate.opsForHash().putAll(key, map);
@@ -114,8 +114,8 @@ class RdsHashTool {
      * @param key 键
      * @return 对象
      */
-    public Boolean hmsetObj(String key, Object object, long time) {
-        return hmsetObj(key, object, time, TimeUnit.SECONDS);
+    public Boolean hmSetObj(String key, Object object, long time) {
+        return hmSetObj(key, object, time, TimeUnit.SECONDS);
     }
 
     /**
@@ -124,7 +124,7 @@ class RdsHashTool {
      * @param key 键
      * @return 对应的多个键值
      */
-    public Map<Object, Object> hmget(String key) {
+    public Map<Object, Object> hmGet(String key) {
         try {
             return redisTemplate.opsForHash().entries(key);
         } catch (Exception e) {
@@ -142,7 +142,7 @@ class RdsHashTool {
      * @param map 对应多个键值
      * @return true 成功 false 失败
      */
-    public boolean hmset(String key, Map<String, Object> map) {
+    public boolean hmSet(String key, Map<String, Object> map) {
         try {
             redisTemplate.opsForHash().putAll(key, map);
             return true;
@@ -162,7 +162,7 @@ class RdsHashTool {
      * @param time 时间(秒)
      * @return true成功 false失败
      */
-    public boolean hmset(String key, Map<String, Object> map, long time) {
+    public boolean hmSet(String key, Map<String, Object> map, long time) {
         try {
             redisTemplate.opsForHash().putAll(key, map);
             if (time > 0) {
@@ -185,7 +185,7 @@ class RdsHashTool {
      * @param value 值
      * @return true 成功 false失败
      */
-    public boolean hset(String key, String item, Object value) {
+    public boolean hSet(String key, String item, Object value) {
         try {
             redisTemplate.opsForHash().put(key, item, value);
             return true;
@@ -205,7 +205,7 @@ class RdsHashTool {
      * @param value 值
      * @return true 成功 false失败
      */
-    public boolean hset(String key, String item, Object value, long time, TimeUnit timeUnit) {
+    public boolean hSet(String key, String item, Object value, long time, TimeUnit timeUnit) {
         try {
             redisTemplate.opsForHash().put(key, item, value);
             if (time > 0) {
@@ -229,8 +229,8 @@ class RdsHashTool {
      * @param time  时间(秒)  注意:如果已存在的hash表有时间,这里将会替换原有的时间
      * @return true 成功 false失败
      */
-    public boolean hset(String key, String item, Object value, long time) {
-        return hset(key, item, value, time, TimeUnit.SECONDS);
+    public boolean hSet(String key, String item, Object value, long time) {
+        return hSet(key, item, value, time, TimeUnit.SECONDS);
 
     }
 
@@ -240,7 +240,7 @@ class RdsHashTool {
      * @param key  键 不能为null
      * @param item 项 可以使多个 不能为null
      */
-    public Long hdel(String key, Object... item) {
+    public Long hDel(String key, Object... item) {
         try {
             redisTemplate.opsForHash().delete(key, item);
         } catch (Exception e) {
@@ -294,7 +294,7 @@ class RdsHashTool {
      * @param by   要增加几(大于0)
      * @return
      */
-    public long hincr(String key, String item, long by) {
+    public long hIncr(String key, String item, long by) {
         try {
             return redisTemplate.opsForHash().increment(key, item, by);
         } catch (Exception e) {
@@ -313,7 +313,7 @@ class RdsHashTool {
      * @param by   要减少记(小于0)
      * @return
      */
-    public double hdecr(String key, String item, double by) {
+    public double hDecr(String key, String item, double by) {
         try {
             return redisTemplate.opsForHash().increment(key, item, -by);
         } catch (Exception e) {
