@@ -36,30 +36,76 @@ public class RedisComponent {
 
     //============================第1部分：common start=============================
 
+    /**
+     * 是否有key
+     *
+     * @param key
+     * @return
+     */
     public boolean hasKey(String key) {
         return rdsCommonTool.hasKey(key);
     }
 
+    /**
+     * 设置key的过期时间(默认单位：秒)
+     *
+     * @param key
+     * @param time
+     * @return
+     */
     public boolean expire(String key, long time) {
         return rdsCommonTool.expire(key, time);
     }
 
+    /**
+     * 设置key的过期时间
+     *
+     * @param key
+     * @param time
+     * @param timeUnit
+     * @return
+     */
     public boolean expire(String key, long time, TimeUnit timeUnit) {
         return rdsCommonTool.expire(key, time, timeUnit);
     }
 
+    /**
+     * 获取key的过期时间(默认单位：秒)
+     *
+     * @param key
+     * @return
+     */
     public long getExpire(String key) {
         return rdsCommonTool.getExpire(key);
     }
 
+    /**
+     * 获取key的过期时间
+     *
+     * @param key
+     * @param timeUnit
+     * @return
+     */
     public long getExpire(String key, TimeUnit timeUnit) {
         return rdsCommonTool.getExpire(key, timeUnit);
     }
 
+    /**
+     * 删除key
+     *
+     * @param key
+     * @return
+     */
     public Boolean del(String... key) {
         return rdsCommonTool.del(key);
     }
 
+    /**
+     * 批量删除key
+     *
+     * @param keys
+     * @return
+     */
     public Long del(Collection<String> keys) {
         return rdsCommonTool.del(keys);
     }
@@ -68,50 +114,130 @@ public class RedisComponent {
 
     //============================第2部分：String start=============================
 
+    /**
+     * 获取String
+     *
+     * @param key
+     * @return
+     */
     public String getStr(String key) {
         return rdsStringTool.getStr(key);
     }
 
+    /**
+     * 获取基本数据类型对象
+     *
+     * @param key
+     * @return
+     */
     public Object get(String key) {
         return rdsStringTool.get(key);
     }
 
+    /**
+     * 设置基本数据类型对象(不过期)
+     *
+     * @param key
+     * @param value
+     * @return
+     */
     public boolean set(String key, Object value) {
         return rdsStringTool.set(key, value);
     }
 
+    /**
+     * 设置基本数据类型对象(过期时间，默认单位：秒)
+     *
+     * @param key
+     * @param value
+     * @return
+     */
     public boolean set(String key, Object value, long time) {
         return rdsStringTool.set(key, value, time);
     }
 
+    /**
+     * 设置基本数据类型对象(过期时间，过期单位)
+     *
+     * @param key
+     * @param value
+     * @return
+     */
     public boolean set(String key, Object value, long time, TimeUnit timeUnit) {
         return rdsStringTool.set(key, value, time, timeUnit);
     }
 
+    /**
+     * 设置基本数据类型对象-不过期(只有在key不存在时设置key的值)
+     *
+     * @param key
+     * @param value
+     * @return
+     */
     public boolean setIfAbsent(String key, Object value) {
         return rdsStringTool.setIfAbsent(key, value);
     }
 
+    /**
+     * 设置基本数据类型对象(只有在key不存在时设置key的值)
+     *
+     * @param key
+     * @param value
+     * @return
+     */
     public boolean setIfAbsent(String key, Object value, long time) {
         return rdsStringTool.setIfAbsent(key, value, time);
     }
 
+    /**
+     * 设置基本数据类型对象(只有在key不存在时设置key的值)
+     *
+     * @param key
+     * @param value
+     * @return
+     */
     public boolean setIfAbsent(String key, Object value, long time, TimeUnit timeUnit) {
         return rdsStringTool.setIfAbsent(key, value, time, timeUnit);
     }
 
+    /**
+     * 递增(默认按1递增)
+     *
+     * @param key
+     * @return
+     */
     public long incr(String key) {
         return rdsStringTool.incr(key);
     }
 
+    /**
+     * 递增(递增幅度)
+     *
+     * @param key
+     * @param delta
+     * @return
+     */
     public long incr(String key, long delta) {
         return rdsStringTool.incr(key, delta);
     }
 
+    /**
+     * 递减(默认按1递减)
+     *
+     * @param key
+     * @return
+     */
     public long decr(String key) {
         return rdsStringTool.decr(key);
     }
 
+    /**
+     * 递减(递减幅度)
+     *
+     * @param key
+     * @param delta
+     * @return
+     */
     public long decr(String key, long delta) {
         return rdsStringTool.decr(key, delta);
     }
@@ -119,36 +245,110 @@ public class RedisComponent {
     //============================第2部分：String end=============================
 
     //================================第3部分：Hash start=================================
+
+    /**
+     * Hash-取对象字段
+     *
+     * @param key
+     * @param item
+     * @return
+     */
     public Object hGet(String key, String item) {
         return rdsHashTool.hGet(key, item);
     }
 
+    /**
+     * Hash-取对象
+     *
+     * @param key
+     * @param target
+     * @param <T>
+     * @return
+     */
     public <T> T hmGetObj(String key, Class<T> target) {
         return rdsHashTool.hmGetObj(key, target);
     }
 
+    /**
+     * 存对象
+     *
+     * @param key
+     * @param object
+     * @return
+     */
     public boolean hmSetObj(String key, Object object) {
         return rdsHashTool.hmSetObj(key, object);
     }
 
-    public boolean hmSetObj(String key, Object object, long time, TimeUnit timeUnit) {
-        return rdsHashTool.hmSetObj(key, object, time, timeUnit);
-    }
-
+    /**
+     * 存对象(设置过期时间，单位默认秒)
+     *
+     * @param key
+     * @param object
+     * @param time
+     * @return
+     */
     public boolean hmSetObj(String key, Object object, long time) {
         return rdsHashTool.hmSetObj(key, object, time);
     }
 
+    /**
+     * 存对象(设置过期时间，单位)
+     *
+     * @param key
+     * @param object
+     * @param time
+     * @param timeUnit
+     * @return
+     */
+    public boolean hmSetObj(String key, Object object, long time, TimeUnit timeUnit) {
+        return rdsHashTool.hmSetObj(key, object, time, timeUnit);
+    }
+
+    /**
+     * 获取Map
+     *
+     * @param key
+     * @return
+     */
     public Map<Object, Object> hmGet(String key) {
         return rdsHashTool.hmGet(key);
     }
 
+    /**
+     * 存Map(不过期)
+     *
+     * @param key
+     * @param map
+     * @return
+     */
     public boolean hmSet(String key, Map<String, Object> map) {
         return rdsHashTool.hmSet(key, map);
     }
 
+    /**
+     * 存Map-设置过期时间(单位默认秒)
+     *
+     * @param key
+     * @param map
+     * @param time
+     * @return
+     */
     public boolean hmSet(String key, Map<String, Object> map, long time) {
         return rdsHashTool.hmSet(key, map, time);
+    }
+
+    /**
+     * 存Map(设置过期时间，单位)
+     *
+     * @param key
+     * @param map
+     * @param time
+     * @param timeUnit
+     * @return
+     */
+    public boolean hmSet(String key, Map<String, Object> map, long time, TimeUnit timeUnit) {
+        return rdsHashTool.hmSet(key, map, time, timeUnit);
     }
 
     public boolean hSet(String key, String item, Object value) {
@@ -161,7 +361,6 @@ public class RedisComponent {
 
     public boolean hSet(String key, String item, Object value, long time) {
         return rdsHashTool.hSet(key, item, value, time);
-
     }
 
     public Long hDel(String key, Object... item) {

@@ -25,7 +25,7 @@ class RdsHashTool {
     private RdsCommonTool rdsCommonTool;
 
     /**
-     * HashGet
+     * Hash-取对象字段
      *
      * @param key  键 不能为null
      * @param item 项 不能为null
@@ -167,6 +167,30 @@ class RdsHashTool {
             redisTemplate.opsForHash().putAll(key, map);
             if (time > 0) {
                 rdsCommonTool.expire(key, time);
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
+    }
+
+    /**
+     * HashSet 并设置时间
+     *
+     * @param key
+     * @param map
+     * @param time
+     * @param timeUnit
+     * @return
+     */
+    public boolean hmSet(String key, Map<String, Object> map, long time, TimeUnit timeUnit) {
+        try {
+            redisTemplate.opsForHash().putAll(key, map);
+            if (time > 0) {
+                rdsCommonTool.expire(key, time, timeUnit);
             }
             return true;
         } catch (Exception e) {

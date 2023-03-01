@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Api(tags = "Redis测试")
@@ -79,8 +81,8 @@ public class RedisTestController {
 
     //================================第3部分：Hash start=================================
     @ApiOperation(value = "Hash-对象存储")
-    @GetMapping("hmsetObj")
-    public MemberDTO hmsetObj(@RequestParam String key) {
+    @GetMapping("hmGetObj")
+    public MemberDTO hmGetObj(@RequestParam String key) {
         MemberDTO member = new MemberDTO();
         member.setId(1L);
         member.setMemberName("AC");
@@ -90,10 +92,33 @@ public class RedisTestController {
 
         //存
         redisComponent.hmSetObj(key, member);
-        redisComponent.hmSetObj(key, member,10);
-        redisComponent.hmSetObj(key, member,10, TimeUnit.MINUTES);
+        redisComponent.hmSetObj(key, member, 10);
+        redisComponent.hmSetObj(key, member, 10, TimeUnit.MINUTES);
 
         //取
         return redisComponent.hmGetObj(key, MemberDTO.class);
+    }
+
+    @ApiOperation(value = "Hash-取对象字段")
+    @GetMapping("hGet")
+    public Object hGet(@RequestParam String key, @RequestParam String item) {
+        Object obj = redisComponent.hGet(key, item);
+        return obj;
+    }
+
+    @ApiOperation(value = "Hash-Map存储")
+    @GetMapping("hmSet")
+    public Map<Object, Object> hmSet(@RequestParam String key) {
+        Map<String, Object> loginMap = new HashMap<>();
+        loginMap.put("name", "AC");
+        loginMap.put("pwd", "123abc");
+
+        //存
+        redisComponent.hmSet(key, loginMap);
+        redisComponent.hmSet(key, loginMap, 10);
+        redisComponent.hmSet(key, loginMap, 10, TimeUnit.MINUTES);
+
+        //取
+        return redisComponent.hmGet(key);
     }
 }
