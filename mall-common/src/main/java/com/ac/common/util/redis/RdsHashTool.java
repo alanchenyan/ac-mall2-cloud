@@ -16,10 +16,13 @@ import java.util.concurrent.TimeUnit;
  * @date 2023/02/24
  */
 @Component
-public class RdsHashTool {
+class RdsHashTool {
 
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
+
+    @Resource
+    private RdsCommonTool rdsCommonTool;
 
     /**
      * HashGet
@@ -94,7 +97,7 @@ public class RdsHashTool {
         try {
             redisTemplate.opsForHash().putAll(key, map);
             if (time > 0) {
-                expire(key, time, timeUnit);
+                rdsCommonTool.expire(key, time, timeUnit);
             }
             return true;
         } catch (Exception e) {
@@ -163,7 +166,7 @@ public class RdsHashTool {
         try {
             redisTemplate.opsForHash().putAll(key, map);
             if (time > 0) {
-                expire(key, time);
+                rdsCommonTool.expire(key, time);
             }
             return true;
         } catch (Exception e) {
@@ -206,7 +209,7 @@ public class RdsHashTool {
         try {
             redisTemplate.opsForHash().put(key, item, value);
             if (time > 0) {
-                expire(key, time, timeUnit);
+                rdsCommonTool.expire(key, time, timeUnit);
             }
             return true;
         } catch (Exception e) {

@@ -31,6 +31,9 @@ public class RedisComponent {
     @Resource
     private RdsStringTool rdsStringTool;
 
+    @Resource
+    private RdsHashTool rdsHashTool;
+
     //============================第1部分：common start=============================
 
     public boolean hasKey(String key) {
@@ -115,308 +118,74 @@ public class RedisComponent {
 
     //============================第2部分：String end=============================
 
-
-    //================================Map=================================
-
-    /**
-     * HashGet
-     *
-     * @param key  键 不能为null
-     * @param item 项 不能为null
-     * @return 值
-     */
+    //================================第3部分：Hash start=================================
     public Object hget(String key, String item) {
-
-        try {
-            return redisTemplate.opsForHash().get(key, item);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
+        return rdsHashTool.hget(key, item);
     }
 
-    /**
-     * 获取hashKey对应的对象
-     *
-     * @param key 键
-     * @return 对象
-     */
     public <T> T hmgetObj(String key, Class<T> target) {
-        try {
-            Map<Object, Object> hashMap = redisTemplate.opsForHash().entries(key);
-            if (hashMap.size() == 0) {
-                return null;
-            }
-            return BeanUtil.toBean(hashMap, target);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
+        return rdsHashTool.hmgetObj(key, target);
     }
 
-    /**
-     * 获取hashKey对应的对象
-     *
-     * @param key 键
-     * @return 对象
-     */
     public Boolean hmsetObj(String key, Object object) {
-        Map<String, Object> map = BeanUtil.beanToMap(object);
-        try {
-            redisTemplate.opsForHash().putAll(key, map);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
+        return rdsHashTool.hmsetObj(key, object);
     }
 
-    /**
-     * 存值
-     *
-     * @param key
-     * @param object
-     * @param time
-     * @param timeUnit
-     * @return
-     */
     public Boolean hmsetObj(String key, Object object, long time, TimeUnit timeUnit) {
-        Map<String, Object> map = BeanUtil.beanToMap(object);
-        try {
-            redisTemplate.opsForHash().putAll(key, map);
-            if (time > 0) {
-                expire(key, time, timeUnit);
-            }
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
+        return rdsHashTool.hmsetObj(key, object, time, timeUnit);
     }
 
-    /**
-     * 获取hashKey对应的对象
-     *
-     * @param key 键
-     * @return 对象
-     */
     public Boolean hmsetObj(String key, Object object, long time) {
-        return hmsetObj(key, object, time, TimeUnit.SECONDS);
+        return rdsHashTool.hmsetObj(key, object, time);
     }
 
-    /**
-     * 获取hashKey对应的所有键值
-     *
-     * @param key 键
-     * @return 对应的多个键值
-     */
     public Map<Object, Object> hmget(String key) {
-        try {
-            return redisTemplate.opsForHash().entries(key);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
+        return rdsHashTool.hmget(key);
     }
 
-    /**
-     * HashSet
-     *
-     * @param key 键
-     * @param map 对应多个键值
-     * @return true 成功 false 失败
-     */
     public boolean hmset(String key, Map<String, Object> map) {
-        try {
-            redisTemplate.opsForHash().putAll(key, map);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
+        return rdsHashTool.hmset(key, map);
     }
 
-    /**
-     * HashSet 并设置时间
-     *
-     * @param key  键
-     * @param map  对应多个键值
-     * @param time 时间(秒)
-     * @return true成功 false失败
-     */
     public boolean hmset(String key, Map<String, Object> map, long time) {
-        try {
-            redisTemplate.opsForHash().putAll(key, map);
-            if (time > 0) {
-                expire(key, time);
-            }
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
+        return rdsHashTool.hmset(key, map, time);
     }
 
-    /**
-     * 向一张hash表中放入数据,如果不存在将创建
-     *
-     * @param key   键
-     * @param item  项
-     * @param value 值
-     * @return true 成功 false失败
-     */
     public boolean hset(String key, String item, Object value) {
-        try {
-            redisTemplate.opsForHash().put(key, item, value);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
+        return rdsHashTool.hset(key, item, value);
     }
 
-    /**
-     * 向一张hash表中放入数据,如果不存在将创建
-     *
-     * @param key   键
-     * @param item  项
-     * @param value 值
-     * @return true 成功 false失败
-     */
     public boolean hset(String key, String item, Object value, long time, TimeUnit timeUnit) {
-        try {
-            redisTemplate.opsForHash().put(key, item, value);
-            if (time > 0) {
-                expire(key, time, timeUnit);
-            }
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
+        return rdsHashTool.hset(key, item, value, time, timeUnit);
     }
 
-    /**
-     * 向一张hash表中放入数据,如果不存在将创建
-     *
-     * @param key   键
-     * @param item  项
-     * @param value 值
-     * @param time  时间(秒)  注意:如果已存在的hash表有时间,这里将会替换原有的时间
-     * @return true 成功 false失败
-     */
     public boolean hset(String key, String item, Object value, long time) {
-        return hset(key, item, value, time, TimeUnit.SECONDS);
+        return rdsHashTool.hset(key, item, value, time);
 
     }
 
-    /**
-     * 删除hash表中的值
-     *
-     * @param key  键 不能为null
-     * @param item 项 可以使多个 不能为null
-     */
     public Long hdel(String key, Object... item) {
-        try {
-            redisTemplate.opsForHash().delete(key, item);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
-        return 0L;
+        return rdsHashTool.hdel(key, item);
     }
 
-    /**
-     * 判断hash表中是否有该项的值
-     *
-     * @param key  键 不能为null
-     * @param item 项 不能为null
-     * @return true 存在 false不存在
-     */
     public boolean hHasKey(String key, String item) {
-        try {
-            return redisTemplate.opsForHash().hasKey(key, item);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
+        return rdsHashTool.hHasKey(key, item);
     }
 
-    /**
-     * 返回hash表字段数量
-     *
-     * @param key  键 不能为null
-     * @param item 项 不能为null
-     */
     public Long hLen(String key, String item) {
-        try {
-            return redisTemplate.opsForHash().lengthOfValue(key, item);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0L;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
+        return rdsHashTool.hLen(key, item);
     }
 
-    /**
-     * hash递增 如果不存在,就会创建一个 并把新增后的值返回
-     *
-     * @param key  键
-     * @param item 项
-     * @param by   要增加几(大于0)
-     * @return
-     */
     public long hincr(String key, String item, long by) {
-        try {
-            return redisTemplate.opsForHash().increment(key, item, by);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
+        return rdsHashTool.hincr(key, item, by);
     }
 
-    /**
-     * hash递减
-     *
-     * @param key  键
-     * @param item 项
-     * @param by   要减少记(小于0)
-     * @return
-     */
     public double hdecr(String key, String item, double by) {
-        try {
-            return redisTemplate.opsForHash().increment(key, item, -by);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
+        return rdsHashTool.hdecr(key, item, by);
     }
+
+    //================================第3部分：Hash end=================================
+
 
     //============================set=============================
 
