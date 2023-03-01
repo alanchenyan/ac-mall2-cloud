@@ -1,6 +1,5 @@
 package com.ac.common.util.redis;
 
-import cn.hutool.core.bean.BeanUtil;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.geo.*;
 import org.springframework.data.redis.connection.RedisGeoCommands;
