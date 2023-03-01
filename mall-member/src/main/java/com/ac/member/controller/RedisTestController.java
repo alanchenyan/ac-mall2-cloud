@@ -125,9 +125,30 @@ public class RedisTestController {
     @ApiOperation(value = "Hash-判断对象字段是否存在")
     @GetMapping("hHasKey")
     public boolean hHasKey(@RequestParam String key, @RequestParam String item) {
-        //删除字段
         return redisComponent.hHasKey(key, item);
     }
+
+    @ApiOperation(value = "Hash-获取对象指定字段长度")
+    @GetMapping("hLen")
+    public Long hLen(@RequestParam String key, @RequestParam String item) {
+        return redisComponent.hLen(key, item);
+    }
+
+    @ApiOperation(value = "Hash-对象字段递增")
+    @GetMapping("hIncr")
+    public MemberDTO hIncr(@RequestParam String key, @RequestParam String item) {
+        redisComponent.hIncr(key, item, 2);
+        return redisComponent.hmGetObj(key, MemberDTO.class);
+
+    }
+
+    @ApiOperation(value = "Hash-对象字段递减")
+    @GetMapping("hDecr")
+    public MemberDTO hDecr(@RequestParam String key, @RequestParam String item) {
+        redisComponent.hDecr(key, item, 1);
+        return redisComponent.hmGetObj(key, MemberDTO.class);
+    }
+
 
     @ApiOperation(value = "Hash-Map存储")
     @GetMapping("hmSet")

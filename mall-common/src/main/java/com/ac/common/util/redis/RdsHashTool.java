@@ -294,7 +294,7 @@ class RdsHashTool {
     }
 
     /**
-     * 返回hash表字段数量
+     * 返回hash表字段长度
      *
      * @param key  键 不能为null
      * @param item 项 不能为null

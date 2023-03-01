@@ -411,14 +411,37 @@ public class RedisComponent {
         return rdsHashTool.hHasKey(key, item);
     }
 
+    /**
+     * Hash-获取对象指定字段长度
+     *
+     * @param key
+     * @param item
+     * @return
+     */
     public Long hLen(String key, String item) {
         return rdsHashTool.hLen(key, item);
     }
 
+    /**
+     * Hash-对象字段递增
+     *
+     * @param key
+     * @param item
+     * @param by
+     * @return
+     */
     public long hIncr(String key, String item, long by) {
         return rdsHashTool.hIncr(key, item, by);
     }
 
+    /**
+     * Hash-对象字段递减
+     *
+     * @param key
+     * @param item
+     * @param by
+     * @return
+     */
     public double hDecr(String key, String item, double by) {
         return rdsHashTool.hDecr(key, item, by);
     }
