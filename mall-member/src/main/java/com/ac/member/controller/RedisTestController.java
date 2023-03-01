@@ -106,6 +106,29 @@ public class RedisTestController {
         return obj;
     }
 
+    @ApiOperation(value = "Hash-设置对象字段")
+    @GetMapping("hSet")
+    public Object hSet(@RequestParam String key, @RequestParam String item, @RequestParam Object value) {
+        redisComponent.hSet(key, item, value);
+        return redisComponent.hGet(key, item);
+    }
+
+    @ApiOperation(value = "Hash-删除对象字段")
+    @GetMapping("hDel")
+    public MemberDTO hDel(@RequestParam String key, @RequestParam String item) {
+        //删除字段
+        redisComponent.hDel(key, item);
+        //取
+        return redisComponent.hmGetObj(key, MemberDTO.class);
+    }
+
+    @ApiOperation(value = "Hash-判断对象字段是否存在")
+    @GetMapping("hHasKey")
+    public boolean hHasKey(@RequestParam String key, @RequestParam String item) {
+        //删除字段
+        return redisComponent.hHasKey(key, item);
+    }
+
     @ApiOperation(value = "Hash-Map存储")
     @GetMapping("hmSet")
     public Map<Object, Object> hmSet(@RequestParam String key) {

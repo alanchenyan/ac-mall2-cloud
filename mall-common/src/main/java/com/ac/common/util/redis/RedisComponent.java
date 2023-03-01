@@ -114,7 +114,7 @@ public class RedisComponent {
     //============================第2部分：String start=============================
 
     /**
-     * 获取String
+     * String-获取String
      *
      * @param key
      * @return
@@ -124,7 +124,7 @@ public class RedisComponent {
     }
 
     /**
-     * 获取基本数据类型对象
+     * String-获取基本数据类型对象
      *
      * @param key
      * @return
@@ -134,7 +134,7 @@ public class RedisComponent {
     }
 
     /**
-     * 设置基本数据类型对象(不过期)
+     * String-设置基本数据类型对象(不过期)
      *
      * @param key
      * @param value
@@ -145,7 +145,7 @@ public class RedisComponent {
     }
 
     /**
-     * 设置基本数据类型对象(过期时间，默认单位：秒)
+     * String-设置基本数据类型对象(过期时间，默认单位：秒)
      *
      * @param key
      * @param value
@@ -156,7 +156,7 @@ public class RedisComponent {
     }
 
     /**
-     * 设置基本数据类型对象(过期时间，过期单位)
+     * String-设置基本数据类型对象(过期时间，过期单位)
      *
      * @param key
      * @param value
@@ -167,7 +167,7 @@ public class RedisComponent {
     }
 
     /**
-     * 设置基本数据类型对象-不过期(只有在key不存在时设置key的值)
+     * String-设置基本数据类型对象-不过期(只有在key不存在时设置key的值)
      *
      * @param key
      * @param value
@@ -178,7 +178,7 @@ public class RedisComponent {
     }
 
     /**
-     * 设置基本数据类型对象(只有在key不存在时设置key的值)
+     * String-设置基本数据类型对象(只有在key不存在时设置key的值)
      *
      * @param key
      * @param value
@@ -189,7 +189,7 @@ public class RedisComponent {
     }
 
     /**
-     * 设置基本数据类型对象(只有在key不存在时设置key的值)
+     * String-设置基本数据类型对象(只有在key不存在时设置key的值)
      *
      * @param key
      * @param value
@@ -200,7 +200,7 @@ public class RedisComponent {
     }
 
     /**
-     * 递增(默认按1递增)
+     * String-递增(默认按1递增)
      *
      * @param key
      * @return
@@ -210,7 +210,7 @@ public class RedisComponent {
     }
 
     /**
-     * 递增(递增幅度)
+     * String-递增(递增幅度)
      *
      * @param key
      * @param delta
@@ -221,7 +221,7 @@ public class RedisComponent {
     }
 
     /**
-     * 递减(默认按1递减)
+     * String-递减(默认按1递减)
      *
      * @param key
      * @return
@@ -231,7 +231,7 @@ public class RedisComponent {
     }
 
     /**
-     * 递减(递减幅度)
+     * String-递减(递减幅度)
      *
      * @param key
      * @param delta
@@ -269,7 +269,7 @@ public class RedisComponent {
     }
 
     /**
-     * 存对象
+     * Hash-存对象
      *
      * @param key
      * @param object
@@ -280,7 +280,7 @@ public class RedisComponent {
     }
 
     /**
-     * 存对象(设置过期时间，单位默认秒)
+     * Hash-存对象(设置过期时间，单位默认秒)
      *
      * @param key
      * @param object
@@ -292,7 +292,7 @@ public class RedisComponent {
     }
 
     /**
-     * 存对象(设置过期时间，单位)
+     * Hash-存对象(设置过期时间，单位)
      *
      * @param key
      * @param object
@@ -305,7 +305,46 @@ public class RedisComponent {
     }
 
     /**
-     * 获取Map
+     * Hash-设置对象字段值
+     *
+     * @param key
+     * @param item
+     * @param value
+     * @return
+     */
+    public boolean hSet(String key, String item, Object value) {
+        return rdsHashTool.hSet(key, item, value);
+    }
+
+    /**
+     * Hash-设置对象字段值（设置过期时间,单位默认秒）
+     *
+     * @param key
+     * @param item
+     * @param value
+     * @param time
+     * @return
+     */
+    public boolean hSet(String key, String item, Object value, long time) {
+        return rdsHashTool.hSet(key, item, value, time);
+    }
+
+    /**
+     * Hash-设置对象字段值（设置过期时间,单位）
+     *
+     * @param key
+     * @param item
+     * @param value
+     * @param time
+     * @param timeUnit
+     * @return
+     */
+    public boolean hSet(String key, String item, Object value, long time, TimeUnit timeUnit) {
+        return rdsHashTool.hSet(key, item, value, time, timeUnit);
+    }
+
+    /**
+     * Hash-获取Map
      *
      * @param key
      * @return
@@ -315,7 +354,7 @@ public class RedisComponent {
     }
 
     /**
-     * 存Map(不过期)
+     * Hash-存Map(不过期)
      *
      * @param key
      * @param map
@@ -326,7 +365,7 @@ public class RedisComponent {
     }
 
     /**
-     * 存Map-设置过期时间(单位默认秒)
+     * Hash-存Map-设置过期时间(单位默认秒)
      *
      * @param key
      * @param map
@@ -338,7 +377,7 @@ public class RedisComponent {
     }
 
     /**
-     * 存Map(设置过期时间，单位)
+     * Hash-存Map(设置过期时间，单位)
      *
      * @param key
      * @param map
@@ -350,22 +389,24 @@ public class RedisComponent {
         return rdsHashTool.hmSet(key, map, time, timeUnit);
     }
 
-    public boolean hSet(String key, String item, Object value) {
-        return rdsHashTool.hSet(key, item, value);
-    }
-
-    public boolean hSet(String key, String item, Object value, long time, TimeUnit timeUnit) {
-        return rdsHashTool.hSet(key, item, value, time, timeUnit);
-    }
-
-    public boolean hSet(String key, String item, Object value, long time) {
-        return rdsHashTool.hSet(key, item, value, time);
-    }
-
+    /**
+     * Hash-删除对象字段
+     *
+     * @param key
+     * @param item
+     * @return
+     */
     public Long hDel(String key, Object... item) {
         return rdsHashTool.hDel(key, item);
     }
 
+    /**
+     * Hash-判断对象字段是否存在
+     *
+     * @param key
+     * @param item
+     * @return
+     */
     public boolean hHasKey(String key, String item) {
         return rdsHashTool.hHasKey(key, item);
     }
