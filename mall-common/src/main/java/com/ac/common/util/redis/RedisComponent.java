@@ -453,58 +453,135 @@ public class RedisComponent {
 
     //================================第4部分：Set start=================================
 
+    /**
+     * Set-集合size
+     *
+     * @param key
+     * @return
+     */
     public Long sSize(String key) {
         return rdsSetTool.sSize(key);
     }
 
+    /**
+     * Set-获取集合
+     *
+     * @param key
+     * @return
+     */
     public Set<Object> sGet(String key) {
         return rdsSetTool.sGet(key);
     }
 
+    /**
+     * Set-根据key随机弹出t中的值
+     *
+     * @param key
+     * @return
+     */
     public Object sPop(String key) {
         return rdsSetTool.sPop(key);
     }
 
-    public boolean sHasKey(String key, Object value) {
-        return rdsSetTool.sHasKey(key, value);
-    }
-
+    /**
+     * Set-存数据(不过期)
+     *
+     * @param key
+     * @param values
+     * @return
+     */
     public long sSet(String key, Object... values) {
         return rdsSetTool.sSet(key, values);
     }
 
-    public boolean sSetPipe(String key, List<Object> datas) {
-        return rdsSetTool.sSetPipe(key, datas);
+    /**
+     * Set-存集合(不过期)
+     *
+     * @param key
+     * @param list
+     * @return
+     */
+    public boolean sSetPipe(String key, List<Object> list) {
+        return rdsSetTool.sSetPipe(key, list);
     }
 
+    /**
+     * Set-判断成员元素是否是集合的成员
+     *
+     * @param key
+     * @param value
+     * @return
+     */
     public boolean sIsMember(String key, Object value) {
         return rdsSetTool.sIsMember(key, value);
     }
 
+    /**
+     * Set-存数据(设置过期时间，单位)
+     *
+     * @param key
+     * @param time
+     * @param timeUnit
+     * @param values
+     * @return
+     */
     public long sSetAndTime(String key, long time, TimeUnit timeUnit, Object... values) {
         return rdsSetTool.sSetAndTime(key, time, timeUnit, values);
     }
 
+    /**
+     * Set-存数据(设置过期时间)
+     *
+     * @param key
+     * @param time
+     * @param values
+     * @return
+     */
     public long sSetAndTime(String key, long time, Object... values) {
         return rdsSetTool.sSetAndTime(key, time, values);
     }
 
-    public long sGetSetSize(String key) {
-        return rdsSetTool.sGetSetSize(key);
-    }
-
+    /**
+     * Set-查询两个集合的交集
+     *
+     * @param key1
+     * @param key2
+     * @return
+     */
     public Set<Object> sInter(String key1, String key2) {
         return rdsSetTool.sInter(key1, key2);
     }
 
+    /**
+     * Set-查询两个集合的交集, 并存储于其他key上
+     *
+     * @param key1
+     * @param key2
+     * @param storeKey
+     * @return
+     */
     public Long sInterAndStore(String key1, String key2, String storeKey) {
         return rdsSetTool.sInterAndStore(key1, key2, storeKey);
     }
 
+    /**
+     * Set-移除值为value的元素
+     *
+     * @param key
+     * @param value
+     * @return
+     */
     public long sSetRemove(String key, Long value) {
-        return sSetRemove(key, value);
+        return rdsSetTool.sSetRemove(key, value);
     }
 
+    /**
+     * Set-移除多个元素
+     *
+     * @param key
+     * @param values
+     * @return
+     */
     public long sSetRemove(String key, Object... values) {
         return rdsSetTool.sSetRemove(key, values);
     }

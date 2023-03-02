@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Api(tags = "Redis测试")
@@ -51,21 +53,30 @@ public class RedisTestController {
     //============================第2部分：String start=============================
     @ApiOperation(value = "存-取-字符串")
     @GetMapping("testString")
-    public String testString(@RequestParam String key, String value) {
+    public String testString() {
+        String key = "userName";
+        String value = "AlanChen";
+
         redisComponent.set(key, value);
         return redisComponent.getStr(key);
     }
 
     @ApiOperation(value = "存-取-字符串（只有在key不存在时设置key的值）")
     @GetMapping("testStringIfAbsent")
-    public String testStringIfAbsent(@RequestParam String key, String value) {
+    public String testStringIfAbsent() {
+        String key = "userName";
+        String value = "AlanChen";
+
         redisComponent.setIfAbsent(key, value);
         return redisComponent.getStr(key);
     }
 
     @ApiOperation(value = "存-取-Long")
     @GetMapping("testLong")
-    public Long testLong(@RequestParam String key, Long value) {
+    public Long testLong() {
+        String key = "likeNum";
+        Long value = 1L;
+
         redisComponent.set(key, value);
         Object obj = redisComponent.get(key);
         return Long.valueOf(obj.toString());
@@ -73,7 +84,9 @@ public class RedisTestController {
 
     @ApiOperation(value = "Long-自增")
     @GetMapping("testIncr")
-    public Long testIncr(@RequestParam String key) {
+    public Long testIncr() {
+        String key = "likeNum";
+
         redisComponent.incr(key);
         Object obj = redisComponent.get(key);
         return Long.valueOf(obj.toString());
@@ -82,7 +95,9 @@ public class RedisTestController {
     //================================第3部分：Hash start=================================
     @ApiOperation(value = "Hash-对象存储")
     @GetMapping("hmGetObj")
-    public MemberDTO hmGetObj(@RequestParam String key) {
+    public MemberDTO hmGetObj() {
+        String key = "member";
+
         MemberDTO member = new MemberDTO();
         member.setId(1L);
         member.setMemberName("AC");
@@ -101,21 +116,31 @@ public class RedisTestController {
 
     @ApiOperation(value = "Hash-取对象字段")
     @GetMapping("hGet")
-    public Object hGet(@RequestParam String key, @RequestParam String item) {
+    public Object hGet() {
+        String key = "member";
+        String item = "memberName";
+
         Object obj = redisComponent.hGet(key, item);
         return obj;
     }
 
     @ApiOperation(value = "Hash-设置对象字段")
     @GetMapping("hSet")
-    public Object hSet(@RequestParam String key, @RequestParam String item, @RequestParam Object value) {
+    public Object hSet() {
+        String key = "member";
+        String item = "memberName";
+        Object value = "AC";
+
         redisComponent.hSet(key, item, value);
         return redisComponent.hGet(key, item);
     }
 
     @ApiOperation(value = "Hash-删除对象字段")
     @GetMapping("hDel")
-    public MemberDTO hDel(@RequestParam String key, @RequestParam String item) {
+    public MemberDTO hDel() {
+        String key = "member";
+        String item = "memberName";
+
         //删除字段
         redisComponent.hDel(key, item);
         //取
@@ -124,19 +149,28 @@ public class RedisTestController {
 
     @ApiOperation(value = "Hash-判断对象字段是否存在")
     @GetMapping("hHasKey")
-    public boolean hHasKey(@RequestParam String key, @RequestParam String item) {
+    public boolean hHasKey() {
+        String key = "member";
+        String item = "memberName";
+
         return redisComponent.hHasKey(key, item);
     }
 
     @ApiOperation(value = "Hash-获取对象指定字段长度")
     @GetMapping("hLen")
-    public Long hLen(@RequestParam String key, @RequestParam String item) {
+    public Long hLen() {
+        String key = "member";
+        String item = "mobile";
+
         return redisComponent.hLen(key, item);
     }
 
     @ApiOperation(value = "Hash-对象字段递增")
     @GetMapping("hIncr")
-    public MemberDTO hIncr(@RequestParam String key, @RequestParam String item) {
+    public MemberDTO hIncr() {
+        String key = "member";
+        String item = "id";
+
         redisComponent.hIncr(key, item, 2);
         return redisComponent.hmGetObj(key, MemberDTO.class);
 
@@ -144,15 +178,19 @@ public class RedisTestController {
 
     @ApiOperation(value = "Hash-对象字段递减")
     @GetMapping("hDecr")
-    public MemberDTO hDecr(@RequestParam String key, @RequestParam String item) {
+    public MemberDTO hDecr() {
+        String key = "member";
+        String item = "id";
+
         redisComponent.hDecr(key, item, 1);
         return redisComponent.hmGetObj(key, MemberDTO.class);
     }
 
-
     @ApiOperation(value = "Hash-Map存储")
     @GetMapping("hmSet")
-    public Map<Object, Object> hmSet(@RequestParam String key) {
+    public Map<Object, Object> hmSet() {
+        String key = "loginMap";
+
         Map<String, Object> loginMap = new HashMap<>();
         loginMap.put("name", "AC");
         loginMap.put("pwd", "123abc");
@@ -165,4 +203,41 @@ public class RedisTestController {
         //取
         return redisComponent.hmGet(key);
     }
+
+    //================================第3部分：Hash end=================================
+
+    //================================第4部分：Set start=================================
+
+    @ApiOperation(value = "Set-存取数据")
+    @GetMapping("sSet")
+    public boolean sSet() {
+        String key = "fansList";
+        redisComponent.sSet(key, "A", "B", "C", "D", "E");
+        Long size = redisComponent.sSize(key);
+        System.out.println("size:" + size);
+
+        redisComponent.sGet(key).stream().forEach(System.out::print);
+        System.out.println("...................");
+
+        String key2 = "fansList2";
+        redisComponent.sSetPipe(key2, Arrays.asList("B", "C", "E", "F", "G"));
+
+        String key3 = "fansList3";
+        redisComponent.sInterAndStore(key, key2, key3);
+        redisComponent.sGet(key3).stream().forEach(System.out::print);
+        System.out.println("...................");
+
+        redisComponent.sSetRemove(key3, "B");
+        redisComponent.sGet(key3).stream().forEach(System.out::print);
+        System.out.println("...................");
+
+        boolean hasC = redisComponent.sIsMember(key, "C");
+        System.out.println("hasC:" + hasC);
+
+        Object obj = redisComponent.sPop(key);
+        System.out.println("sPop obj:" + obj);
+
+        return true;
+    }
+
 }

@@ -71,24 +71,6 @@ class RdsSetTool {
     }
 
     /**
-     * 根据value从一个set中查询,是否存在
-     *
-     * @param key   键
-     * @param value 值
-     * @return true 存在 false不存在
-     */
-    public boolean sHasKey(String key, Object value) {
-        try {
-            return redisTemplate.opsForSet().isMember(key, value);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
-    }
-
-    /**
      * 将数据放入set缓存
      *
      * @param key    键
@@ -110,20 +92,20 @@ class RdsSetTool {
      * 管道批量插入数据
      *
      * @param key
-     * @param datas
+     * @param list
      * @return
      */
-    public boolean sSetPipe(String key, List<Object> datas) {
+    public boolean sSetPipe(String key, List<Object> list) {
         try {
             redisTemplate.executePipelined(new SessionCallback<Object>() {
                 @Override
                 public <K, V> Map execute(RedisOperations<K, V> operations) throws DataAccessException {
-                    if (CollectionUtils.isEmpty(datas) || StringUtils.isEmpty(key)) {
+                    if (CollectionUtils.isEmpty(list) || StringUtils.isEmpty(key)) {
                         return null;
                     }
 
                     SetOperations setOperations = operations.opsForSet();
-                    for (Object value : datas) {
+                    for (Object value : list) {
                         setOperations.add(key, value);
                     }
                     return null;
@@ -193,23 +175,6 @@ class RdsSetTool {
     }
 
     /**
-     * 获取set缓存的长度
-     *
-     * @param key 键
-     * @return
-     */
-    public long sGetSetSize(String key) {
-        try {
-            return redisTemplate.opsForSet().size(key);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
-    }
-
-    /**
      * 查询两个集合的交集
      *
      * @param key1 键1
@@ -247,7 +212,7 @@ class RdsSetTool {
     }
 
     /**
-     * 移除值为value的
+     * 移除值为value的元素
      *
      * @param key   键
      * @param value 值 可以是多个
@@ -266,7 +231,7 @@ class RdsSetTool {
     }
 
     /**
-     * 移除值为value的
+     * 移除多个元素
      *
      * @param key    键
      * @param values 值 可以是多个
