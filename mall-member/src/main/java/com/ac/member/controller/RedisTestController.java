@@ -215,14 +215,17 @@ public class RedisTestController {
 
         System.out.println("fansList...................");
         redisComponent.sGet(key).stream().forEach(System.out::print);
+        System.out.println();
 
         System.out.println("Set-右边弹出，左边压入...................");
-        List<Object> list2 = redisComponent.rightPopAndLeftPush(key, key, 3);
+        List<Object> list2 = redisComponent.rightPopAndLeftPush(key, key, 2);
         list2.stream().forEach(System.out::print);
+        System.out.println();
 
         System.out.println("Set-通过start-end获取元素集合...................");
         List<Object> list = redisComponent.lGet(key, 0, 3);
         list.stream().forEach(System.out::print);
+        System.out.println();
 
         String key2 = "fansList2";
         redisComponent.sSetPipe(key2, Arrays.asList("B", "C", "E", "F", "G"));
@@ -231,11 +234,11 @@ public class RedisTestController {
         String key3 = "fansList3";
         redisComponent.sInterAndStore(key, key2, key3);
         redisComponent.sGet(key3).stream().forEach(System.out::print);
-        System.out.println("...................");
+        System.out.println();
 
         redisComponent.sSetRemove(key3, "B");
         redisComponent.sGet(key3).stream().forEach(System.out::print);
-        System.out.println("...................");
+        System.out.println();
 
         boolean hasC = redisComponent.sIsMember(key, "C");
         System.out.println("hasC:" + hasC);
