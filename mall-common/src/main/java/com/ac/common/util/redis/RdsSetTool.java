@@ -268,7 +268,7 @@ class RdsSetTool {
         }
     }
 
-    public List<Object> lRightPopLeftPush(String sourceKey, String destinationKey, int limit) {
+    public List<Object> rightPopAndLeftPush(String sourceKey, String destinationKey, int limit) {
         try {
             return redisTemplate.executePipelined(new SessionCallback<Object>() {
                 @Override

@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Api(tags = "Redis测试")
@@ -216,12 +213,21 @@ public class RedisTestController {
         Long size = redisComponent.sSize(key);
         System.out.println("size:" + size);
 
+        System.out.println("fansList...................");
         redisComponent.sGet(key).stream().forEach(System.out::print);
-        System.out.println("...................");
+
+        System.out.println("Set-右边弹出，左边压入...................");
+        List<Object> list2 = redisComponent.rightPopAndLeftPush(key, key, 3);
+        list2.stream().forEach(System.out::print);
+
+        System.out.println("Set-通过start-end获取元素集合...................");
+        List<Object> list = redisComponent.lGet(key, 0, 3);
+        list.stream().forEach(System.out::print);
 
         String key2 = "fansList2";
         redisComponent.sSetPipe(key2, Arrays.asList("B", "C", "E", "F", "G"));
 
+        System.out.println("fansList3...................");
         String key3 = "fansList3";
         redisComponent.sInterAndStore(key, key2, key3);
         redisComponent.sGet(key3).stream().forEach(System.out::print);

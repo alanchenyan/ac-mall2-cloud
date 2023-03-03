@@ -586,12 +586,28 @@ public class RedisComponent {
         return rdsSetTool.sSetRemove(key, values);
     }
 
+    /**
+     * Set-通过start-end获取元素集合
+     *
+     * @param key
+     * @param start 开始
+     * @param end   结束  0 到 -1代表所有值
+     * @return
+     */
     public List<Object> lGet(String key, long start, long end) {
         return rdsSetTool.lGet(key, start, end);
     }
 
-    public List<Object> lRightPopLeftPush(String sourceKey, String destinationKey, int limit) {
-        return rdsSetTool.lRightPopLeftPush(sourceKey, destinationKey, limit);
+    /**
+     * Set-右边弹出，左边压入
+     *
+     * @param sourceKey
+     * @param destinationKey
+     * @param limit
+     * @return
+     */
+    public List<Object> rightPopAndLeftPush(String sourceKey, String destinationKey, int limit) {
+        return rdsSetTool.rightPopAndLeftPush(sourceKey, destinationKey, limit);
     }
 
     public List<Object> lMultiPop(String key, int limit) {
