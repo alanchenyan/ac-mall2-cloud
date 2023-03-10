@@ -203,11 +203,42 @@ public class RedisTestController {
 
     //================================第3部分：Hash end=================================
 
-    //================================第4部分：Set start=================================
+    //================================第4部分：List start=================================
 
-    @ApiOperation(value = "Set-存取数据")
+    @ApiOperation(value = "List-存取数据")
     @GetMapping("sSet")
     public boolean sSet() {
+        String key = "list";
+        redisComponent.lSetAll(key, Arrays.asList("A", "B", "C", "D", "E", "F", "G"));
+
+        //ABCDEFG
+        System.out.println("list...................");
+        redisComponent.lGet(key, 0, -1).stream().forEach(System.out::print);
+        System.out.println();
+
+        //ABC
+        System.out.println("取前三个list...................");
+        redisComponent.lGet(key, 0, 2).stream().forEach(System.out::print);
+        System.out.println();
+
+        //GF
+        System.out.println("从右边(倒着取)开始取2个-右边弹出，左边压入...................");
+        List<Object> list2 = redisComponent.rightPopAndLeftPush(key, key, 2);
+        list2.stream().forEach(System.out::print);
+        System.out.println();
+
+        //FGABCDE
+        System.out.println("list...................");
+        redisComponent.lGet(key, 0, -1).stream().forEach(System.out::print);
+        System.out.println();
+
+        return true;
+    }
+
+    //================================第5部分：List start=================================
+    @ApiOperation(value = "Set-存取数据")
+    @GetMapping("sSetBak")
+    public boolean sSetBak() {
         String key = "fansList";
         redisComponent.sSet(key, "A", "B", "C", "D", "E");
         Long size = redisComponent.sSize(key);

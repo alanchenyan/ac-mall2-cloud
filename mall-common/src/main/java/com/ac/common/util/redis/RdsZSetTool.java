@@ -93,7 +93,6 @@ class RdsZSetTool {
      */
     public boolean zAddAll(String key, List<Object> values, double score) {
         try {
-            //TODO 多值插入
             for (Object value : values) {
                 redisTemplate.opsForZSet().add(key, value, score);
             }
@@ -244,7 +243,7 @@ class RdsZSetTool {
             return (LinkedHashSet<Object>) set;
         } catch (Exception e) {
             e.printStackTrace();
-            return new LinkedHashSet<Object>();
+            return new LinkedHashSet();
         } finally {
             RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
         }
@@ -300,7 +299,7 @@ class RdsZSetTool {
             return (LinkedHashSet<Object>) set;
         } catch (Exception e) {
             e.printStackTrace();
-            return new LinkedHashSet<Object>();
+            return new LinkedHashSet();
         } finally {
             RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
         }

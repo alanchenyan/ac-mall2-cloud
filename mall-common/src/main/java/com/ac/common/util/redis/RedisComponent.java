@@ -27,6 +27,9 @@ public class RedisComponent {
     private RdsHashTool rdsHashTool;
 
     @Resource
+    private RdsListTool rdsListTool;
+
+    @Resource
     private RdsSetTool rdsSetTool;
 
     @Resource
@@ -451,7 +454,75 @@ public class RedisComponent {
     //================================第3部分：Hash end=================================
 
 
-    //================================第4部分：Set start=================================
+    //================================第4部分：List start=================================
+
+    /**
+     * List-通过start-end获取元素集合
+     *
+     * @param key
+     * @param start 开始
+     * @param end   结束  0 到 -1代表所有值
+     * @return
+     */
+    public List<Object> lGet(String key, long start, long end) {
+        return rdsListTool.lGet(key, start, end);
+    }
+
+    /**
+     * List-右边弹出，左边压入
+     *
+     * @param sourceKey
+     * @param destinationKey
+     * @param limit
+     * @return
+     */
+    public List<Object> rightPopAndLeftPush(String sourceKey, String destinationKey, int limit) {
+        return rdsListTool.rightPopAndLeftPush(sourceKey, destinationKey, limit);
+    }
+
+    public List<Object> lMultiPop(String key, int limit) {
+        return rdsListTool.lMultiPop(key, limit);
+    }
+
+    public Object lPop(String key) {
+        return rdsListTool.lPop(key);
+    }
+
+    public long lGetListSize(String key) {
+        return rdsListTool.lGetListSize(key);
+    }
+
+    public Object lGetIndex(String key, long index) {
+        return rdsListTool.lGetIndex(key, index);
+    }
+
+    public boolean lSet(String key, Object value) {
+        return rdsListTool.lSet(key, value);
+    }
+
+    public boolean lSet(String key, Object value, long time) {
+        return rdsListTool.lSet(key, value, time);
+    }
+
+    public boolean lSetAll(String key, List<Object> value) {
+        return rdsListTool.lSetAll(key, value);
+    }
+
+    public boolean lSet(String key, List<Object> value, long time) {
+        return rdsListTool.lSet(key, value, time);
+    }
+
+    public boolean lUpdateIndex(String key, long index, Object value) {
+        return rdsListTool.lUpdateIndex(key, index, value);
+    }
+
+    public long lRemove(String key, long count, Object value) {
+        return rdsListTool.lRemove(key, count, value);
+    }
+
+    //================================第4部分：List end=================================
+
+    //================================第5部分：Set start=================================
 
     /**
      * Set-集合size
@@ -586,73 +657,9 @@ public class RedisComponent {
         return rdsSetTool.sSetRemove(key, values);
     }
 
-    /**
-     * Set-通过start-end获取元素集合
-     *
-     * @param key
-     * @param start 开始
-     * @param end   结束  0 到 -1代表所有值
-     * @return
-     */
-    public List<Object> lGet(String key, long start, long end) {
-        return rdsSetTool.lGet(key, start, end);
-    }
+    //================================第5部分：Set end=================================
 
-    /**
-     * Set-右边弹出，左边压入
-     *
-     * @param sourceKey
-     * @param destinationKey
-     * @param limit
-     * @return
-     */
-    public List<Object> rightPopAndLeftPush(String sourceKey, String destinationKey, int limit) {
-        return rdsSetTool.rightPopAndLeftPush(sourceKey, destinationKey, limit);
-    }
-
-    public List<Object> lMultiPop(String key, int limit) {
-        return rdsSetTool.lMultiPop(key, limit);
-    }
-
-    public Object lPop(String key) {
-        return rdsSetTool.lPop(key);
-    }
-
-    public long lGetListSize(String key) {
-        return rdsSetTool.lGetListSize(key);
-    }
-
-    public Object lGetIndex(String key, long index) {
-        return rdsSetTool.lGetIndex(key, index);
-    }
-
-    public boolean lSet(String key, Object value) {
-        return rdsSetTool.lSet(key, value);
-    }
-
-    public boolean lSet(String key, Object value, long time) {
-        return rdsSetTool.lSet(key, value, time);
-    }
-
-    public boolean lSetAll(String key, List<Object> value) {
-        return rdsSetTool.lSetAll(key, value);
-    }
-
-    public boolean lSet(String key, List<Object> value, long time) {
-        return rdsSetTool.lSet(key, value, time);
-    }
-
-    public boolean lUpdateIndex(String key, long index, Object value) {
-        return rdsSetTool.lUpdateIndex(key, index, value);
-    }
-
-    public long lRemove(String key, long count, Object value) {
-        return rdsSetTool.lRemove(key, count, value);
-    }
-
-    //================================第4部分：Set end=================================
-
-    //================================第5部分：zSet start=================================
+    //================================第6部分：zSet start=================================
 
     public boolean zAdd(String key, Object value, double score) {
         return rdsZSetTool.zAdd(key, value, score);
@@ -742,9 +749,9 @@ public class RedisComponent {
         return rdsZSetTool.zRemove(key, objects);
     }
 
-    //================================第5部分：zSet end=================================
+    //================================第6部分：zSet end=================================
 
-    //================================第6部分：GEO start=================================
+    //================================第7部分：GEO start=================================
 
     public Long geoAdd(String key, String member, BigDecimal lng, BigDecimal lat) {
         return rdsGeoTool.geoAdd(key, member, lng, lat);
@@ -770,5 +777,5 @@ public class RedisComponent {
         return rdsGeoTool.geoRadius(key, member, v, metrics);
     }
 
-    //================================第6部分：GEO end=================================
+    //================================第7部分：GEO end=================================
 }
