@@ -104,7 +104,7 @@ class RdsSetTool {
      */
     public long sSetList(String key, List<Object> list, long time, TimeUnit timeUnit) {
         try {
-            Long count = redisTemplate.opsForSet().add(key, list);
+            Long count = redisTemplate.opsForSet().add(key, list.toArray());
             if (time > 0) {
                 rdsCommonTool.expire(key, time, timeUnit);
             }
@@ -232,7 +232,7 @@ class RdsSetTool {
      */
     public long sSetRemove(String key, List<Object> list) {
         try {
-            Long count = redisTemplate.opsForSet().remove(key, list);
+            Long count = redisTemplate.opsForSet().remove(key, list.toArray());
             return count;
         } catch (Exception e) {
             e.printStackTrace();

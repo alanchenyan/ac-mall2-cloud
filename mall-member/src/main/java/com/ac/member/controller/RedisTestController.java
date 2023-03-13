@@ -286,47 +286,52 @@ public class RedisTestController {
         String key = "setKey";
         redisComponent.sSetList(key, Arrays.asList("A", "B", "C"));
 
+        //CBA
         System.out.println("显示全部setKey...................");
         redisComponent.sGet(key).stream().forEach(System.out::print);
         System.out.println();
 
+        //size:3
         Long size = redisComponent.sSize(key);
         System.out.println("size:" + size);
 
+        //ACBDGEF
         System.out.println("存集合...................");
-        redisComponent.sPipeSetList(key, Arrays.asList("D", "E", "F", "G", "H"));
-
-        System.out.println("显示全部setKey...................");
+        redisComponent.sPipeSetList(key, Arrays.asList("D", "E", "F", "G"));
         redisComponent.sGet(key).stream().forEach(System.out::print);
         System.out.println();
 
+        //hasC:true
         boolean hasC = redisComponent.sIsMember(key, "C");
         System.out.println("hasC:" + hasC);
 
+        //DACGEHF
         String key2 = "setKey2";
         System.out.println("存集合setKey2...................");
-        redisComponent.sSetList(key, Arrays.asList("A", "C", "D", "E", "F", "G", "H"), 100);
-
-        System.out.println("显示全部setKey...................");
+        redisComponent.sSetList(key2, Arrays.asList("A", "C", "D", "E", "F", "G", "H"), 100);
         redisComponent.sGet(key2).stream().forEach(System.out::print);
         System.out.println();
 
+        //CDAGEF
         System.out.println("查询两个集合的交集, 并存储于其他setKey3上...................");
         String key3 = "setKey3";
         redisComponent.sInterAndStore(key, key2, key3);
         redisComponent.sGet(key3).stream().forEach(System.out::print);
         System.out.println();
 
+        //DAGEF
         System.out.println("Set-移除值为value的元素...................");
         redisComponent.sSetRemove(key3, "C");
         redisComponent.sGet(key3).stream().forEach(System.out::print);
         System.out.println();
 
+        //GAF
         System.out.println("Set-移除多个元素...................");
         redisComponent.sSetRemove(key3, Arrays.asList("D", "E"));
         redisComponent.sGet(key3).stream().forEach(System.out::print);
         System.out.println();
 
+        //GA
         System.out.println("Set-随机弹出一个元素...................");
         redisComponent.sPop(key3);
         redisComponent.sGet(key3).stream().forEach(System.out::print);
