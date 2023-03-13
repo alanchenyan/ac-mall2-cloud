@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class RdsListTool {
@@ -19,37 +20,39 @@ public class RdsListTool {
     private RdsCommonTool rdsCommonTool;
 
     /**
-     * 将list放入缓存
+     * List-从左边压入元素
      *
-     * @param key   键
-     * @param value 值
+     * @param key
+     * @param value
      * @return
      */
-    public boolean lSetAll(String key, List<Object> value) {
-        try {
-            redisTemplate.opsForList().rightPushAll(key, value);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
+    public boolean lLeftPush(String key, Object value) {
+        return lLeftPush(key, value, 0);
     }
 
     /**
-     * 将list放入缓存
+     * List-从左边压入元素
      *
-     * @param key   键
-     * @param value 值
-     * @param time  时间(秒)
+     * @param key
+     * @param value
      * @return
      */
-    public boolean lSet(String key, List<Object> value, long time) {
+    public boolean lLeftPush(String key, Object value, long time) {
+        return lLeftPush(key, value, time, TimeUnit.SECONDS);
+    }
+
+    /**
+     * List-从左边压入元素
+     *
+     * @param key
+     * @param value
+     * @return
+     */
+    public boolean lLeftPush(String key, Object value, long time, TimeUnit timeUnit) {
         try {
-            redisTemplate.opsForList().rightPushAll(key, value);
+            redisTemplate.opsForList().leftPush(key, value);
             if (time > 0) {
-                rdsCommonTool.expire(key, time);
+                rdsCommonTool.expire(key, time, timeUnit);
             }
             return true;
         } catch (Exception e) {
@@ -61,63 +64,170 @@ public class RdsListTool {
     }
 
     /**
-     * 根据索引修改list中的某条数据
+     * List-从右边压入元素
      *
-     * @param key   键
-     * @param index 索引
-     * @param value 值
+     * @param key
+     * @param value
      * @return
      */
-    public boolean lUpdateIndex(String key, long index, Object value) {
-        try {
-            redisTemplate.opsForList().set(key, index, value);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
+    public boolean lRightPush(String key, Object value) {
+        return lRightPush(key, value, 0);
     }
 
     /**
-     * 移除N个值为value
+     * List-从右边压入元素
      *
-     * @param key   键
-     * @param count 移除多少个
-     * @param value 值
-     * @return 移除的个数
+     * @param key
+     * @param value
+     * @param time
+     * @return
      */
-    public long lRemove(String key, long count, Object value) {
-        try {
-            Long remove = redisTemplate.opsForList().remove(key, count, value);
-            return remove;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
+    public boolean lRightPush(String key, Object value, long time) {
+        return lRightPush(key, value, time, TimeUnit.SECONDS);
     }
 
     /**
-     * 将list放入缓存
+     * List-从右边压入元素
      *
-     * @param key   键
-     * @param value 值
-     * @param time  时间(秒)
+     * @param key
+     * @param value
+     * @param time
      * @return
      */
-    public boolean lSet(String key, Object value, long time) {
+    public boolean lRightPush(String key, Object value, long time, TimeUnit timeUnit) {
         try {
             redisTemplate.opsForList().rightPush(key, value);
             if (time > 0) {
-                rdsCommonTool.expire(key, time);
+                rdsCommonTool.expire(key, time, timeUnit);
             }
             return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
+    }
+
+    /**
+     * List-从右边压入多个元素
+     *
+     * @param key
+     * @param value
+     * @return
+     */
+    public boolean rightPushAll(String key, List<Object> value) {
+        return rightPushAll(key, value, 0);
+    }
+
+    /**
+     * List-从右边压入多个元素
+     *
+     * @param key
+     * @param value
+     * @param time
+     * @return
+     */
+    public boolean rightPushAll(String key, List<Object> value, long time) {
+        return rightPushAll(key, value, time, TimeUnit.SECONDS);
+    }
+
+    /**
+     * List-从右边压入多个元素
+     *
+     * @param key
+     * @param value
+     * @param time
+     * @param timeUnit
+     * @return
+     */
+    public boolean rightPushAll(String key, List<Object> value, long time, TimeUnit timeUnit) {
+        try {
+            redisTemplate.opsForList().rightPushAll(key, value);
+            if (time > 0) {
+                rdsCommonTool.expire(key, time, timeUnit);
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
+    }
+
+    /**
+     * List-右边弹出（倒着取），左边压入
+     *
+     * @param sourceKey
+     * @param destinationKey
+     * @param limit
+     * @return 弹出的元素
+     */
+    public List<Object> rightPopAndLeftPush(String sourceKey, String destinationKey, int limit) {
+        try {
+            return redisTemplate.executePipelined(new SessionCallback<Object>() {
+                @Override
+                public <K, V> Map execute(RedisOperations<K, V> operations) throws DataAccessException {
+
+                    ListOperations listOperations = operations.opsForList();
+                    for (long i = 0; i < limit; i++) {
+                        listOperations.rightPopAndLeftPush(sourceKey, destinationKey);
+                    }
+                    return null;
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
+    }
+
+    /**
+     * List-从左边弹出元素
+     *
+     * @param key
+     * @return
+     */
+    public Object lLeftPop(String key) {
+        try {
+            if (lGetListSize(key) == 0) {
+                return null;
+            }
+            return redisTemplate.opsForList().leftPop(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
+    }
+
+    /**
+     * List-从左边弹出多个元素
+     *
+     * @param key
+     * @param limit
+     * @return 弹出的元素
+     */
+    public List<Object> lLeftMultiPop(String key, int limit) {
+        try {
+            return redisTemplate.executePipelined(new SessionCallback<Object>() {
+                @Override
+                public <K, V> Map execute(RedisOperations<K, V> operations) throws DataAccessException {
+
+                    ListOperations listOperations = operations.opsForList();
+                    for (long i = 0; i < limit; i++) {
+                        listOperations.leftPop(key);
+                    }
+                    return null;
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
         } finally {
             RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
         }
@@ -142,66 +252,10 @@ public class RdsListTool {
         }
     }
 
-    public List<Object> rightPopAndLeftPush(String sourceKey, String destinationKey, int limit) {
-        try {
-            return redisTemplate.executePipelined(new SessionCallback<Object>() {
-                @Override
-                public <K, V> Map execute(RedisOperations<K, V> operations) throws DataAccessException {
-
-                    ListOperations listOperations = operations.opsForList();
-                    for (long i = 0; i < limit; i++) {
-                        listOperations.rightPopAndLeftPush(sourceKey, destinationKey);
-                    }
-                    return null;
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
-    }
-
-    public List<Object> lMultiPop(String key, int limit) {
-        try {
-            return redisTemplate.executePipelined(new SessionCallback<Object>() {
-                @Override
-                public <K, V> Map execute(RedisOperations<K, V> operations) throws DataAccessException {
-
-                    ListOperations listOperations = operations.opsForList();
-                    for (long i = 0; i < limit; i++) {
-                        listOperations.leftPop(key);
-                    }
-                    return null;
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
-    }
-
-    public Object lPop(String key) {
-        try {
-            if (lGetListSize(key) == 0) {
-                return null;
-            }
-            return redisTemplate.opsForList().leftPop(key);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
-    }
-
     /**
-     * 获取list缓存的长度
+     * List-获取List长度
      *
-     * @param key 键
+     * @param key
      * @return
      */
     public long lGetListSize(String key) {
@@ -234,19 +288,40 @@ public class RdsListTool {
     }
 
     /**
-     * 将list放入缓存
+     * List-根据索引修改list中的某条数据
      *
      * @param key   键
+     * @param index 索引
      * @param value 值
      * @return
      */
-    public boolean lSet(String key, Object value) {
+    public boolean lUpdateIndex(String key, long index, Object value) {
         try {
-            redisTemplate.opsForList().leftPush(key, value);
+            redisTemplate.opsForList().set(key, index, value);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
+    }
+
+    /**
+     * List-移除N个值为value的元素
+     *
+     * @param key   键
+     * @param count 移除多少个
+     * @param value 值
+     * @return 移除的个数
+     */
+    public long lRemove(String key, long count, Object value) {
+        try {
+            Long remove = redisTemplate.opsForList().remove(key, count, value);
+            return remove;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
         } finally {
             RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
         }

@@ -206,13 +206,25 @@ public class RedisTestController {
     //================================第4部分：List start=================================
 
     @ApiOperation(value = "List-存取数据")
-    @GetMapping("sSet")
+    @GetMapping("list")
     public boolean sSet() {
         String key = "list";
-        redisComponent.lSetAll(key, Arrays.asList("A", "B", "C", "D", "E", "F", "G"));
+        redisComponent.rightPushAll(key, Arrays.asList("B", "C", "D", "E", "F", "G"));
+
+        //BCDEFG
+        System.out.println("list...................");
+        redisComponent.lGet(key, 0, -1).stream().forEach(System.out::print);
+        System.out.println();
 
         //ABCDEFG
-        System.out.println("list...................");
+        System.out.println("从左边压入元素...................");
+        redisComponent.lLeftPush(key, "A");
+        redisComponent.lGet(key, 0, -1).stream().forEach(System.out::print);
+        System.out.println();
+
+        //ABCDEFGH
+        System.out.println("从右边压入元素...................");
+        redisComponent.lRightPush(key, "H");
         redisComponent.lGet(key, 0, -1).stream().forEach(System.out::print);
         System.out.println();
 
@@ -221,14 +233,48 @@ public class RedisTestController {
         redisComponent.lGet(key, 0, 2).stream().forEach(System.out::print);
         System.out.println();
 
-        //GF
+        //HG
         System.out.println("从右边(倒着取)开始取2个-右边弹出，左边压入...................");
         List<Object> list2 = redisComponent.rightPopAndLeftPush(key, key, 2);
         list2.stream().forEach(System.out::print);
         System.out.println();
 
-        //FGABCDE
-        System.out.println("list...................");
+        //GHABCDEF
+        System.out.println("显示全部list...................");
+        redisComponent.lGet(key, 0, -1).stream().forEach(System.out::print);
+        System.out.println();
+
+        //GH
+        System.out.println("弹出多个元素list...................");
+        redisComponent.lLeftMultiPop(key, 2).stream().forEach(System.out::print);
+        System.out.println();
+
+        //A
+        System.out.println("从左边弹出一个元素...................");
+        System.out.println(redisComponent.lLeftPop(key));
+
+        //BCDEF
+        System.out.println("显示全部list...................");
+        redisComponent.lGet(key, 0, -1).stream().forEach(System.out::print);
+        System.out.println();
+
+        //5
+        System.out.println("获取List长度...................");
+        System.out.println(redisComponent.lGetListSize(key));
+
+        //C
+        System.out.println("获取指定下标的元素...................");
+        System.out.println(redisComponent.lGetIndex(key, 1));
+
+        //bCDEF
+        System.out.println("根据索引修改list中的某条数据...................");
+        redisComponent.lUpdateIndex(key, 0, "b");
+        redisComponent.lGet(key, 0, -1).stream().forEach(System.out::print);
+        System.out.println();
+
+        //bDEF
+        System.out.println("移除N个值为value的元素...................");
+        redisComponent.lRemove(key, 1, "C");
         redisComponent.lGet(key, 0, -1).stream().forEach(System.out::print);
         System.out.println();
 

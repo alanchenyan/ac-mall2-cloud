@@ -469,53 +469,186 @@ public class RedisComponent {
     }
 
     /**
-     * List-右边弹出，左边压入
+     * List-右边弹出（倒着取），左边压入
      *
      * @param sourceKey
      * @param destinationKey
      * @param limit
-     * @return
+     * @return 弹出的元素
      */
     public List<Object> rightPopAndLeftPush(String sourceKey, String destinationKey, int limit) {
         return rdsListTool.rightPopAndLeftPush(sourceKey, destinationKey, limit);
     }
 
-    public List<Object> lMultiPop(String key, int limit) {
-        return rdsListTool.lMultiPop(key, limit);
+    /**
+     * List-从左边弹出多个元素
+     *
+     * @param key
+     * @param limit
+     * @return 弹出的元素
+     */
+    public List<Object> lLeftMultiPop(String key, int limit) {
+        return rdsListTool.lLeftMultiPop(key, limit);
     }
 
-    public Object lPop(String key) {
-        return rdsListTool.lPop(key);
+    /**
+     * List-从左边弹出一个元素
+     *
+     * @param key
+     * @return 弹出的元素
+     */
+    public Object lLeftPop(String key) {
+        return rdsListTool.lLeftPop(key);
     }
 
+    /**
+     * List-获取List长度
+     *
+     * @param key
+     * @return
+     */
     public long lGetListSize(String key) {
         return rdsListTool.lGetListSize(key);
     }
 
+    /**
+     * List-获取指定下标的元素
+     *
+     * @param key
+     * @param index
+     * @return
+     */
     public Object lGetIndex(String key, long index) {
         return rdsListTool.lGetIndex(key, index);
     }
 
-    public boolean lSet(String key, Object value) {
-        return rdsListTool.lSet(key, value);
+    /**
+     * List-从左边压入元素
+     *
+     * @param key
+     * @param value
+     * @return
+     */
+    public boolean lLeftPush(String key, Object value) {
+        return rdsListTool.lLeftPush(key, value);
     }
 
-    public boolean lSet(String key, Object value, long time) {
-        return rdsListTool.lSet(key, value, time);
+    /**
+     * List-从左边压入元素
+     *
+     * @param key
+     * @param value
+     * @param time
+     * @return
+     */
+    public boolean lLeftPush(String key, Object value, long time) {
+        return rdsListTool.lLeftPush(key, value, time);
     }
 
-    public boolean lSetAll(String key, List<Object> value) {
-        return rdsListTool.lSetAll(key, value);
+    /**
+     * List-从左边压入元素
+     *
+     * @param key
+     * @param value
+     * @param time
+     * @param timeUnit
+     * @return
+     */
+    public boolean lLeftPush(String key, Object value, long time, TimeUnit timeUnit) {
+        return rdsListTool.lLeftPush(key, value, time, timeUnit);
     }
 
-    public boolean lSet(String key, List<Object> value, long time) {
-        return rdsListTool.lSet(key, value, time);
+    /**
+     * List-从右边压入元素
+     *
+     * @param key
+     * @param value
+     * @return
+     */
+    public boolean lRightPush(String key, Object value) {
+        return rdsListTool.lRightPush(key, value);
     }
 
+    /**
+     * List-从右边压入元素
+     *
+     * @param key
+     * @param value
+     * @param time
+     * @return
+     */
+    public boolean lRightPush(String key, Object value, long time) {
+        return rdsListTool.lRightPush(key, value, time);
+    }
+
+    /**
+     * List-从右边压入元素
+     *
+     * @param key
+     * @param value
+     * @param time
+     * @return
+     */
+    public boolean lRightPush(String key, Object value, long time, TimeUnit timeUnit) {
+        return rdsListTool.lRightPush(key, value, time, timeUnit);
+    }
+
+    /**
+     * List-从右边压入多个元素
+     *
+     * @param key
+     * @param value
+     * @return
+     */
+    public boolean rightPushAll(String key, List<Object> value) {
+        return rdsListTool.rightPushAll(key, value);
+    }
+
+    /**
+     * List-从右边压入多个元素
+     *
+     * @param key
+     * @param value
+     * @param time
+     * @return
+     */
+    public boolean rightPushAll(String key, List<Object> value, long time) {
+        return rdsListTool.rightPushAll(key, value, time);
+    }
+
+    /**
+     * List-从右边压入多个元素
+     *
+     * @param key
+     * @param value
+     * @param time
+     * @param timeUnit
+     * @return
+     */
+    public boolean rightPushAll(String key, List<Object> value, long time, TimeUnit timeUnit) {
+        return rdsListTool.rightPushAll(key, value, time, timeUnit);
+    }
+
+    /**
+     * List-根据索引修改list中的某条数据
+     *
+     * @param key   键
+     * @param index 索引
+     * @param value 值
+     * @return
+     */
     public boolean lUpdateIndex(String key, long index, Object value) {
         return rdsListTool.lUpdateIndex(key, index, value);
     }
 
+    /**
+     * List-移除N个值为value的元素
+     *
+     * @param key   键
+     * @param count 移除多少个
+     * @param value 值
+     * @return 移除的个数
+     */
     public long lRemove(String key, long count, Object value) {
         return rdsListTool.lRemove(key, count, value);
     }
