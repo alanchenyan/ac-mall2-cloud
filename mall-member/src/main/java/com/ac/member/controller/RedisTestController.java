@@ -5,6 +5,8 @@ import com.ac.member.dto.MemberDTO;
 import com.ac.member.enums.MemberSexEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.data.redis.core.DefaultTypedTuple;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -353,7 +355,10 @@ public class RedisTestController {
     @GetMapping("zSet")
     public boolean zSet() {
         String key = "zSet";
+        String key2 = "zSet2";
+        String key3 = "zSet3";
         rdsComponent.del(key);
+        rdsComponent.del(key2);
 
         System.out.println("存入元素");
         rdsComponent.zAdd(key, "A", 1);
@@ -373,6 +378,27 @@ public class RedisTestController {
         System.out.println("获取指定下标的元素");
         Object obj = rdsComponent.zGetByIndex(key, 1);
         System.out.println(obj);
+
+        //4
+        long size = rdsComponent.zSize(key);
+        System.out.println("获取zSet长度:" + size);
+
+        //ACE
+        System.out.println("批量存入元素key2");
+        Set<ZSetOperations.TypedTuple<Object>> set = new HashSet<>();
+        set.add(new DefaultTypedTuple("A", 1D));
+        set.add(new DefaultTypedTuple("E", 5D));
+        set.add(new DefaultTypedTuple("C", 3D));
+
+        rdsComponent.zAdd(key2, set);
+        rdsComponent.zRange(key2, 0, -1).stream().forEach(System.out::print);
+        System.out.println();
+
+        //AC
+        System.out.println("对比两个有序集合的交集并将结果集存储在新的有序集合dest中");
+        rdsComponent.zInterAndStore(key, key2, key3);
+        rdsComponent.zRange(key3, 0, -1).stream().forEach(System.out::print);
+        System.out.println();
 
         return true;
     }

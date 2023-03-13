@@ -816,6 +816,13 @@ public class RdsComponent {
         return rdsZSetTool.zAdd(key, value, score);
     }
 
+    /**
+     * ZSet-批量存入元素
+     *
+     * @param key
+     * @param set
+     * @return
+     */
     public Long zAdd(String key, Set<ZSetOperations.TypedTuple<Object>> set) {
         return rdsZSetTool.zAdd(key, set);
     }
@@ -824,16 +831,25 @@ public class RdsComponent {
         return rdsZSetTool.zAdd(key, valueMap);
     }
 
-    public boolean zAddAll(String key, List<Object> values, double score) {
-        return rdsZSetTool.zAddAll(key, values, score);
-    }
-
+    /**
+     * ZSet-对比两个有序集合的交集并将结果集存储在新的有序集合dest中
+     *
+     * @param key2 键1
+     * @param key2 键2
+     * @return 成功个数
+     */
     public long zInterAndStore(String key1, String key2, String destKey) {
         return rdsZSetTool.zInterAndStore(key1, key2, destKey);
     }
 
-    public long zCard(String key) {
-        return rdsZSetTool.zCard(key);
+    /**
+     * ZSet-获取zSet长度
+     *
+     * @param key 键
+     * @return 长度
+     */
+    public long zSize(String key) {
+        return rdsZSetTool.zSize(key);
     }
 
     public long zCount(String key, Double min, Double max) {

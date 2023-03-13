@@ -67,11 +67,11 @@ class RdsZSetTool {
      */
     public Long zAdd(String key, Map<Object, Double> valueMap) {
         try {
-            Set<ZSetOperations.TypedTuple<Object>> typles = new HashSet<>();
+            Set<ZSetOperations.TypedTuple<Object>> zSet = new HashSet<>();
             for (Object value : valueMap.keySet()) {
-                typles.add(new DefaultTypedTuple<>(value, valueMap.get(value)));
+                zSet.add(new DefaultTypedTuple<>(value, valueMap.get(value)));
             }
-            return redisTemplate.opsForZSet().add(key, typles);
+            return redisTemplate.opsForZSet().add(key, zSet);
         } catch (Exception e) {
             e.printStackTrace();
             return 0L;
@@ -81,29 +81,7 @@ class RdsZSetTool {
     }
 
     /**
-     * 将多个数据放入sorted set缓存
-     *
-     * @param key    键
-     * @param values 值 可以是多个
-     * @param score  分数
-     * @return 成功个数
-     */
-    public boolean zAddAll(String key, List<Object> values, double score) {
-        try {
-            for (Object value : values) {
-                redisTemplate.opsForZSet().add(key, value, score);
-            }
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
-    }
-
-    /**
-     * 对比两个有序集合的交集并将结果集存储在新的有序集合dest中
+     * ZSet-对比两个有序集合的交集并将结果集存储在新的有序集合dest中
      *
      * @param key2 键1
      * @param key2 键2
@@ -121,12 +99,12 @@ class RdsZSetTool {
     }
 
     /**
-     * 获取sorted set缓存集合长度
+     * ZSet-获取zSet长度
      *
      * @param key 键
-     * @return 成功个数
+     * @return 长度
      */
-    public long zCard(String key) {
+    public long zSize(String key) {
         try {
             return redisTemplate.opsForZSet().zCard(key);
         } catch (Exception e) {
@@ -138,7 +116,7 @@ class RdsZSetTool {
     }
 
     /**
-     * 获取sorted set缓存集合指定区间分数的成员数
+     * ZSet-获取zSet指定区间分数的成员数
      *
      * @param key 键
      * @return 成功个数
