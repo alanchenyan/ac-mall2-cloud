@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * @author Alan Chen
  * @description Redis-ZSet类型
- * 备注：该类主要是为了辅助RedisComponent完成功能，只希望RedisComponent能访问，因此该类没有设置为public
+ * 备注：该类主要是为了辅助RdsComponent完成功能，只希望RedisComponent能访问，因此该类没有设置为public
  * @date 2023/02/24
  */
 @Component
@@ -21,16 +21,13 @@ class RdsZSetTool {
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
-    @Resource
-    private RdsCommonTool rdsCommonTool;
-
     /**
-     * 将数据放入sorted set缓存
+     * ZSet-存入一个元素
      *
      * @param key   键
      * @param value 值
-     * @param score 分数
-     * @return 成功个数
+     * @param score 分数(排序序号，asc排序)
+     * @return
      */
     public boolean zAdd(String key, Object value, double score) {
         try {
@@ -209,12 +206,13 @@ class RdsZSetTool {
     }
 
     /**
-     * 根据索引获取一个sorted set缓存对象
+     * ZSet-获取指定下标的元素
      *
-     * @param index 键
-     * @return 缓存对象
+     * @param key
+     * @param index
+     * @return
      */
-    public Object zRange(String key, long index) {
+    public Object zGetByIndex(String key, long index) {
         try {
             LinkedHashSet<Object> set = zRange(key, index, index);
             Iterator<Object> iterator = set.iterator();
@@ -228,11 +226,11 @@ class RdsZSetTool {
     }
 
     /**
-     * 根据索引区间获取一个sorted set缓存对象
+     * ZSet-根据索引区间获取zSet列表
      *
      * @param start 开始索引
-     * @param end   结束索引
-     * @return 缓存对象
+     * @param end   结束索引 -1查询全部
+     * @return zSet列表
      */
     public LinkedHashSet<Object> zRange(String key, long start, long end) {
         try {

@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Alan Chen
  * @description Redis-Set类型
- * 备注：该类主要是为了辅助RedisComponent完成功能，只希望RedisComponent能访问，因此该类没有设置为public
+ * 备注：该类主要是为了辅助RdsComponent完成功能，只希望RedisComponent能访问，因此该类没有设置为public
  * @date 2023/02/24
  */
 @Component

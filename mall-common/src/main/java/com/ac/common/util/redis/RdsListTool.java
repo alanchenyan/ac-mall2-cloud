@@ -10,6 +10,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author Alan Chen
+ * @description Redis-List类型
+ * 备注：该类主要是为了辅助RdsComponent完成功能，只希望RedisComponent能访问，因此该类没有设置为public
+ * @date 2023/02/24
+ */
 @Component
 public class RdsListTool {
 
@@ -270,13 +276,13 @@ public class RdsListTool {
     }
 
     /**
-     * 通过索引 获取list中的值
+     * List-通过索引 获取list中的值
      *
      * @param key   键
      * @param index 索引  index>=0时， 0 表头，1 第二个元素，依次类推；index<0时，-1，表尾，-2倒数第二个元素，依次类推
      * @return
      */
-    public Object lGetIndex(String key, long index) {
+    public Object lGetByIndex(String key, long index) {
         try {
             return redisTemplate.opsForList().index(key, index);
         } catch (Exception e) {
@@ -295,7 +301,7 @@ public class RdsListTool {
      * @param value 值
      * @return
      */
-    public boolean lUpdateIndex(String key, long index, Object value) {
+    public boolean lUpdateByIndex(String key, long index, Object value) {
         try {
             redisTemplate.opsForList().set(key, index, value);
             return true;

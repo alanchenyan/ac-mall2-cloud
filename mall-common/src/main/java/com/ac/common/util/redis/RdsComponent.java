@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2023/02/24
  */
 @Component
-public class RedisComponent {
+public class RdsComponent {
 
     @Resource
     private RdsCommonTool rdsCommonTool;
@@ -48,6 +48,16 @@ public class RedisComponent {
      */
     public boolean hasKey(String key) {
         return rdsCommonTool.hasKey(key);
+    }
+
+    /**
+     * 返回key集合
+     *
+     * @param key 键
+     * @return
+     */
+    public Set<String> keys(String key) {
+        return rdsCommonTool.keys(key);
     }
 
     /**
@@ -518,8 +528,8 @@ public class RedisComponent {
      * @param index
      * @return
      */
-    public Object lGetIndex(String key, long index) {
-        return rdsListTool.lGetIndex(key, index);
+    public Object lGetByIndex(String key, long index) {
+        return rdsListTool.lGetByIndex(key, index);
     }
 
     /**
@@ -637,8 +647,8 @@ public class RedisComponent {
      * @param value 值
      * @return
      */
-    public boolean lUpdateIndex(String key, long index, Object value) {
-        return rdsListTool.lUpdateIndex(key, index, value);
+    public boolean lUpdateByIndex(String key, long index, Object value) {
+        return rdsListTool.lUpdateByIndex(key, index, value);
     }
 
     /**
@@ -794,6 +804,14 @@ public class RedisComponent {
 
     //================================第6部分：zSet start=================================
 
+    /**
+     * ZSet-存入一个元素
+     *
+     * @param key   键
+     * @param value 值
+     * @param score 分数(排序序号，asc排序)
+     * @return
+     */
     public boolean zAdd(String key, Object value, double score) {
         return rdsZSetTool.zAdd(key, value, score);
     }
@@ -834,10 +852,24 @@ public class RedisComponent {
         return rdsZSetTool.zHasKey(key, obj);
     }
 
-    public Object zRange(String key, long index) {
-        return rdsZSetTool.zRange(key, index);
+    /**
+     * ZSet-获取指定下标的元素
+     *
+     * @param key
+     * @param index
+     * @return
+     */
+    public Object zGetByIndex(String key, long index) {
+        return rdsZSetTool.zGetByIndex(key, index);
     }
 
+    /**
+     * ZSet-根据索引区间获取zSet列表
+     *
+     * @param start 开始索引
+     * @param end   结束索引 -1查询全部
+     * @return zSet列表
+     */
     public LinkedHashSet<Object> zRange(String key, long start, long end) {
         return rdsZSetTool.zRange(key, start, end);
     }

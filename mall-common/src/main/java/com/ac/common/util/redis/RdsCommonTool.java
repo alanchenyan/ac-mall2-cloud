@@ -8,12 +8,13 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.Collection;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author Alan Chen
  * @description Redis-通用工具类
- * 备注：该类主要是为了辅助RedisComponent完成功能，只希望RedisComponent能访问，因此该类没有设置为public
+ * 备注：该类主要是为了辅助RdsComponent完成功能，只希望RedisComponent能访问，因此该类没有设置为public
  * @date 2023/02/24
  */
 @Component
@@ -34,6 +35,23 @@ class RdsCommonTool {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
+    }
+
+    /**
+     * 返回key集合
+     *
+     * @param key 键
+     * @return
+     */
+    public Set<String> keys(String key) {
+        try {
+            return redisTemplate.keys(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         } finally {
             RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
         }
