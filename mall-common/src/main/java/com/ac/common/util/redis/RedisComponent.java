@@ -658,7 +658,7 @@ public class RedisComponent {
     //================================第5部分：Set start=================================
 
     /**
-     * Set-集合size
+     * Set-获取Set中的元素数
      *
      * @param key
      * @return
@@ -668,9 +668,9 @@ public class RedisComponent {
     }
 
     /**
-     * Set-获取集合
+     * Set-获取Set中的所有元素
      *
-     * @param key
+     * @param key 键
      * @return
      */
     public Set<Object> sGet(String key) {
@@ -678,35 +678,60 @@ public class RedisComponent {
     }
 
     /**
-     * Set-根据key随机弹出t中的值
+     * Set-随机弹出一个元素
      *
-     * @param key
-     * @return
+     * @param key 键
+     * @return 弹出的元素
      */
     public Object sPop(String key) {
         return rdsSetTool.sPop(key);
     }
 
     /**
-     * Set-存数据(不过期)
+     * Set-存入多个元素
      *
-     * @param key
-     * @param values
-     * @return
+     * @param key  键
+     * @param list
+     * @return 成功个数
      */
-    public long sSet(String key, Object... values) {
-        return rdsSetTool.sSet(key, values);
+    public long sSetList(String key, List<Object> list) {
+        return rdsSetTool.sSetList(key, list);
     }
 
     /**
-     * Set-存集合(不过期)
+     * Set-存入多个元素
+     *
+     * @param key
+     * @param list
+     * @param time
+     * @return
+     */
+    public long sSetList(String key, List<Object> list, long time) {
+        return rdsSetTool.sSetList(key, list, time);
+    }
+
+    /**
+     * Set-存入多个元素
+     *
+     * @param key
+     * @param list
+     * @param time
+     * @param timeUnit
+     * @return
+     */
+    public long sSetList(String key, List<Object> list, long time, TimeUnit timeUnit) {
+        return rdsSetTool.sSetList(key, list, time, timeUnit);
+    }
+
+    /**
+     * Set-批量存入多个元素
      *
      * @param key
      * @param list
      * @return
      */
-    public boolean sSetPipe(String key, List<Object> list) {
-        return rdsSetTool.sSetPipe(key, list);
+    public boolean sPipeSetList(String key, List<Object> list) {
+        return rdsSetTool.sPipeSetList(key, list);
     }
 
     /**
@@ -718,31 +743,6 @@ public class RedisComponent {
      */
     public boolean sIsMember(String key, Object value) {
         return rdsSetTool.sIsMember(key, value);
-    }
-
-    /**
-     * Set-存数据(设置过期时间，单位)
-     *
-     * @param key
-     * @param time
-     * @param timeUnit
-     * @param values
-     * @return
-     */
-    public long sSetAndTime(String key, long time, TimeUnit timeUnit, Object... values) {
-        return rdsSetTool.sSetAndTime(key, time, timeUnit, values);
-    }
-
-    /**
-     * Set-存数据(设置过期时间)
-     *
-     * @param key
-     * @param time
-     * @param values
-     * @return
-     */
-    public long sSetAndTime(String key, long time, Object... values) {
-        return rdsSetTool.sSetAndTime(key, time, values);
     }
 
     /**
@@ -773,9 +773,9 @@ public class RedisComponent {
      *
      * @param key
      * @param value
-     * @return
+     * @return 移除的个数
      */
-    public long sSetRemove(String key, Long value) {
+    public long sSetRemove(String key, Object value) {
         return rdsSetTool.sSetRemove(key, value);
     }
 
@@ -783,11 +783,11 @@ public class RedisComponent {
      * Set-移除多个元素
      *
      * @param key
-     * @param values
-     * @return
+     * @param list
+     * @return 移除的个数
      */
-    public long sSetRemove(String key, Object... values) {
-        return rdsSetTool.sSetRemove(key, values);
+    public long sSetRemove(String key, List<Object> list) {
+        return rdsSetTool.sSetRemove(key, list);
     }
 
     //================================第5部分：Set end=================================

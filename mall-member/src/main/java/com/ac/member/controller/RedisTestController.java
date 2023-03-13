@@ -201,13 +201,11 @@ public class RedisTestController {
         return redisComponent.hmGet(key);
     }
 
-    //================================第3部分：Hash end=================================
-
     //================================第4部分：List start=================================
 
     @ApiOperation(value = "List-存取数据")
     @GetMapping("list")
-    public boolean sSet() {
+    public boolean list() {
         String key = "list";
         redisComponent.rightPushAll(key, Arrays.asList("B", "C", "D", "E", "F", "G"));
 
@@ -281,47 +279,58 @@ public class RedisTestController {
         return true;
     }
 
-    //================================第5部分：List start=================================
+    //================================第5部分：Set start=================================
     @ApiOperation(value = "Set-存取数据")
-    @GetMapping("sSetBak")
-    public boolean sSetBak() {
-        String key = "fansList";
-        redisComponent.sSet(key, "A", "B", "C", "D", "E");
-        Long size = redisComponent.sSize(key);
-        System.out.println("size:" + size);
+    @GetMapping("sSet")
+    public boolean sSet() {
+        String key = "setKey";
+        redisComponent.sSetList(key, Arrays.asList("A", "B", "C"));
 
-        System.out.println("fansList...................");
+        System.out.println("显示全部setKey...................");
         redisComponent.sGet(key).stream().forEach(System.out::print);
         System.out.println();
 
-        System.out.println("Set-右边弹出，左边压入...................");
-        List<Object> list2 = redisComponent.rightPopAndLeftPush(key, key, 2);
-        list2.stream().forEach(System.out::print);
-        System.out.println();
+        Long size = redisComponent.sSize(key);
+        System.out.println("size:" + size);
 
-        System.out.println("Set-通过start-end获取元素集合...................");
-        List<Object> list = redisComponent.lGet(key, 0, 3);
-        list.stream().forEach(System.out::print);
-        System.out.println();
+        System.out.println("存集合...................");
+        redisComponent.sPipeSetList(key, Arrays.asList("D", "E", "F", "G", "H"));
 
-        String key2 = "fansList2";
-        redisComponent.sSetPipe(key2, Arrays.asList("B", "C", "E", "F", "G"));
-
-        System.out.println("fansList3...................");
-        String key3 = "fansList3";
-        redisComponent.sInterAndStore(key, key2, key3);
-        redisComponent.sGet(key3).stream().forEach(System.out::print);
-        System.out.println();
-
-        redisComponent.sSetRemove(key3, "B");
-        redisComponent.sGet(key3).stream().forEach(System.out::print);
+        System.out.println("显示全部setKey...................");
+        redisComponent.sGet(key).stream().forEach(System.out::print);
         System.out.println();
 
         boolean hasC = redisComponent.sIsMember(key, "C");
         System.out.println("hasC:" + hasC);
 
-        Object obj = redisComponent.sPop(key);
-        System.out.println("sPop obj:" + obj);
+        String key2 = "setKey2";
+        System.out.println("存集合setKey2...................");
+        redisComponent.sSetList(key, Arrays.asList("A", "C", "D", "E", "F", "G", "H"), 100);
+
+        System.out.println("显示全部setKey...................");
+        redisComponent.sGet(key2).stream().forEach(System.out::print);
+        System.out.println();
+
+        System.out.println("查询两个集合的交集, 并存储于其他setKey3上...................");
+        String key3 = "setKey3";
+        redisComponent.sInterAndStore(key, key2, key3);
+        redisComponent.sGet(key3).stream().forEach(System.out::print);
+        System.out.println();
+
+        System.out.println("Set-移除值为value的元素...................");
+        redisComponent.sSetRemove(key3, "C");
+        redisComponent.sGet(key3).stream().forEach(System.out::print);
+        System.out.println();
+
+        System.out.println("Set-移除多个元素...................");
+        redisComponent.sSetRemove(key3, Arrays.asList("D", "E"));
+        redisComponent.sGet(key3).stream().forEach(System.out::print);
+        System.out.println();
+
+        System.out.println("Set-随机弹出一个元素...................");
+        redisComponent.sPop(key3);
+        redisComponent.sGet(key3).stream().forEach(System.out::print);
+        System.out.println();
 
         return true;
     }

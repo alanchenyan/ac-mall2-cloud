@@ -26,9 +26,9 @@ class RdsSetTool {
     private RdsCommonTool rdsCommonTool;
 
     /**
-     * 根据key获取Set中的成员数
+     * Set-获取Set中的元素数
      *
-     * @param key 键
+     * @param key
      * @return
      */
     public Long sSize(String key) {
@@ -41,7 +41,7 @@ class RdsSetTool {
     }
 
     /**
-     * 根据key获取Set中的所有值
+     * Set-获取Set中的所有元素
      *
      * @param key 键
      * @return
@@ -56,10 +56,10 @@ class RdsSetTool {
     }
 
     /**
-     * 根据key随机弹出t中的值
+     * Set-随机弹出一个元素
      *
      * @param key 键
-     * @return
+     * @return 弹出的元素
      */
     public Object sPop(String key) {
         try {
@@ -71,15 +71,44 @@ class RdsSetTool {
     }
 
     /**
-     * 将数据放入set缓存
+     * Set-存入多个元素
      *
-     * @param key    键
-     * @param values 值 可以是多个
+     * @param key  键
+     * @param list
      * @return 成功个数
      */
-    public long sSet(String key, Object... values) {
+    public long sSetList(String key, List<Object> list) {
+        return sSetList(key, list, 0);
+    }
+
+    /**
+     * Set-存入多个元素
+     *
+     * @param key
+     * @param list
+     * @param time
+     * @return
+     */
+    public long sSetList(String key, List<Object> list, long time) {
+        return sSetList(key, list, time, TimeUnit.SECONDS);
+    }
+
+    /**
+     * Set-存入多个元素
+     *
+     * @param key
+     * @param list
+     * @param time
+     * @param timeUnit
+     * @return
+     */
+    public long sSetList(String key, List<Object> list, long time, TimeUnit timeUnit) {
         try {
-            return redisTemplate.opsForSet().add(key, values);
+            Long count = redisTemplate.opsForSet().add(key, list);
+            if (time > 0) {
+                rdsCommonTool.expire(key, time, timeUnit);
+            }
+            return count;
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
@@ -89,13 +118,13 @@ class RdsSetTool {
     }
 
     /**
-     * 管道批量插入数据
+     * Set-批量存入多个元素
      *
      * @param key
      * @param list
      * @return
      */
-    public boolean sSetPipe(String key, List<Object> list) {
+    public boolean sPipeSetList(String key, List<Object> list) {
         try {
             redisTemplate.executePipelined(new SessionCallback<Object>() {
                 @Override
@@ -139,42 +168,6 @@ class RdsSetTool {
     }
 
     /**
-     * 将set数据放入缓存
-     *
-     * @param key      键
-     * @param time     时间
-     * @param timeUnit 时间单位
-     * @param values   值 可以是多个
-     * @return 成功个数
-     */
-    public long sSetAndTime(String key, long time, TimeUnit timeUnit, Object... values) {
-        try {
-            Long count = redisTemplate.opsForSet().add(key, values);
-            if (time > 0) {
-                rdsCommonTool.expire(key, time, timeUnit);
-            }
-            return count;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
-    }
-
-    /**
-     * 将set数据放入缓存
-     *
-     * @param key    键
-     * @param time   时间(秒)
-     * @param values 值 可以是多个
-     * @return 成功个数
-     */
-    public long sSetAndTime(String key, long time, Object... values) {
-        return sSetAndTime(key, time, TimeUnit.SECONDS, values);
-    }
-
-    /**
      * 查询两个集合的交集
      *
      * @param key1 键1
@@ -212,13 +205,13 @@ class RdsSetTool {
     }
 
     /**
-     * 移除值为value的元素
+     * Set-移除值为value的元素
      *
-     * @param key   键
-     * @param value 值 可以是多个
+     * @param key
+     * @param value
      * @return 移除的个数
      */
-    public long sSetRemove(String key, Long value) {
+    public long sSetRemove(String key, Object value) {
         try {
             Long count = redisTemplate.opsForSet().remove(key, value);
             return count;
@@ -231,15 +224,15 @@ class RdsSetTool {
     }
 
     /**
-     * 移除多个元素
+     * Set-移除多个元素
      *
-     * @param key    键
-     * @param values 值 可以是多个
+     * @param key
+     * @param list
      * @return 移除的个数
      */
-    public long sSetRemove(String key, Object... values) {
+    public long sSetRemove(String key, List<Object> list) {
         try {
-            Long count = redisTemplate.opsForSet().remove(key, values);
+            Long count = redisTemplate.opsForSet().remove(key, list);
             return count;
         } catch (Exception e) {
             e.printStackTrace();
