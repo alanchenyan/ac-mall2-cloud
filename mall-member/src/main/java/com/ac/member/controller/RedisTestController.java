@@ -359,6 +359,7 @@ public class RedisTestController {
         String key3 = "zSet3";
         rdsComponent.del(key);
         rdsComponent.del(key2);
+        rdsComponent.del(key3);
 
         System.out.println("存入元素");
         rdsComponent.zAdd(key, "A", 1);
@@ -382,6 +383,22 @@ public class RedisTestController {
         //4
         long size = rdsComponent.zSize(key);
         System.out.println("获取zSet长度:" + size);
+
+        //2
+        long count = rdsComponent.zCount(key, 1D, 2D);
+        System.out.println("获取zSet指定区间分数的成员数:" + count);
+
+        //2.0
+        Double score = rdsComponent.zScore(key, "B");
+        System.out.println("获取元素分数值:" + score);
+
+        //1
+        Long index = rdsComponent.zRank(key, "B");
+        System.out.println("返回指定成员的下标值:" + index);
+
+        //true
+        boolean hasB = rdsComponent.zHasElement(key, "B");
+        System.out.println("判断是否存在指定元素B:" + hasB);
 
         //ACE
         System.out.println("批量存入元素key2");

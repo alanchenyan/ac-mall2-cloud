@@ -827,6 +827,13 @@ public class RdsComponent {
         return rdsZSetTool.zAdd(key, set);
     }
 
+    /**
+     * ZSet-批量存入元素
+     *
+     * @param key
+     * @param valueMap Object=元素值;Double=分数
+     * @return
+     */
     public Long zAdd(String key, Map<Object, Double> valueMap) {
         return rdsZSetTool.zAdd(key, valueMap);
     }
@@ -852,20 +859,49 @@ public class RdsComponent {
         return rdsZSetTool.zSize(key);
     }
 
+    /**
+     * ZSet-获取zSet指定区间分数的成员数
+     *
+     * @param key
+     * @param min
+     * @param max
+     * @return
+     */
     public long zCount(String key, Double min, Double max) {
         return rdsZSetTool.zCount(key, min, max);
     }
 
+    /**
+     * ZSet-获取元素分数值
+     *
+     * @param key   键
+     * @param value 值
+     * @return 分数值
+     */
     public Double zScore(String key, Object value) {
         return rdsZSetTool.zScore(key, value);
     }
 
+    /**
+     * ZSet-返回指定成员的下标值
+     *
+     * @param key 键
+     * @param obj 元素
+     * @return 下标值
+     */
     public Long zRank(String key, Object obj) {
         return rdsZSetTool.zRank(key, obj);
     }
 
-    public boolean zHasKey(String key, Object obj) {
-        return rdsZSetTool.zHasKey(key, obj);
+    /**
+     * ZSet-判断是否存在指定元素
+     *
+     * @param key 键
+     * @param obj 元素
+     * @return true存在 false不存在
+     */
+    public boolean zHasElement(String key, Object obj) {
+        return rdsZSetTool.zHasElement(key, obj);
     }
 
     /**

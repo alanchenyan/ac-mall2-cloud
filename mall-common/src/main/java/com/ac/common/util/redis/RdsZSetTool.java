@@ -133,7 +133,7 @@ class RdsZSetTool {
     }
 
     /**
-     * 获取sorted set缓存集合中成员分数值
+     * ZSet-获取元素分数值
      *
      * @param key   键
      * @param value 值
@@ -151,11 +151,11 @@ class RdsZSetTool {
     }
 
     /**
-     * 返回有序集合中指定成员的索引
+     * ZSet-返回指定成员的下标值
      *
      * @param key 键
-     * @param obj 成员对象
-     * @return 缓存对象
+     * @param obj 元素
+     * @return 下标值
      */
     public Long zRank(String key, Object obj) {
         try {
@@ -173,13 +173,13 @@ class RdsZSetTool {
     }
 
     /**
-     * 查看有序集合中是否存在指定成员
+     * ZSet-判断是否存在指定元素
      *
      * @param key 键
-     * @param obj 成员对象
+     * @param obj 元素
      * @return true存在 false不存在
      */
-    public boolean zHasKey(String key, Object obj) {
+    public boolean zHasElement(String key, Object obj) {
         return this.zRank(key, obj) >= 0;
     }
 
