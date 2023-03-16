@@ -458,6 +458,27 @@ public class RedisTestController {
         rdsComponent.zRange(key3, 0, -1).stream().forEach(System.out::print);
         System.out.println();
 
+        /**
+         * A:1.0
+         * B:2.0
+         * C:3.0
+         * D:6.0
+         */
+        System.out.println("增加元素分数值");
+        rdsComponent.zIncrScore(key, "D", 2);
+        Set<ZSetOperations.TypedTuple<Object>> setResult3 = rdsComponent.zRangeWithScores(key, 0, -1);
+        for (ZSetOperations.TypedTuple<Object> item : setResult3) {
+            System.out.println(item.getValue() + ":" + item.getScore());
+        }
+        System.out.println();
+
+        //B
+        System.out.println("删除元素");
+        rdsComponent.zRemove(key, "A");
+        rdsComponent.zRemove(key, Arrays.asList("C", "D"));
+        rdsComponent.zRange(key, 0, -1).stream().forEach(System.out::print);
+        System.out.println();
+
         return true;
     }
 

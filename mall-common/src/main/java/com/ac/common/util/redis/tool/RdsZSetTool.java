@@ -366,17 +366,16 @@ public class RdsZSetTool {
     }
 
     /**
-     * sorted set缓存对象的score值增量+1
+     * ZSet-增加元素分数值
      *
      * @param key   键
      * @param value 值
-     * @param incr  增量值
-     * @return 是否成功
+     * @param delta 增量值
+     * @return
      */
-    public Double zIncr(String key, Object value, long incr) {
+    public Double zIncrScore(String key, Object value, double delta) {
         try {
-            Double aDouble = redisTemplate.opsForZSet().incrementScore(key, value, incr);
-            return aDouble;
+            return redisTemplate.opsForZSet().incrementScore(key, value, delta);
         } catch (Exception e) {
             e.printStackTrace();
             return -1D;
@@ -386,11 +385,11 @@ public class RdsZSetTool {
     }
 
     /**
-     * 移除成员
+     * ZSet-删除元素
      *
-     * @param key    键
-     * @param object 对象
-     * @return 移除数量
+     * @param key
+     * @param object
+     * @return
      */
     public Long zRemove(String key, Object object) {
         try {
@@ -404,15 +403,15 @@ public class RdsZSetTool {
     }
 
     /**
-     * 移除成员
+     * ZSet-批量删除元素
      *
-     * @param key     键
-     * @param objects 对象数组
-     * @return 移除数量
+     * @param key
+     * @param list
+     * @return
      */
-    public Long zRemove(String key, Object... objects) {
+    public Long zRemove(String key, List<Object> list) {
         try {
-            return redisTemplate.opsForZSet().remove(key, objects);
+            return redisTemplate.opsForZSet().remove(key, list.toArray());
         } catch (Exception e) {
             e.printStackTrace();
             return 0L;

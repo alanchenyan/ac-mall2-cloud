@@ -1011,16 +1011,38 @@ public class RdsComponent {
         return rdsZSetTool.zRevRangeByScoreWithScores(key, min, max, offset, count);
     }
 
-    public Double zIncr(String key, Object value, long incr) {
-        return rdsZSetTool.zIncr(key, value, incr);
+    /**
+     * ZSet-增加元素分数值
+     *
+     * @param key   键
+     * @param value 值
+     * @param delta 增量值
+     * @return
+     */
+    public Double zIncrScore(String key, Object value, double delta) {
+        return rdsZSetTool.zIncrScore(key, value, delta);
     }
 
+    /**
+     * ZSet-删除元素
+     *
+     * @param key
+     * @param object
+     * @return
+     */
     public Long zRemove(String key, Object object) {
         return rdsZSetTool.zRemove(key, object);
     }
 
-    public Long zRemove(String key, Object... objects) {
-        return rdsZSetTool.zRemove(key, objects);
+    /**
+     * ZSet-批量删除元素
+     *
+     * @param key
+     * @param list
+     * @return
+     */
+    public Long zRemove(String key, List<Object> list) {
+        return rdsZSetTool.zRemove(key, list);
     }
 
     //================================第6部分：zSet end=================================
