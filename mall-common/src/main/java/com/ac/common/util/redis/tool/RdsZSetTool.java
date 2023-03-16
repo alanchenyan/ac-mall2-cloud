@@ -172,6 +172,24 @@ public class RdsZSetTool {
     }
 
     /**
+     * 判断value在zset中的排名  zrank
+     *
+     * @param key
+     * @param value
+     * @return
+     */
+    public Long zReverseRank(String key, Object value) {
+        try {
+            return redisTemplate.opsForZSet().reverseRank(key, value);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0L;
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
+    }
+
+    /**
      * ZSet-判断是否存在指定元素
      *
      * @param key 键
@@ -224,6 +242,14 @@ public class RdsZSetTool {
         }
     }
 
+    /**
+     * ZSet-根据索引区间获取zSet列表(从后往前取)
+     *
+     * @param key
+     * @param start
+     * @param end
+     * @return
+     */
     public LinkedHashSet<Object> zRevRange(String key, long start, long end) {
         try {
             Set<Object> set = redisTemplate.opsForZSet().reverseRange(key, start, end);
@@ -238,25 +264,6 @@ public class RdsZSetTool {
             RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
         }
     }
-
-    /**
-     * 判断value在zset中的排名  zrank
-     *
-     * @param key
-     * @param value
-     * @return
-     */
-    public Long rank(String key, String value) {
-        try {
-            return redisTemplate.opsForZSet().reverseRank(key, value);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0L;
-        } finally {
-            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
-        }
-    }
-
 
     /**
      * 根据分数区间获取一个sorted set缓存对象

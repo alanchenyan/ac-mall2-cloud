@@ -368,10 +368,17 @@ public class RedisTestController {
         rdsComponent.zAdd(key, "D", 4);
 
         //ABC
+        System.out.println("根据索引区间获取zSet列表");
         rdsComponent.zRange(key, 0, 2).stream().forEach(System.out::print);
         System.out.println();
 
+        //DCB
+        System.out.println("根据索引区间获取zSet列表(倒取)");
+        rdsComponent.zRevRange(key, 0, 2).stream().forEach(System.out::print);
+        System.out.println();
+
         //ABCD
+        System.out.println("根据索引区间获取zSet列表（取全部）");
         rdsComponent.zRange(key, 0, -1).stream().forEach(System.out::print);
         System.out.println();
 
@@ -395,6 +402,10 @@ public class RedisTestController {
         //1
         Long index = rdsComponent.zRank(key, "B");
         System.out.println("返回指定成员的下标值:" + index);
+
+        //2
+        Long index2 = rdsComponent.zReverseRank(key, "B");
+        System.out.println("返回指定成员的下标值(倒取):" + index2);
 
         //true
         boolean hasB = rdsComponent.zHasElement(key, "B");

@@ -895,6 +895,17 @@ public class RdsComponent {
     }
 
     /**
+     * ZSet-返回指定成员的下标值(从后往前取)
+     *
+     * @param key 键
+     * @param obj 元素
+     * @return 下标值
+     */
+    public Long zReverseRank(String key, Object obj) {
+        return rdsZSetTool.zReverseRank(key, obj);
+    }
+
+    /**
      * ZSet-判断是否存在指定元素
      *
      * @param key 键
@@ -927,12 +938,16 @@ public class RdsComponent {
         return rdsZSetTool.zRange(key, start, end);
     }
 
+    /**
+     * ZSet-根据索引区间获取zSet列表(从后往前取)
+     *
+     * @param key
+     * @param start
+     * @param end
+     * @return
+     */
     public LinkedHashSet<Object> zRevRange(String key, long start, long end) {
         return rdsZSetTool.zRevRange(key, start, end);
-    }
-
-    public Long rank(String key, String value) {
-        return rdsZSetTool.rank(key, value);
     }
 
     public LinkedHashSet<Object> zRangeByScore(String key, long start, long end) {
