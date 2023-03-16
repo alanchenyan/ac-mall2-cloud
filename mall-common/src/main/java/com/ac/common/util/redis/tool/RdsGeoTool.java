@@ -31,9 +31,9 @@ public class RdsGeoTool {
      * @param lat    纬度
      * @return 成功数量
      */
-    public Long geoAdd(String key, String member, BigDecimal lng, BigDecimal lat) {
+    public Long geoAdd(String key, String member, double lng, double lat) {
         try {
-            return redisTemplate.opsForGeo().add(key, new Point(lng.doubleValue(), lat.doubleValue()), member);
+            return redisTemplate.opsForGeo().add(key, new Point(lng, lat), member);
         } catch (Exception e) {
             e.printStackTrace();
             return 0L;
@@ -49,7 +49,7 @@ public class RdsGeoTool {
      * @param member 成员
      * @return 成功数量
      */
-    public Point geoGet(String key, String member) {
+    public Point geoPosition(String key, String member) {
         try {
             List<Point> pointList = redisTemplate.opsForGeo().position(key, member);
             if (pointList.size() > 0) {
@@ -71,7 +71,7 @@ public class RdsGeoTool {
      * @param members 成员数组
      * @return 成功数量
      */
-    public List<Point> geoGet(String key, String... members) {
+    public List<Point> geoPositions(String key, String... members) {
         try {
             return redisTemplate.opsForGeo().position(key, members);
         } catch (Exception e) {
@@ -90,10 +90,9 @@ public class RdsGeoTool {
      * @param member2 成员2
      * @return 成功数量
      */
-    public Distance geoDist(String key, String member1, String member2) {
+    public Distance geoDistance(String key, String member1, String member2) {
         try {
-            Distance distance = redisTemplate.opsForGeo().distance(key, member1, member2);
-            return distance;
+            return redisTemplate.opsForGeo().distance(key, member1, member2);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -111,7 +110,7 @@ public class RdsGeoTool {
      * @param metrics 度规（枚举）（km、m）
      * @return 成功数量
      */
-    public Distance geoDist(String key, String member1, String member2, Metrics metrics) {
+    public Distance geoDistance(String key, String member1, String member2, Metrics metrics) {
         try {
             Distance distance = redisTemplate.opsForGeo().distance(key, member1, member2, metrics);
             return distance;

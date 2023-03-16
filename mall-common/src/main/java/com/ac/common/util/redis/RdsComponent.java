@@ -1049,24 +1049,24 @@ public class RdsComponent {
 
     //================================第7部分：GEO start=================================
 
-    public Long geoAdd(String key, String member, BigDecimal lng, BigDecimal lat) {
+    public Long geoAdd(String key, String member, double lng, double lat) {
         return rdsGeoTool.geoAdd(key, member, lng, lat);
     }
 
-    public Point geoGet(String key, String member) {
-        return rdsGeoTool.geoGet(key, member);
+    public Point geoPosition(String key, String member) {
+        return rdsGeoTool.geoPosition(key, member);
     }
 
-    public List<Point> geoGet(String key, String... members) {
-        return rdsGeoTool.geoGet(key, members);
+    public List<Point> geoPositions(String key, String... members) {
+        return rdsGeoTool.geoPositions(key, members);
     }
 
-    public Distance geoDist(String key, String member1, String member2) {
-        return rdsGeoTool.geoDist(key, member1, member2);
+    public Distance geoDistance(String key, String member1, String member2) {
+        return rdsGeoTool.geoDistance(key, member1, member2);
     }
 
-    public Distance geoDist(String key, String member1, String member2, Metrics metrics) {
-        return rdsGeoTool.geoDist(key, member1, member2, metrics);
+    public Distance geoDistance(String key, String member1, String member2, Metrics metrics) {
+        return rdsGeoTool.geoDistance(key, member1, member2, metrics);
     }
 
     public List<String> geoRadius(String key, String member, BigDecimal v, Metrics metrics) {
