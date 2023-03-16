@@ -6,7 +6,6 @@ import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -1049,28 +1048,77 @@ public class RdsComponent {
 
     //================================第7部分：GEO start=================================
 
-    public Long geoAdd(String key, String member, double lng, double lat) {
+    /**
+     * GEO-添加成员经纬度
+     *
+     * @param key    键
+     * @param member 成员
+     * @param lng    经度
+     * @param lat    纬度
+     * @return 成功数量
+     */
+    public Long geoAdd(String key, Object member, double lng, double lat) {
         return rdsGeoTool.geoAdd(key, member, lng, lat);
     }
 
-    public Point geoPosition(String key, String member) {
+    /**
+     * GEO-获取成员经纬度
+     *
+     * @param key    键
+     * @param member 成员
+     * @return 经纬度
+     */
+    public Point geoPosition(String key, Object member) {
         return rdsGeoTool.geoPosition(key, member);
     }
 
-    public List<Point> geoPositions(String key, String... members) {
-        return rdsGeoTool.geoPositions(key, members);
+    /**
+     * GEO-获取一批成员的经纬度
+     *
+     * @param key  键
+     * @param list 成员列表
+     * @return 经纬度列表
+     */
+    public List<Point> geoPositions(String key, List<Object> list) {
+        return rdsGeoTool.geoPositions(key, list);
     }
 
-    public Distance geoDistance(String key, String member1, String member2) {
+    /**
+     * GEO-计算两个成员间的距离
+     *
+     * @param key     键
+     * @param member1 成员1
+     * @param member2 成员2
+     * @return 距离
+     */
+    public Distance geoDistance(String key, Object member1, Object member2) {
         return rdsGeoTool.geoDistance(key, member1, member2);
     }
 
-    public Distance geoDistance(String key, String member1, String member2, Metrics metrics) {
+    /**
+     * GEO-计算两个成员间的距离
+     *
+     * @param key
+     * @param member1
+     * @param member2
+     * @param metrics
+     * @return
+     */
+    public Distance geoDistance(String key, Object member1, Object member2, Metrics metrics) {
         return rdsGeoTool.geoDistance(key, member1, member2, metrics);
     }
 
-    public List<String> geoRadius(String key, String member, BigDecimal v, Metrics metrics) {
-        return rdsGeoTool.geoRadius(key, member, v, metrics);
+    /**
+     * GEO-获取指定成员周围的成员列表
+     *
+     * @param key
+     * @param member
+     * @param value
+     * @param metrics
+     * @return
+     */
+    public List<Object> geoRadius(String key, Object member, double value, Metrics metrics) {
+        return rdsGeoTool.geoRadius(key, member, value, metrics);
     }
 
     //================================第7部分：GEO end=================================

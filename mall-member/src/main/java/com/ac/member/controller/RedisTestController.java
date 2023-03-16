@@ -5,6 +5,9 @@ import com.ac.member.dto.MemberDTO;
 import com.ac.member.enums.MemberSexEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Metrics;
+import org.springframework.data.geo.Point;
 import org.springframework.data.redis.core.DefaultTypedTuple;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.web.bind.annotation.*;
@@ -482,4 +485,56 @@ public class RedisTestController {
         return true;
     }
 
+
+    //================================第7部分：GEO start=================================
+    @ApiOperation(value = "zSet-存取数据")
+    @GetMapping("geo")
+    public boolean geo() {
+        String key = "geo";
+        String member1 = "A001";
+        String member2 = "A002";
+        String member3 = "A003";
+
+        rdsComponent.del(key);
+
+        System.out.println("添加元素经纬度");
+        rdsComponent.geoAdd(key, member1, 120, 60);
+        rdsComponent.geoAdd(key, member2, 121, 61);
+        rdsComponent.geoAdd(key, member3, 122, 62);
+
+        //获取成员经纬度,x=120.00000089406967,y=59.99999923259345
+        Point point = rdsComponent.geoPosition(key, member1);
+        System.out.println("获取成员经纬度,x=" + point.getX() + ",y=" + point.getY());
+
+        /**
+         * 获取成员经纬度,x=120.00000089406967,y=59.99999923259345
+         * 获取成员经纬度,x=120.99999815225601,y=60.99999995909701
+         * 获取成员经纬度,x=122.00000077486038,y=62.00000068560058
+         */
+        System.out.println("批量获取成员经纬度");
+        List<Point> pointList = rdsComponent.geoPositions(key, Arrays.asList(member1, member2, member3));
+        for (Point item : pointList) {
+            System.out.println("获取成员经纬度,x=" + item.getX() + ",y=" + item.getY());
+        }
+
+        //计算两个成员间的距离,Unit=m,Value=123976.7968,Metric=METERS
+        Distance distance = rdsComponent.geoDistance(key, member1, member2);
+        System.out.println("计算两个成员间的距离,Unit=" + distance.getUnit() + ",Value=" + distance.getValue() + ",Metric=" + distance.getMetric());
+
+        //计算两个成员间的距离,指定单位千米,Unit=km,Value=123.9768,Metric=KILOMETERS
+        Distance distance2 = rdsComponent.geoDistance(key, member1, member2, Metrics.KILOMETERS);
+        System.out.println("计算两个成员间的距离,指定单位千米,Unit=" + distance2.getUnit() + ",Value=" + distance2.getValue() + ",Metric=" + distance2.getMetric());
+
+        /**
+         * A001
+         * A002
+         * A003
+         */
+        List<Object> list = rdsComponent.geoRadius(key, member2, 1000, Metrics.KILOMETERS);
+        System.out.println("获取指定成员周围的成员列表");
+        for (Object obj : list) {
+            System.out.println(obj);
+        }
+        return true;
+    }
 }

@@ -23,7 +23,7 @@ public class RdsGeoTool {
     private RedisTemplate<String, Object> redisTemplate;
 
     /**
-     * geo-添加
+     * GEO-添加成员经纬度
      *
      * @param key    键
      * @param member 成员
@@ -31,7 +31,7 @@ public class RdsGeoTool {
      * @param lat    纬度
      * @return 成功数量
      */
-    public Long geoAdd(String key, String member, double lng, double lat) {
+    public Long geoAdd(String key, Object member, double lng, double lat) {
         try {
             return redisTemplate.opsForGeo().add(key, new Point(lng, lat), member);
         } catch (Exception e) {
@@ -43,13 +43,13 @@ public class RdsGeoTool {
     }
 
     /**
-     * geo-获取坐标
+     * GEO-获取成员经纬度
      *
      * @param key    键
      * @param member 成员
-     * @return 成功数量
+     * @return 经纬度
      */
-    public Point geoPosition(String key, String member) {
+    public Point geoPosition(String key, Object member) {
         try {
             List<Point> pointList = redisTemplate.opsForGeo().position(key, member);
             if (pointList.size() > 0) {
@@ -65,15 +65,15 @@ public class RdsGeoTool {
     }
 
     /**
-     * geo-获取坐标
+     * GEO-获取一批成员的经纬度
      *
-     * @param key     键
-     * @param members 成员数组
-     * @return 成功数量
+     * @param key  键
+     * @param list 成员列表
+     * @return 经纬度列表
      */
-    public List<Point> geoPositions(String key, String... members) {
+    public List<Point> geoPositions(String key, List<Object> list) {
         try {
-            return redisTemplate.opsForGeo().position(key, members);
+            return redisTemplate.opsForGeo().position(key, list.toArray());
         } catch (Exception e) {
             e.printStackTrace();
             return new ArrayList<>();
@@ -83,14 +83,14 @@ public class RdsGeoTool {
     }
 
     /**
-     * geo-计算距离
+     * GEO-计算两个成员间的距离
      *
      * @param key     键
      * @param member1 成员1
      * @param member2 成员2
-     * @return 成功数量
+     * @return 距离
      */
-    public Distance geoDistance(String key, String member1, String member2) {
+    public Distance geoDistance(String key, Object member1, Object member2) {
         try {
             return redisTemplate.opsForGeo().distance(key, member1, member2);
         } catch (Exception e) {
@@ -102,15 +102,15 @@ public class RdsGeoTool {
     }
 
     /**
-     * geo-计算距离
+     * GEO-计算两个成员间的距离
      *
-     * @param key     键
-     * @param member1 成员1
-     * @param member2 成员2
-     * @param metrics 度规（枚举）（km、m）
-     * @return 成功数量
+     * @param key
+     * @param member1
+     * @param member2
+     * @param metrics
+     * @return
      */
-    public Distance geoDistance(String key, String member1, String member2, Metrics metrics) {
+    public Distance geoDistance(String key, Object member1, Object member2, Metrics metrics) {
         try {
             Distance distance = redisTemplate.opsForGeo().distance(key, member1, member2, metrics);
             return distance;
@@ -123,18 +123,20 @@ public class RdsGeoTool {
     }
 
     /**
-     * geo-范围成员
+     * GEO-获取指定成员周围的成员列表
      *
-     * @param key    键
-     * @param member 成员
-     * @return 成功数量
+     * @param key
+     * @param member
+     * @param value
+     * @param metrics
+     * @return
      */
-    public List<String> geoRadius(String key, String member, BigDecimal v, Metrics metrics) {
+    public List<Object> geoRadius(String key, Object member, double value, Metrics metrics) {
         try {
-            GeoResults<RedisGeoCommands.GeoLocation<Object>> geoResults = redisTemplate.opsForGeo().radius(key, member, new Distance(v.doubleValue(), metrics));
-            List<String> result = new ArrayList<>();
+            GeoResults<RedisGeoCommands.GeoLocation<Object>> geoResults = redisTemplate.opsForGeo().radius(key, member, new Distance(value, metrics));
+            List<Object> result = new ArrayList<>();
             for (GeoResult<RedisGeoCommands.GeoLocation<Object>> geoResult : geoResults.getContent()) {
-                result.add(geoResult.getContent().getName().toString());
+                result.add(geoResult.getContent().getName());
             }
             return result;
         } catch (Exception e) {
