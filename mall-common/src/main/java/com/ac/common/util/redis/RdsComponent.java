@@ -983,12 +983,32 @@ public class RdsComponent {
         return rdsZSetTool.zRangeByScoreWithScores(key, min, max);
     }
 
+    /**
+     * ZSet-根据分数区间获取Set列表(返回元素、分数值)，再从下标offset开始，取count个元素
+     *
+     * @param key
+     * @param min    开始分数
+     * @param max    结束分数
+     * @param offset 下标开始值
+     * @param count  取元素的数量
+     * @return
+     */
     public Set<ZSetOperations.TypedTuple<Object>> zRangeByScoreWithScores(String key, double min, double max, long offset, long count) {
         return rdsZSetTool.zRangeByScoreWithScores(key, min, max, offset, count);
     }
 
-    public Set<ZSetOperations.TypedTuple<Object>> zRevRangeByScoreWithScores(String key, double scoreMin, double scoreMax, long offset, long count) {
-        return rdsZSetTool.zRevRangeByScoreWithScores(key, scoreMin, scoreMax, offset, count);
+    /**
+     * ZSet-根据分数区间获取Set列表(返回元素、分数值)，再从下标offset开始，取count个元素（从后往前取）
+     *
+     * @param key
+     * @param min    开始分数
+     * @param max    结束分数
+     * @param offset 下标开始值
+     * @param count  取元素的数量
+     * @return
+     */
+    public Set<ZSetOperations.TypedTuple<Object>> zRevRangeByScoreWithScores(String key, double min, double max, long offset, long count) {
+        return rdsZSetTool.zRevRangeByScoreWithScores(key, min, max, offset, count);
     }
 
     public Double zIncr(String key, Object value, long incr) {

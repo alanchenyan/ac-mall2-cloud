@@ -400,6 +400,18 @@ public class RedisTestController {
         }
         System.out.println();
 
+
+        /**
+         * C:3.0
+         * D:4.0
+         */
+        System.out.println("根据分数区间获取Set列表(返回元素、分数值)，再从下标offset开始，取count个元素");
+        Set<ZSetOperations.TypedTuple<Object>> setResult2 = rdsComponent.zRangeByScoreWithScores(key, 2, 4, 1, 2);
+        for (ZSetOperations.TypedTuple<Object> item : setResult2) {
+            System.out.println(item.getValue() + ":" + item.getScore());
+        }
+        System.out.println();
+
         //B
         System.out.println("获取指定下标的元素");
         Object obj = rdsComponent.zGetByIndex(key, 1);
