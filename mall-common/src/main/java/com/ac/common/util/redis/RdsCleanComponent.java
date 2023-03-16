@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
-public class RdsCleanUtil {
+public class RdsCleanComponent {
 
     @Resource
     private RdsComponent rdsComponent;

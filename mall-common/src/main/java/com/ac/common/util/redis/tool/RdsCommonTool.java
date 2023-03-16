@@ -1,4 +1,4 @@
-package com.ac.common.util.redis;
+package com.ac.common.util.redis.tool;
 
 import cn.hutool.core.collection.CollUtil;
 import org.springframework.data.redis.core.RedisConnectionUtils;
@@ -14,11 +14,10 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Alan Chen
  * @description Redis-通用工具类
- * 备注：该类主要是为了辅助RdsComponent完成功能，只希望RedisComponent能访问，因此该类没有设置为public
  * @date 2023/02/24
  */
 @Component
-class RdsCommonTool {
+public class RdsCommonTool {
 
     @Resource
     private RedisTemplate<String, Object> redisTemplate;

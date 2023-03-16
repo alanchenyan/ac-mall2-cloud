@@ -1,5 +1,6 @@
-package com.ac.common.util.redis;
+package com.ac.common.util.redis.tool;
 
+import com.ac.common.util.redis.tool.RdsCommonTool;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Alan Chen
  * @description Redis-List类型
- * 备注：该类主要是为了辅助RdsComponent完成功能，只希望RedisComponent能访问，因此该类没有设置为public
  * @date 2023/02/24
  */
 @Component
