@@ -950,20 +950,41 @@ public class RdsComponent {
         return rdsZSetTool.zRevRange(key, start, end);
     }
 
-    public LinkedHashSet<Object> zRangeByScore(String key, long start, long end) {
-        return rdsZSetTool.zRangeByScore(key, start, end);
+    /**
+     * ZSet-根据分数区间获取Set列表
+     *
+     * @param min 开始分数
+     * @param max 结束分数
+     * @return
+     */
+    public LinkedHashSet<Object> zRangeByScore(String key, double min, double max) {
+        return rdsZSetTool.zRangeByScore(key, min, max);
     }
 
+    /**
+     * ZSet-根据下标区间获取Set列表(返回元素、分数值)
+     *
+     * @param start 开始下标
+     * @param end   结束下标
+     * @return
+     */
     public Set<ZSetOperations.TypedTuple<Object>> zRangeWithScores(String key, long start, long end) {
         return rdsZSetTool.zRangeWithScores(key, start, end);
     }
 
-    public Set<ZSetOperations.TypedTuple<Object>> zRangeByScoreWithScores(String key, double scoreMin, double scoreMax) {
-        return rdsZSetTool.zRangeByScoreWithScores(key, scoreMin, scoreMax);
+    /**
+     * ZSet-根据分数区间获取Set列表(返回元素、分数值)
+     *
+     * @param min 开始分数
+     * @param max 结束分数
+     * @return
+     */
+    public Set<ZSetOperations.TypedTuple<Object>> zRangeByScoreWithScores(String key, double min, double max) {
+        return rdsZSetTool.zRangeByScoreWithScores(key, min, max);
     }
 
-    public Set<ZSetOperations.TypedTuple<Object>> zRangeByScoreWithScores(String key, double scoreMin, double scoreMax, long offset, long count) {
-        return rdsZSetTool.zRangeByScoreWithScores(key, scoreMin, scoreMax, offset, count);
+    public Set<ZSetOperations.TypedTuple<Object>> zRangeByScoreWithScores(String key, double min, double max, long offset, long count) {
+        return rdsZSetTool.zRangeByScoreWithScores(key, min, max, offset, count);
     }
 
     public Set<ZSetOperations.TypedTuple<Object>> zRevRangeByScoreWithScores(String key, double scoreMin, double scoreMax, long offset, long count) {

@@ -40,11 +40,11 @@ public class RdsZSetTool {
     }
 
     /**
-     * 将数据放入sorted set缓存
+     * ZSet-批量存入元素
      *
-     * @param key 键
-     * @param set 值集合
-     * @return 成功个数
+     * @param key
+     * @param set
+     * @return
      */
     public Long zAdd(String key, Set<ZSetOperations.TypedTuple<Object>> set) {
         try {
@@ -58,11 +58,11 @@ public class RdsZSetTool {
     }
 
     /**
-     * 将数据放入sorted set缓存
+     * ZSet-批量存入元素
      *
-     * @param key      键
-     * @param valueMap 值集合
-     * @return 成功个数
+     * @param key
+     * @param valueMap Object=元素值;Double=分数
+     * @return
      */
     public Long zAdd(String key, Map<Object, Double> valueMap) {
         try {
@@ -172,15 +172,15 @@ public class RdsZSetTool {
     }
 
     /**
-     * 判断value在zset中的排名  zrank
+     * ZSet-返回指定成员的下标值(从后往前取)
      *
-     * @param key
-     * @param value
-     * @return
+     * @param key 键
+     * @param obj 元素
+     * @return 下标值
      */
-    public Long zReverseRank(String key, Object value) {
+    public Long zReverseRank(String key, Object obj) {
         try {
-            return redisTemplate.opsForZSet().reverseRank(key, value);
+            return redisTemplate.opsForZSet().reverseRank(key, obj);
         } catch (Exception e) {
             e.printStackTrace();
             return 0L;
@@ -243,7 +243,7 @@ public class RdsZSetTool {
     }
 
     /**
-     * ZSet-根据索引区间获取zSet列表(从后往前取)
+     * ZSet-根据索引区间获取ZSet列表(从后往前取)
      *
      * @param key
      * @param start
@@ -266,15 +266,15 @@ public class RdsZSetTool {
     }
 
     /**
-     * 根据分数区间获取一个sorted set缓存对象
+     * ZSet-根据分数区间获取Set列表
      *
-     * @param start 开始分数
-     * @param end   结束分数
-     * @return 缓存对象
+     * @param min 开始分数
+     * @param max 结束分数
+     * @return
      */
-    public LinkedHashSet<Object> zRangeByScore(String key, long start, long end) {
+    public LinkedHashSet<Object> zRangeByScore(String key, double min, double max) {
         try {
-            Set<Object> set = redisTemplate.opsForZSet().rangeByScore(key, start, end);
+            Set<Object> set = redisTemplate.opsForZSet().rangeByScore(key, min, max);
             if (set == null || set.size() == 0) {
                 return null;
             }
@@ -287,6 +287,13 @@ public class RdsZSetTool {
         }
     }
 
+    /**
+     * ZSet-根据下标区间获取Set列表(返回元素、分数值)
+     *
+     * @param start 开始下标
+     * @param end   结束下标
+     * @return
+     */
     public Set<ZSetOperations.TypedTuple<Object>> zRangeWithScores(String key, long start, long end) {
         try {
             return redisTemplate.opsForZSet().rangeWithScores(key, start, end);
@@ -298,9 +305,16 @@ public class RdsZSetTool {
         }
     }
 
-    public Set<ZSetOperations.TypedTuple<Object>> zRangeByScoreWithScores(String key, double scoreMin, double scoreMax) {
+    /**
+     * ZSet-根据分数区间获取Set列表(返回元素、分数值)
+     *
+     * @param min 开始分数
+     * @param max 结束分数
+     * @return
+     */
+    public Set<ZSetOperations.TypedTuple<Object>> zRangeByScoreWithScores(String key, double min, double max) {
         try {
-            return redisTemplate.opsForZSet().rangeByScoreWithScores(key, scoreMin, scoreMax);
+            return redisTemplate.opsForZSet().rangeByScoreWithScores(key, min, max);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -309,9 +323,9 @@ public class RdsZSetTool {
         }
     }
 
-    public Set<ZSetOperations.TypedTuple<Object>> zRangeByScoreWithScores(String key, double scoreMin, double scoreMax, long offset, long count) {
+    public Set<ZSetOperations.TypedTuple<Object>> zRangeByScoreWithScores(String key, double min, double max, long offset, long count) {
         try {
-            return redisTemplate.opsForZSet().rangeByScoreWithScores(key, scoreMin, scoreMax, offset, count);
+            return redisTemplate.opsForZSet().rangeByScoreWithScores(key, min, max, offset, count);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

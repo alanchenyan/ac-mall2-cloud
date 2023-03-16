@@ -382,6 +382,24 @@ public class RedisTestController {
         rdsComponent.zRange(key, 0, -1).stream().forEach(System.out::print);
         System.out.println();
 
+        //ABC
+        System.out.println("根据分数区间获取Set列表");
+        rdsComponent.zRangeByScore(key, 0, 3).forEach(System.out::print);
+        System.out.println();
+
+        /**
+         * A:1.0
+         * B:2.0
+         * C:3.0
+         * D:4.0
+         */
+        System.out.println("根据下标区间获取Set列表(返回元素、分数值)");
+        Set<ZSetOperations.TypedTuple<Object>> setResult = rdsComponent.zRangeWithScores(key, 0, 3);
+        for (ZSetOperations.TypedTuple<Object> item : setResult) {
+            System.out.println(item.getValue() + ":" + item.getScore());
+        }
+        System.out.println();
+
         //B
         System.out.println("获取指定下标的元素");
         Object obj = rdsComponent.zGetByIndex(key, 1);
