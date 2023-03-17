@@ -5,6 +5,7 @@ import com.ac.member.dao.MemberDao;
 import com.ac.member.dto.MemberDTO;
 import com.ac.member.entity.Member;
 import com.ac.member.qry.MemberQry;
+import com.ac.member.rds.MemberRds;
 import com.ac.member.service.MemberService;
 import com.ac.member.vo.MemberEditVO;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,9 @@ public class MemberServiceImpl implements MemberService {
     @Resource
     private MemberDao memberDaoImpl;
 
+    @Resource
+    private MemberRds memberRds;
+
     @Override
     public Member findById(Long id) {
         return Optional.ofNullable(memberDaoImpl.getById(id)).orElseThrow(() -> new RuntimeException("数据不存在"));
@@ -28,13 +32,23 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberDTO findMember(Long id) {
-        return MemberConvert.instance.entityToDto(findById(id));
+        Member entity = memberRds.get(id);
+        if (entity == null) {
+            entity = findById(id);
+            memberRds.save(entity);
+            log.info("从数据库查数据,id={}", id);
+        }
+        return MemberConvert.instance.entityToDto(entity);
     }
 
     @Override
     public Boolean addMember(MemberEditVO editVO) {
         Member entity = MemberConvert.instance.editVoToEntity(editVO);
-        return memberDaoImpl.save(entity);
+        boolean result = memberDaoImpl.save(entity);
+        if (result) {
+            memberRds.save(entity);
+        }
+        return result;
     }
 
     @Override
