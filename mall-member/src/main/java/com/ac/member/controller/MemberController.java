@@ -46,7 +46,6 @@ public class MemberController {
     @ApiOperation(value = "记录积分")
     @PostMapping("integral")
     public Boolean recordIntegral(@RequestBody @Valid IntegralLogEditVO logEditVO) {
-        memberIntegralComponent.recordIntegral(logEditVO);
-        return true;
+        return memberIntegralComponent.recordIntegral(logEditVO);
     }
 }
