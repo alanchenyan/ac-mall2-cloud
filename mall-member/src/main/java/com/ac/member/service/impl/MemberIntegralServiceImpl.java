@@ -17,7 +17,7 @@ public class MemberIntegralServiceImpl implements MemberIntegralService {
     private MemberIntegralDao memberIntegralDaoImpl;
 
     /**
-     * 此方法有并发问题，需要在外面加分布式锁
+     * 更新用户积分
      *
      * @param memberId
      */

@@ -19,6 +19,8 @@ public class MemberIntegralComponent {
 
     /**
      * 记录积分
+     * 并发问题：出现死锁
+     * 并发下相同的业务参数去执行，第一个事物还没提交后面的事物又来了，这种我们加分布式锁就好了
      *
      * @param logEditVO
      */
