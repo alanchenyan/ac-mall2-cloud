@@ -11,6 +11,13 @@ spring:
         max-wait: -1
         min-idle: 5
     timeout: 1000
+    redisson:
+      password: 123abc
+      cluster:
+        nodeAddresses: ["redis://127.0.0.1:6379"]
+      single:
+        address: "redis://127.0.0.1:6379"
+        database: 0
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
