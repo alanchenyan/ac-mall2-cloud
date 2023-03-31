@@ -27,8 +27,8 @@ public class RedissonConfig {
      * @throws
      */
     @Bean(destroyMethod = "shutdown")
-    public RedissonClient redissonClient() {
-        log.info("redissonRepository={}", redissonRepository);
+    public RedissonClient singleRedisson() {
+        log.info("redisSonRepository={}", redissonRepository);
         Config config = new Config();
         config.setCodec(StringCodec.INSTANCE);
         config.setTransportMode(TransportMode.NIO);
