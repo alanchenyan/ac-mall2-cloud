@@ -21,10 +21,9 @@ public class RedissonConfig {
     private RedissonRepository redissonRepository;
 
     /**
-     * 单机配置
+     * Redisson单机配置
      *
      * @return
-     * @throws
      */
     @Bean(destroyMethod = "shutdown")
     public RedissonClient singleRedisson() {
