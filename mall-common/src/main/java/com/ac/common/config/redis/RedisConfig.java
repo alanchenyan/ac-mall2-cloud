@@ -36,7 +36,7 @@ import java.time.format.DateTimeFormatter;
  * @date 2023/02/27
  */
 @Configuration
-public class RedisRepositoryConfig {
+public class RedisConfig {
 
     /**
      * 日期时间格式
