@@ -22,17 +22,19 @@ public class OrderSender {
 
     public void asyncSend(MqOrderMsg mqMsg) {
         String payload = JSONObject.toJSONString(mqMsg);
+
+        //Topic+Tag更精准接收消息
         String destination = MqTopicConstant.TOPIC_ORDER + ":" + mqMsg.getAction().getCode();
 
         rocketMQTemplate.asyncSend(destination, payload, new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {
-                log.info(OrderSender.class.getName() + "消息发送成功, result: {}", sendResult);
+                log.info(OrderSender.class.getSimpleName() + ",消息发送成功, result: {}", sendResult);
             }
 
             @Override
             public void onException(Throwable e) {
-                log.error(OrderSender.class.getName() + "消息发送失败");
+                log.error(OrderSender.class.getSimpleName() + ",消息发送失败");
                 e.printStackTrace();
             }
         });
