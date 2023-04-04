@@ -1,19 +1,12 @@
 package com.ac.member.component;
 
-import cn.hutool.core.thread.ThreadUtil;
 import com.ac.member.service.MemberIntegralLogService;
 import com.ac.member.service.MemberIntegralService;
 import com.ac.member.vo.IntegralLogEditVO;
-import com.alibaba.fastjson.JSON;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
-import java.util.concurrent.TimeUnit;
 
 @Component
 public class MemberIntegralComponent {
@@ -23,9 +16,6 @@ public class MemberIntegralComponent {
 
     @Resource
     private MemberIntegralService memberIntegralServiceImpl;
-
-    @Resource
-    private TransactionTemplate transactionTemplate;
 
     /**
      * 记录积分

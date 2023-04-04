@@ -10,6 +10,9 @@ import com.ac.order.dto.OrderDetailDTO;
 import com.ac.order.entity.Order;
 import com.ac.order.entity.OrderItem;
 import com.ac.order.enums.OrderStateEnum;
+import com.ac.order.mq.msg.OrderAction;
+import com.ac.order.mq.msg.OrderMsg;
+import com.ac.order.mq.send.OrderSender;
 import com.ac.order.qry.OrderPageQry;
 import com.ac.order.service.OrderItemService;
 import com.ac.order.service.OrderService;
@@ -37,6 +40,9 @@ public class OrderServiceImpl implements OrderService {
     @Resource
     private OrderItemService orderItemServiceImpl;
 
+    @Resource
+    private OrderSender orderSender;
+
     @Override
     public OrderDetailDTO findOrderDetail(Long id) {
         return null;
@@ -52,7 +58,9 @@ public class OrderServiceImpl implements OrderService {
     public Long createOrder(OrderAddVO addVO) {
         Order order = new Order();
         order.setOrderNo(RandomUtil.randomNumbers(8));
-        order.setOrderState(OrderStateEnum.UN_PAY);
+
+        //省略支付流程
+        order.setOrderState(OrderStateEnum.PAYED);
         order.setOrderTime(LocalDateTime.now());
 
         //通过feign取用户信息
@@ -76,6 +84,15 @@ public class OrderServiceImpl implements OrderService {
         BigDecimal payAmount = productAmount.subtract(discountAmount);
         order.setPayAmount(payAmount);
         orderDaoImpl.updateById(order);
+
+        //发送下单MQ
+        OrderMsg msg = OrderMsg.builder()
+                .action(OrderAction.PAID)
+                .orderId(order.getId())
+                .memberId(order.getMemberId())
+                .payAmount(order.getPayAmount())
+                .build();
+        orderSender.asyncSend(msg);
 
         return order.getId();
     }

@@ -40,6 +40,7 @@
         <hutool.version>5.1.4</hutool.version>
         <redis.version>3.0.2</redis.version>
         <redisson.version>3.20.1</redisson.version>
+        <rocketmq.version>2.2.3</rocketmq.version>
     </properties>
 
     <!-- 管理子类所有的jar包的版本，这样的目的是方便去统一升级和维护 -->
@@ -180,6 +181,12 @@
                 <version>${redisson.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-spring-boot-starter</artifactId>
+                <version>${rocketmq.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -300,6 +307,11 @@
         <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson-spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-spring-boot-starter</artifactId>
         </dependency>
     </dependencies>
 
