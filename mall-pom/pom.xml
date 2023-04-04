@@ -4,11 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <modules>
+        <module>../mall-core</module>
+        <module>../mall-common</module>
+        <module>../mall-feign</module>
         <module>../mall-member</module>
         <module>../mall-product</module>
-        <module>../mall-common</module>
         <module>../mall-order</module>
-        <module>../mall-feign</module>
     </modules>
 
     <groupId>com.ac</groupId>

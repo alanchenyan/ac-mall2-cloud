@@ -1,17 +1,16 @@
 package com.ac.order.service.impl;
 
 import cn.hutool.core.util.RandomUtil;
+import com.ac.common.qm.msg.MqOrderAction;
+import com.ac.common.qm.msg.MqOrderMsg;
 import com.ac.feign.member.api.MemberFeignApi;
 import com.ac.feign.member.dto.MemberDTO;
-import com.ac.feign.product.api.ProductFeignApi;
 import com.ac.order.dao.OrderDao;
 import com.ac.order.dto.OrderDTO;
 import com.ac.order.dto.OrderDetailDTO;
 import com.ac.order.entity.Order;
 import com.ac.order.entity.OrderItem;
 import com.ac.order.enums.OrderStateEnum;
-import com.ac.order.mq.msg.OrderAction;
-import com.ac.order.mq.msg.OrderMsg;
 import com.ac.order.mq.send.OrderSender;
 import com.ac.order.qry.OrderPageQry;
 import com.ac.order.service.OrderItemService;
@@ -86,13 +85,13 @@ public class OrderServiceImpl implements OrderService {
         orderDaoImpl.updateById(order);
 
         //发送下单MQ
-        OrderMsg msg = OrderMsg.builder()
-                .action(OrderAction.PAID)
+        MqOrderMsg mqMsg = MqOrderMsg.builder()
+                .action(MqOrderAction.PAID)
                 .orderId(order.getId())
                 .memberId(order.getMemberId())
                 .payAmount(order.getPayAmount())
                 .build();
-        orderSender.asyncSend(msg);
+        orderSender.asyncSend(mqMsg);
 
         return order.getId();
     }

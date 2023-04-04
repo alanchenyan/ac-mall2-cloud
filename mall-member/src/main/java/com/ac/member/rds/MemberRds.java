@@ -1,6 +1,6 @@
 package com.ac.member.rds;
 
-import com.ac.common.util.redis.RdsComponent;
+import com.ac.core.util.redis.RdsComponent;
 import com.ac.member.entity.Member;
 import org.springframework.stereotype.Component;
 

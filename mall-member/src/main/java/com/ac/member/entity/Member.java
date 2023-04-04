@@ -1,6 +1,6 @@
 package com.ac.member.entity;
 
-import com.ac.common.base.BaseEntity;
+import com.ac.core.base.BaseEntity;
 import com.ac.member.enums.MemberSexEnum;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;

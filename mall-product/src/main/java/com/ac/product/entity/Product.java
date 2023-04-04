@@ -1,6 +1,6 @@
 package com.ac.product.entity;
 
-import com.ac.common.base.BaseEntity;
+import com.ac.core.base.BaseEntity;
 import com.ac.product.enums.PublishStateEnum;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;

@@ -1,6 +1,7 @@
 package com.ac.order.mq.send;
 
-import com.ac.order.mq.msg.OrderMsg;
+import com.ac.common.qm.MqTopicConstant;
+import com.ac.common.qm.msg.MqOrderMsg;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.SendCallback;
@@ -19,11 +20,9 @@ public class OrderSender {
     @Resource
     private RocketMQTemplate rocketMQTemplate;
 
-    private static final String topic = "TOPIC_ORDER";
-
-    public void asyncSend(OrderMsg msg) {
-        String payload = JSONObject.toJSONString(msg);
-        String destination = topic + ":" + msg.getAction().getCode();
+    public void asyncSend(MqOrderMsg mqMsg) {
+        String payload = JSONObject.toJSONString(mqMsg);
+        String destination = MqTopicConstant.TOPIC_ORDER + ":" + mqMsg.getAction().getCode();
 
         rocketMQTemplate.asyncSend(destination, payload, new SendCallback() {
             @Override
