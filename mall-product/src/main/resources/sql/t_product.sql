@@ -1,6 +1,8 @@
 CREATE TABLE `t_product` (
   `id` bigint NOT NULL COMMENT 'id',
   `product_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '' COMMENT '产品名称',
+  `category` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '' COMMENT '产品分类',
+  `brand` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '' COMMENT '产品品牌',
   `stock` bigint DEFAULT '0' COMMENT '库存',
   `sell_num` bigint DEFAULT '0' COMMENT '销量',
   `cost_price` decimal(16,2) NOT NULL DEFAULT '0.00' COMMENT '进价',

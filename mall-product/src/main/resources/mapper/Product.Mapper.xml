@@ -5,6 +5,8 @@
     <sql id="ProductDTO_Column">
         t.id,
         t.product_name,
+        t.category,
+        t.brand,
         t.stock,
         t.sellNum,
         t.cost_price,
