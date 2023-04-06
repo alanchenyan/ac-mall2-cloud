@@ -15,6 +15,12 @@ public class ProductEditVO {
     @ApiModelProperty("产品名称")
     private String productName;
 
+    @ApiModelProperty("分类")
+    private String category;
+
+    @ApiModelProperty("品牌")
+    private String brand;
+
     @ApiModelProperty("库存")
     private Integer stock;
 
