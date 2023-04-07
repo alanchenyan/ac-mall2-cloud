@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 
 @Slf4j
 @Component
-public class EsTool {
+public class EsTemplateTool {
 
     @Resource
     private ElasticsearchRestTemplate elasticsearchRestTemplate;

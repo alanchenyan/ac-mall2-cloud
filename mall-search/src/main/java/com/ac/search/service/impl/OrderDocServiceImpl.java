@@ -4,7 +4,7 @@ import com.ac.search.dao.OrderDocDao;
 import com.ac.search.entity.OrderDoc;
 import com.ac.search.entity.ProductDoc;
 import com.ac.search.service.OrderDocService;
-import com.ac.search.tool.EsTool;
+import com.ac.search.tool.EsTemplateTool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +20,11 @@ public class OrderDocServiceImpl implements OrderDocService {
     private OrderDocDao orderDocDao;
 
     @Resource
-    private EsTool esTool;
+    private EsTemplateTool esTemplateTool;
 
     @Override
     public boolean deleteIndex() {
-        return esTool.deleteIndex(ProductDoc.class);
+        return esTemplateTool.deleteIndex(ProductDoc.class);
     }
 
     @Override

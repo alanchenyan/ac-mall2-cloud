@@ -16,10 +16,10 @@ import javax.annotation.Resource;
 
 @Slf4j
 @Component
-public class ProductDocCreateByClientTool {
+public class EsClientTool {
 
     @Resource
-    protected RestHighLevelClient client;
+    protected RestHighLevelClient restHighLevelClient;
 
     protected static final RequestOptions COMMON_OPTIONS;
 
@@ -30,14 +30,13 @@ public class ProductDocCreateByClientTool {
         COMMON_OPTIONS = builder.build();
     }
 
-    public boolean createIndex(String index) {
+    public boolean createIndex(String index,XContentBuilder mapping) {
         XContentBuilder setting = packageSetting();
-        XContentBuilder mapping = packageMapping();
-        return createIndexSetting(index, setting, mapping);
+        return doCreateIndex(index, setting, mapping);
     }
 
-    protected boolean createIndexSetting(String indexName, XContentBuilder settings, XContentBuilder mapping) {
-        Boolean is = false;
+    private boolean doCreateIndex(String indexName, XContentBuilder settings, XContentBuilder mapping) {
+        boolean is = false;
         try {
             CreateIndexRequest request = buildCreateIndexRequest(indexName);
             if (settings != null) {
@@ -46,9 +45,7 @@ public class ProductDocCreateByClientTool {
             if (mapping != null) {
                 request.mapping(mapping);
             }
-            //获取索引客户端
-            IndicesClient indices = client.indices();
-            //创建索引
+            IndicesClient indices = restHighLevelClient.indices();
             CreateIndexResponse response = indices.create(request, COMMON_OPTIONS);
             log.info("是否所有节点都已确认请求: " + response.isAcknowledged());
             log.info("指示是否在超时之前为索引中的每个分片启动了必要数量的分片副本: " + response.isShardsAcknowledged());
@@ -59,7 +56,7 @@ public class ProductDocCreateByClientTool {
         return is;
     }
 
-    protected CreateIndexRequest buildCreateIndexRequest(String indexName) {
+    private CreateIndexRequest buildCreateIndexRequest(String indexName) {
         //创建索引请求
         CreateIndexRequest request = new CreateIndexRequest(indexName);
         //设置索引
@@ -68,66 +65,6 @@ public class ProductDocCreateByClientTool {
         builder.put("index.number_of_replicas", 0);
         request.settings(builder);
         return request;
-    }
-
-    private XContentBuilder packageMapping() {
-        XContentBuilder mapping = null;
-        try {
-            //创建索引Mapping
-            mapping = XContentFactory.jsonBuilder()
-                    .startObject()
-                        .field("dynamic", true)
-                        .startObject("properties")
-                            //id
-                            .startObject("id")
-                                .field("type", "long")
-                                .field("index", false)
-                            .endObject()
-
-                            //分类(关键字)
-                            .startObject("category")
-                                .field("type", "keyword")
-                            .endObject()
-
-                            //品牌(关键字)
-                            .startObject("brand")
-                                .field("type", "keyword")
-                            .endObject()
-
-                            //产品名称(模糊搜索)
-                            .startObject("productName")
-                                .field("type", "text")
-                                .field("analyzer", "ngram")
-                                .field("search_analyzer", "ikSmartAnalyzer")
-                                .startObject("fields")
-                                    .startObject("pinyin")
-                                        .field("type", "text")
-                                        .field("index", true)
-                                        .field("analyzer", "pinyinFullIndexAnalyzer")
-                                    .endObject()
-                                .endObject()
-                            .endObject()
-
-                            //产品详情描述(分词搜索)
-                            .startObject("remark")
-                                .field("type", "text")
-                                .field("analyzer", "ikMaxAnalyzer")
-                                .field("search_analyzer", "ikSmartAnalyzer")
-                                .startObject("fields")
-                                    .startObject("pinyin")
-                                        .field("type", "text")
-                                        .field("index", true)
-                                        .field("analyzer", "pinyinFullIndexAnalyzer")
-                                    .endObject()
-                                .endObject()
-                            .endObject()
-
-                        .endObject()
-                    .endObject();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-        return mapping;
     }
 
     /**
@@ -154,7 +91,7 @@ public class ProductDocCreateByClientTool {
      *
      * @return
      */
-    protected XContentBuilder packageSetting() {
+    private XContentBuilder packageSetting() {
         XContentBuilder setting = null;
         try {
             setting = XContentFactory.jsonBuilder()

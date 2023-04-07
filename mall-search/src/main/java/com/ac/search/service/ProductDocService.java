@@ -7,6 +7,12 @@ import java.util.List;
 public interface ProductDocService {
 
     /**
+     * 初始化index
+     * @return
+     */
+    boolean initIndex();
+
+    /**
      * 删除index
      */
     boolean deleteIndex();
