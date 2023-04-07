@@ -1,10 +1,10 @@
 package com.ac.search.service;
 
-import com.ac.search.entity.ProductDoc;
+import com.ac.search.entity.OrderDoc;
 
 import java.util.List;
 
-public interface ProductService {
+public interface OrderDocService {
 
     /**
      * 删除index
@@ -16,12 +16,12 @@ public interface ProductService {
      *
      * @param doc
      */
-    void save(ProductDoc doc);
+    void save(OrderDoc doc);
 
     /**
      * 列表
      *
      * @return
      */
-    List<ProductDoc> listAll();
+    List<OrderDoc> listAll();
 }

@@ -1,8 +1,9 @@
 package com.ac.search.service.impl;
 
-import com.ac.search.dao.ProductDocDao;
+import com.ac.search.dao.OrderDocDao;
+import com.ac.search.entity.OrderDoc;
 import com.ac.search.entity.ProductDoc;
-import com.ac.search.service.ProductService;
+import com.ac.search.service.OrderDocService;
 import com.ac.search.tool.EsTool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,29 +14,28 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class ProductServiceImpl implements ProductService {
+public class OrderDocServiceImpl implements OrderDocService {
 
     @Resource
-    private ProductDocDao productDocDao;
+    private OrderDocDao orderDocDao;
 
     @Resource
     private EsTool esTool;
 
     @Override
     public boolean deleteIndex() {
-        //return esTool.deleteIndex("product_doc");
         return esTool.deleteIndex(ProductDoc.class);
     }
 
     @Override
-    public void save(ProductDoc doc) {
-        productDocDao.save(doc);
+    public void save(OrderDoc doc) {
+        orderDocDao.save(doc);
     }
 
     @Override
-    public List<ProductDoc> listAll() {
-        Iterable<ProductDoc> items = productDocDao.findAll();
-        List<ProductDoc> list = new ArrayList<>();
+    public List<OrderDoc> listAll() {
+        Iterable<OrderDoc> items = orderDocDao.findAll();
+        List<OrderDoc> list = new ArrayList<>();
         items.forEach(item -> list.add(item));
         return list;
     }
