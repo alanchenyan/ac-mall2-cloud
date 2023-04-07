@@ -3,7 +3,7 @@ package com.ac.search.service.impl;
 import com.ac.search.dao.ProductDocDao;
 import com.ac.search.entity.ProductDoc;
 import com.ac.search.service.ProductService;
-import com.ac.search.service2.EsComponent;
+import com.ac.search.tool.EsTool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +19,12 @@ public class ProductServiceImpl implements ProductService {
     private ProductDocDao productDocDao;
 
     @Resource
-    private EsComponent esComponent;
+    private EsTool esTool;
 
     @Override
     public boolean deleteIndex() {
-        return esComponent.deleteIndex(ProductDoc.class);
+        //return esTool.deleteIndex("product_doc");
+        return esTool.deleteIndex(ProductDoc.class);
     }
 
     @Override

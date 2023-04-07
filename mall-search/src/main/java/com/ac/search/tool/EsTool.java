@@ -1,4 +1,4 @@
-package com.ac.search.service2;
+package com.ac.search.tool;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 
 @Slf4j
 @Component
-public class EsComponent {
+public class EsTool {
 
     @Resource
     private ElasticsearchRestTemplate elasticsearchRestTemplate;
