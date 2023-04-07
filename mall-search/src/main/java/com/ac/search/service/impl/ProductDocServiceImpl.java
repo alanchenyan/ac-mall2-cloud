@@ -1,9 +1,11 @@
 package com.ac.search.service.impl;
 
+import com.ac.search.constant.IndexNameConstants;
 import com.ac.search.dao.ProductDocDao;
 import com.ac.search.entity.ProductDoc;
 import com.ac.search.service.ProductDocService;
 import com.ac.search.tool.EsTool;
+import com.ac.search.tool.ProductDocCreateByClientTool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +23,17 @@ public class ProductDocServiceImpl implements ProductDocService {
     @Resource
     private EsTool esTool;
 
+    @Resource
+    private ProductDocCreateByClientTool productDocCreateByClientTool;
+
     @Override
     public boolean deleteIndex() {
-        //return esTool.deleteIndex("product_doc");
         return esTool.deleteIndex(ProductDoc.class);
+    }
+
+    @Override
+    public boolean createIndex() {
+        return productDocCreateByClientTool.createIndex(IndexNameConstants.PRODUCT_DOC);
     }
 
     @Override

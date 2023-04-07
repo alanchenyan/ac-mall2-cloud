@@ -18,9 +18,15 @@ public class ProductDocController {
     private ProductDocService productDocServiceImpl;
 
     @ApiOperation(value = "删除index")
-    @DeleteMapping("index")
+    @DeleteMapping("deleteIndex")
     public boolean deleteIndex() {
         return productDocServiceImpl.deleteIndex();
+    }
+
+    @ApiOperation(value = "创建index")
+    @PostMapping("createIndex")
+    public boolean createIndex() {
+        return productDocServiceImpl.createIndex();
     }
 
     @ApiOperation(value = "列表")

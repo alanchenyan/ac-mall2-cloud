@@ -12,6 +12,13 @@ public interface ProductDocService {
     boolean deleteIndex();
 
     /**
+     * 创建index
+     *
+     * @return
+     */
+    boolean createIndex();
+
+    /**
      * 保存
      *
      * @param doc

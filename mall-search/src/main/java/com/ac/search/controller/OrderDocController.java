@@ -18,7 +18,7 @@ public class OrderDocController {
     private OrderDocService orderDocServiceImpl;
 
     @ApiOperation(value = "删除index")
-    @DeleteMapping("index")
+    @DeleteMapping("deleteIndex")
     public boolean deleteIndex() {
         return orderDocServiceImpl.deleteIndex();
     }

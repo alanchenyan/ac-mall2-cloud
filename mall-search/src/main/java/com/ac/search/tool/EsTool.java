@@ -14,6 +14,10 @@ public class EsTool {
     @Resource
     private ElasticsearchRestTemplate elasticsearchRestTemplate;
 
+    public boolean createIndex(String indexName, Object settings) {
+        return elasticsearchRestTemplate.indexOps(IndexCoordinates.of(indexName)).create();
+    }
+
     public boolean deleteIndex(Class<?> clazz) {
         return elasticsearchRestTemplate.indexOps(clazz).delete();
     }
