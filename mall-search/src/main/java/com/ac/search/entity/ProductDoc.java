@@ -2,7 +2,6 @@ package com.ac.search.entity;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.data.elasticsearch.annotations.Document;
 
 /**
  * @author Alan Chen
@@ -10,7 +9,6 @@ import org.springframework.data.elasticsearch.annotations.Document;
  * @date 2023/02/22
  */
 @Data
-@Document(indexName = "product_doc", shards = 1, replicas = 0)
 public class ProductDoc {
 
     @ApiModelProperty(value = "ID")
