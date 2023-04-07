@@ -10,6 +10,7 @@
         <module>../mall-member</module>
         <module>../mall-product</module>
         <module>../mall-order</module>
+        <module>../mall-search</module>
     </modules>
 
     <groupId>com.ac</groupId>
