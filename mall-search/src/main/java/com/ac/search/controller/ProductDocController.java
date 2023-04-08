@@ -47,5 +47,49 @@ public class ProductDocController {
     @GetMapping("listByMatchHighlight")
     public List<ProductHighlight> listByMatchHighlight(@RequestParam String keyword) {
         return productDocServiceImpl.listByMatchHighlight(keyword);
+
+        /**
+         * 查询结果：
+         * [
+         *        {
+         * 		"highlightFields": {
+         * 			"remark": {
+         * 				"name": "remark",
+         * 				"fragment": true,
+         * 				"text": "可口可乐 迷你小瓶<span style='color:red'>雪碧</span>300ml*6/12/24瓶整箱装柠檬味汽水碳酸饮料批发 <span style='color:red'>雪碧</span>【300mlX6瓶】】 口味"
+         *            },
+         * 			"productName": {
+         * 				"name": "productName",
+         * 				"fragment": true,
+         * 				"text": "<span style='color:red'>雪碧</span>"
+         *            }
+         *        },
+         * 		"id": "1001",
+         * 		"productName": "雪碧",
+         * 		"category": "饮料",
+         * 		"brand": "可口可乐",
+         * 		"remark": "可口可乐 迷你小瓶雪碧300ml*6/12/24瓶整箱装柠檬味汽水碳酸饮料批发 雪碧【300mlX6瓶】】 口味"
+         *    },
+         *    {
+         * 		"highlightFields": {
+         * 			"remark": {
+         * 				"name": "remark",
+         * 				"fragment": true,
+         * 				"text": "可口可乐 迷你小瓶<span style='color:red'>雪碧</span>300ml*6/12/24瓶整箱装柠檬味汽水碳酸饮料批发 <span style='color:red'>雪碧</span>【300mlX6瓶】】 口味"
+         *            },
+         * 			"productName": {
+         * 				"name": "productName",
+         * 				"fragment": true,
+         * 				"text": "迷你<span style='color:red'>雪碧</span>"
+         *            }
+         *        },
+         * 		"id": "1002",
+         * 		"productName": "迷你雪碧",
+         * 		"category": "饮料",
+         * 		"brand": "可口可乐",
+         * 		"remark": "可口可乐 迷你小瓶雪碧300ml*6/12/24瓶整箱装柠檬味汽水碳酸饮料批发 雪碧【300mlX6瓶】】 口味"
+         *    }
+         * ]
+         */
     }
 }

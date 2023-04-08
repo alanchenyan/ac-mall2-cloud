@@ -5,11 +5,13 @@ import com.ac.search.highlight.BaseHighlight;
 import com.ac.search.highlight.HighlightFieldInfo;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
+import com.sun.deploy.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.TermQueryBuilder;
@@ -21,9 +23,11 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -148,10 +152,18 @@ public class EsClientSearchTool {
         Map<String, HighlightFieldInfo> highlightFields = new HashMap<>(fieldsMap.size());
         for (Map.Entry<String, HighlightField> entry : fieldsMap.entrySet()) {
             HighlightField filed = entry.getValue();
+
+            String text = "";
+            Text[] textArray = filed.getFragments();
+            if (textArray != null && textArray.length > 0) {
+                List<String> textList = Arrays.asList(textArray).stream().map(Text::toString).collect(Collectors.toList());
+                text = StringUtils.join(textList, ",");
+            }
+
             HighlightFieldInfo info = HighlightFieldInfo.builder()
                     .name(filed.getName())
                     .fragment(filed.isFragment())
-                    .text(filed.toString())
+                    .text(text)
                     .build();
             highlightFields.put(entry.getKey(), info);
         }
