@@ -6,7 +6,7 @@ import com.ac.search.entity.ProductDoc;
 import com.ac.search.mapping.ProductDocMapping;
 import com.ac.search.service.ProductDocService;
 import com.ac.search.tool.EsClientSearchTool;
-import com.ac.search.tool.EsClientTool;
+import com.ac.search.tool.EsClientDdlTool;
 import com.ac.search.tool.EsTemplateTool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class ProductDocServiceImpl implements ProductDocService {
     private EsTemplateTool esTemplateTool;
 
     @Resource
-    private EsClientTool esClientTool;
+    private EsClientDdlTool esClientDdlTool;
 
     @Resource
     private EsClientSearchTool esClientSearchTool;
@@ -50,12 +50,12 @@ public class ProductDocServiceImpl implements ProductDocService {
 
     @Override
     public boolean createIndex() {
-        return esClientTool.createIndex(IndexNameConstants.PRODUCT_DOC, productDocMapping.packageMapping());
+        return esClientDdlTool.createIndex(IndexNameConstants.PRODUCT_DOC, productDocMapping.packageMapping());
     }
 
     @Override
     public void save(ProductDoc doc) {
-        esClientTool.insertDoc(IndexNameConstants.PRODUCT_DOC, doc.getId(), doc);
+        esClientDdlTool.insertDoc(IndexNameConstants.PRODUCT_DOC, doc.getId(), doc);
     }
 
     @Override

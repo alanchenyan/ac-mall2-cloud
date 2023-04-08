@@ -19,9 +19,14 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.io.IOException;
 
+/**
+ * @author Alan Chen
+ * @description RestHighLevelClient DDL
+ * @date 2023/4/8
+ */
 @Slf4j
 @Component
-public class EsClientTool {
+public class EsClientDdlTool {
 
     @Resource
     protected RestHighLevelClient restHighLevelClient;

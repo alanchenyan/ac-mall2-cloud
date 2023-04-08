@@ -7,6 +7,11 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
+/**
+ * @author Alan Chen
+ * @description ElasticsearchRestTemplate 工具类
+ * @date 2023/4/8
+ */
 @Slf4j
 @Component
 public class EsTemplateTool {

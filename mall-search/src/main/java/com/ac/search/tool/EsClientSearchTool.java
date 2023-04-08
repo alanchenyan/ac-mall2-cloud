@@ -29,6 +29,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * @author Alan Chen
+ * @description RestHighLevelClient 搜索
+ * @date 2023/4/8
+ */
 @Slf4j
 @Component
 public class EsClientSearchTool {
