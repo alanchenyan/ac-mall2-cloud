@@ -17,10 +17,8 @@ public class ProductDocMapping {
                     .startObject()
                         .field("dynamic", true)
                         .startObject("properties")
-                            //id
                             .startObject("id")
-                                .field("type", "long")
-                                .field("index", false)
+                                .field("type", "keyword")
                             .endObject()
 
                             //分类(关键字)

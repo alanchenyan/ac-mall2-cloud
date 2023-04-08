@@ -1,17 +1,17 @@
 package com.ac.search.service.impl;
 
 import com.ac.search.constant.IndexNameConstants;
-import com.ac.search.dao.ProductDocDao;
+import com.ac.search.dto.ProductHighlight;
 import com.ac.search.entity.ProductDoc;
 import com.ac.search.mapping.ProductDocMapping;
 import com.ac.search.service.ProductDocService;
-import com.ac.search.tool.EsTemplateTool;
+import com.ac.search.tool.EsClientSearchTool;
 import com.ac.search.tool.EsClientTool;
+import com.ac.search.tool.EsTemplateTool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -19,13 +19,13 @@ import java.util.List;
 public class ProductDocServiceImpl implements ProductDocService {
 
     @Resource
-    private ProductDocDao productDocDao;
-
-    @Resource
     private EsTemplateTool esTemplateTool;
 
     @Resource
     private EsClientTool esClientTool;
+
+    @Resource
+    private EsClientSearchTool esClientSearchTool;
 
     @Resource
     private ProductDocMapping productDocMapping;
@@ -59,10 +59,17 @@ public class ProductDocServiceImpl implements ProductDocService {
     }
 
     @Override
-    public List<ProductDoc> listAll() {
-        Iterable<ProductDoc> items = productDocDao.findAll();
-        List<ProductDoc> list = new ArrayList<>();
-        items.forEach(item -> list.add(item));
-        return list;
+    public List<ProductDoc> listByTerm(String keyword) {
+        return esClientSearchTool.termSearch(ProductDoc.class, IndexNameConstants.PRODUCT_DOC, "category", keyword);
+    }
+
+    @Override
+    public List<ProductDoc> listByMatch(String keyword) {
+        return esClientSearchTool.matchSearch(ProductDoc.class, IndexNameConstants.PRODUCT_DOC, "remark", keyword);
+    }
+
+    @Override
+    public List<ProductHighlight> listByMatchHighlight(String keyword) {
+        return esClientSearchTool.matchSearchHighlight(ProductHighlight.class, IndexNameConstants.PRODUCT_DOC, "remark", keyword);
     }
 }

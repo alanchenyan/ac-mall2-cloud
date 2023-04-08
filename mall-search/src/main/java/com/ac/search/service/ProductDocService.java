@@ -1,5 +1,6 @@
 package com.ac.search.service;
 
+import com.ac.search.dto.ProductHighlight;
 import com.ac.search.entity.ProductDoc;
 
 import java.util.List;
@@ -8,6 +9,7 @@ public interface ProductDocService {
 
     /**
      * 初始化index
+     *
      * @return
      */
     boolean initIndex();
@@ -32,9 +34,26 @@ public interface ProductDocService {
     void save(ProductDoc doc);
 
     /**
-     * 列表
+     * 精确查询
      *
+     * @param keyword
      * @return
      */
-    List<ProductDoc> listAll();
+    List<ProductDoc> listByTerm(String keyword);
+
+    /**
+     * 分词查询
+     *
+     * @param keyword
+     * @return
+     */
+    List<ProductDoc> listByMatch(String keyword);
+
+    /**
+     * 分词查询-高亮显示
+     *
+     * @param keyword
+     * @return
+     */
+    List<ProductHighlight> listByMatchHighlight(String keyword);
 }
