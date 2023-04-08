@@ -1,6 +1,9 @@
 package com.ac.search.tool;
 
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.HttpAsyncResponseConsumerFactory;
 import org.elasticsearch.client.IndicesClient;
 import org.elasticsearch.client.RequestOptions;
@@ -10,9 +13,11 @@ import org.elasticsearch.client.indices.CreateIndexResponse;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 
 @Slf4j
 @Component
@@ -30,9 +35,33 @@ public class EsClientTool {
         COMMON_OPTIONS = builder.build();
     }
 
+    /**
+     * 创建index
+     * @param index
+     * @param mapping
+     * @return
+     */
     public boolean createIndex(String index,XContentBuilder mapping) {
         XContentBuilder setting = packageSetting();
         return doCreateIndex(index, setting, mapping);
+    }
+
+    /**
+     * 添加文档
+     *
+     * @param indexName 索引名
+     * @param docId     文档ID
+     * @param docObj    文档对象
+     * @return
+     */
+    public IndexResponse insertDoc(String indexName, String docId, Object docObj) {
+        IndexRequest indexRequest = buildInsertDocRequest(indexName, docId, docObj);
+        try {
+            return restHighLevelClient.index(indexRequest, COMMON_OPTIONS);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("插入文档失败");
+        }
     }
 
     private boolean doCreateIndex(String indexName, XContentBuilder settings, XContentBuilder mapping) {
@@ -56,6 +85,11 @@ public class EsClientTool {
         return is;
     }
 
+    /**
+     * 构建CreateIndexRequest
+     * @param indexName
+     * @return
+     */
     private CreateIndexRequest buildCreateIndexRequest(String indexName) {
         //创建索引请求
         CreateIndexRequest request = new CreateIndexRequest(indexName);
@@ -65,6 +99,22 @@ public class EsClientTool {
         builder.put("index.number_of_replicas", 0);
         request.settings(builder);
         return request;
+    }
+
+    /**
+     * 构建InsertDocRequest
+     *
+     * @param indexName 索引名
+     * @param docId     文档ID
+     * @param docObj    文档对象
+     * @return
+     */
+    protected IndexRequest buildInsertDocRequest(String indexName, String docId, Object docObj) {
+        String jsonStr = JSON.toJSONString(docObj);
+        IndexRequest indexRequest = new IndexRequest(indexName);
+        indexRequest.id(docId);
+        indexRequest.source(jsonStr, XContentType.JSON);
+        return indexRequest;
     }
 
     /**

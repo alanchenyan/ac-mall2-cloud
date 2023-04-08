@@ -15,7 +15,6 @@ public class EsRestClientConfig extends AbstractElasticsearchConfiguration {
     @Override
     @Bean
     public RestHighLevelClient elasticsearchClient() {
-
         final ClientConfiguration clientConfiguration = ClientConfiguration.builder()
                 .connectedTo("127.0.0.1:9200")
                 .build();

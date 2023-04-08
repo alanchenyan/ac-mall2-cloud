@@ -55,7 +55,7 @@ public class ProductDocServiceImpl implements ProductDocService {
 
     @Override
     public void save(ProductDoc doc) {
-        productDocDao.save(doc);
+        esClientTool.insertDoc(IndexNameConstants.PRODUCT_DOC, doc.getId(), doc);
     }
 
     @Override
