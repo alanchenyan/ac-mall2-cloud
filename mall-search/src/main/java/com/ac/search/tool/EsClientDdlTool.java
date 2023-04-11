@@ -63,7 +63,7 @@ public class EsClientDdlTool {
             log.info("是否所有节点都已确认请求: " + response.isAcknowledged());
             return true;
         } catch (IOException e) {
-            log.info("删除index失败,indexName={}",indexName);
+            log.error("删除index失败,indexName={}",indexName);
             e.printStackTrace();
         }
         return false;
@@ -82,7 +82,7 @@ public class EsClientDdlTool {
         try {
             return restHighLevelClient.index(indexRequest, EsClientOptions.OPTIONS);
         } catch (IOException e) {
-            log.info("插入文档失败,indexName={},docId={},docObj={}",indexName,docId,docObj);
+            log.error("插入文档失败,indexName={},docId={},docObj={}",indexName,docId,docObj);
             e.printStackTrace();
             throw new RuntimeException("插入文档失败");
         }
@@ -101,7 +101,7 @@ public class EsClientDdlTool {
             request.docAsUpsert(true);
             return restHighLevelClient.update(request, EsClientOptions.OPTIONS);
         } catch (IOException e) {
-            log.info("修改文档失败,indexName={},docId={},docObj={}",indexName,docId,docObj);
+            log.error("修改文档失败,indexName={},docId={},docObj={}",indexName,docId,docObj);
             e.printStackTrace();
             throw new RuntimeException("修改文档失败");
         }
@@ -118,7 +118,7 @@ public class EsClientDdlTool {
         try {
             return restHighLevelClient.delete(deleteRequest, EsClientOptions.OPTIONS);
         } catch (IOException e) {
-            log.info("删除文档失败,indexName={},docId={}",indexName,docId);
+            log.error("删除文档失败,indexName={},docId={}",indexName,docId);
             e.printStackTrace();
             throw new RuntimeException("删除文档失败");
         }
@@ -140,7 +140,7 @@ public class EsClientDdlTool {
             log.info("指示是否在超时之前为索引中的每个分片启动了必要数量的分片副本: " + response.isShardsAcknowledged());
             is = response.isAcknowledged();
         } catch (Exception e) {
-            log.info("创建index失败,indexName={}",indexName);
+            log.error("创建index失败,indexName={}",indexName);
             e.printStackTrace();
         }
         return is;
@@ -167,7 +167,7 @@ public class EsClientDdlTool {
      * @param indexName
      * @return
      */
-    protected DeleteIndexRequest buildDeleteIndexRequest(String indexName) {
+    private DeleteIndexRequest buildDeleteIndexRequest(String indexName) {
         return new DeleteIndexRequest(indexName);
     }
 
@@ -179,7 +179,7 @@ public class EsClientDdlTool {
      * @param docObj    文档对象
      * @return
      */
-    protected IndexRequest buildInsertDocRequest(String indexName, String docId, Object docObj) {
+    private IndexRequest buildInsertDocRequest(String indexName, String docId, Object docObj) {
         String jsonStr = JSON.toJSONString(docObj);
         IndexRequest indexRequest = new IndexRequest(indexName);
         indexRequest.id(docId);
@@ -194,7 +194,7 @@ public class EsClientDdlTool {
      * @param docObj
      * @return
      */
-    protected UpdateRequest buildUpdateDocRequest(String indexName, String docId, Object docObj) {
+    private UpdateRequest buildUpdateDocRequest(String indexName, String docId, Object docObj) {
         String jsonStr = JSON.toJSONString(docObj);
         UpdateRequest request = new UpdateRequest(indexName, docId);
         request.doc(jsonStr, XContentType.JSON);
@@ -331,7 +331,8 @@ public class EsClientDdlTool {
                         .endObject()
                     .endObject();
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("setting构建失败");
+            e.printStackTrace();
         }
         return setting;
     }
