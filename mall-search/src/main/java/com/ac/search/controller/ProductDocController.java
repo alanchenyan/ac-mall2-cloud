@@ -26,15 +26,15 @@ public class ProductDocController {
 
     @ApiOperation(value = "新增文档")
     @PostMapping
-    public boolean add(@RequestBody ProductDoc doc) {
-        productDocServiceImpl.save(doc);
+    public boolean saveDoc(@RequestBody ProductDoc doc) {
+        productDocServiceImpl.saveDoc(doc);
         return true;
     }
 
     @ApiOperation(value = "修改文档")
     @PutMapping
-    public boolean update(@RequestBody ProductDoc doc) {
-        productDocServiceImpl.update(doc);
+    public boolean updateDoc(@RequestBody ProductDoc doc) {
+        productDocServiceImpl.updateDoc(doc);
         return true;
     }
 

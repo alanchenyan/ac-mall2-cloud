@@ -43,12 +43,12 @@ public class ProductDocServiceImpl implements ProductDocService {
     }
 
     @Override
-    public void save(ProductDoc doc) {
+    public void saveDoc(ProductDoc doc) {
         esClientDdlTool.insertDoc(IndexNameConstants.PRODUCT_DOC, doc.getId(), doc);
     }
 
     @Override
-    public void update(ProductDoc doc) {
+    public void updateDoc(ProductDoc doc) {
         esClientDdlTool.updateDoc(IndexNameConstants.PRODUCT_DOC,doc.getId(),doc);
     }
 

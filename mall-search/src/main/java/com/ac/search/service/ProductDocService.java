@@ -31,14 +31,14 @@ public interface ProductDocService {
      *
      * @param doc
      */
-    void save(ProductDoc doc);
+    void saveDoc(ProductDoc doc);
 
     /**
      * 修改文档
      *
      * @param doc
      */
-    void update(ProductDoc doc);
+    void updateDoc(ProductDoc doc);
 
     /**
      * 精确查询
