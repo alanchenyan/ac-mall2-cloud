@@ -38,6 +38,13 @@ public class ProductDocController {
         return true;
     }
 
+    @ApiOperation(value = "删除文档")
+    @DeleteMapping
+    public boolean deleteDoc(@RequestParam String docId) {
+        productDocServiceImpl.deleteDoc(docId);
+        return true;
+    }
+
     @ApiOperation(value = "精确查询")
     @GetMapping("listByTerm")
     public List<ProductDoc> listByTerm(@RequestParam String keyword) {

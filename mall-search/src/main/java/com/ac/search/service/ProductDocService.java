@@ -41,6 +41,13 @@ public interface ProductDocService {
     void updateDoc(ProductDoc doc);
 
     /**
+     * 删除文档
+     *
+     * @param docId
+     */
+    void deleteDoc(String docId);
+
+    /**
      * 精确查询
      *
      * @param keyword

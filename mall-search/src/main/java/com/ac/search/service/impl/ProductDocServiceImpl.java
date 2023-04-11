@@ -49,7 +49,12 @@ public class ProductDocServiceImpl implements ProductDocService {
 
     @Override
     public void updateDoc(ProductDoc doc) {
-        esClientDdlTool.updateDoc(IndexNameConstants.PRODUCT_DOC,doc.getId(),doc);
+        esClientDdlTool.updateDoc(IndexNameConstants.PRODUCT_DOC, doc.getId(), doc);
+    }
+
+    @Override
+    public void deleteDoc(String docId) {
+        esClientDdlTool.deleteDoc(IndexNameConstants.PRODUCT_DOC, docId);
     }
 
     @Override

@@ -3,6 +3,8 @@ package com.ac.search.tool;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
+import org.elasticsearch.action.delete.DeleteRequest;
+import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.support.master.AcknowledgedResponse;
@@ -113,6 +115,23 @@ public class EsClientDdlTool {
             log.info("修改文档失败,indexName={},docId={},docObj={}",indexName,docId,docObj);
             e.printStackTrace();
             throw new RuntimeException("修改文档失败");
+        }
+    }
+
+    /**
+     * 删除文档
+     * @param indexName
+     * @param docId
+     * @return
+     */
+    public DeleteResponse deleteDoc(String indexName, String docId) {
+        DeleteRequest deleteRequest = new DeleteRequest(indexName, docId);
+        try {
+            return restHighLevelClient.delete(deleteRequest, COMMON_OPTIONS);
+        } catch (IOException e) {
+            log.info("删除文档失败,indexName={},docId={}",indexName,docId);
+            e.printStackTrace();
+            throw new RuntimeException("删除文档失败");
         }
     }
 
