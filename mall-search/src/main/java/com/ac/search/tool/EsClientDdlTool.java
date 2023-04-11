@@ -62,7 +62,7 @@ public class EsClientDdlTool {
             AcknowledgedResponse response = indices.delete(request, EsClientOptions.OPTIONS);
             log.info("是否所有节点都已确认请求: " + response.isAcknowledged());
             return true;
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("删除index失败,indexName={}",indexName);
             e.printStackTrace();
         }
@@ -81,7 +81,7 @@ public class EsClientDdlTool {
         IndexRequest indexRequest = buildInsertDocRequest(indexName, docId, docObj);
         try {
             return restHighLevelClient.index(indexRequest, EsClientOptions.OPTIONS);
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("插入文档失败,indexName={},docId={},docObj={}",indexName,docId,docObj);
             e.printStackTrace();
             throw new RuntimeException("插入文档失败");
@@ -100,7 +100,7 @@ public class EsClientDdlTool {
         try {
             request.docAsUpsert(true);
             return restHighLevelClient.update(request, EsClientOptions.OPTIONS);
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("修改文档失败,indexName={},docId={},docObj={}",indexName,docId,docObj);
             e.printStackTrace();
             throw new RuntimeException("修改文档失败");
@@ -117,7 +117,7 @@ public class EsClientDdlTool {
         DeleteRequest deleteRequest = new DeleteRequest(indexName, docId);
         try {
             return restHighLevelClient.delete(deleteRequest, EsClientOptions.OPTIONS);
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("删除文档失败,indexName={},docId={}",indexName,docId);
             e.printStackTrace();
             throw new RuntimeException("删除文档失败");
