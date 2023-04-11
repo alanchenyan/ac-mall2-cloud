@@ -21,7 +21,6 @@ import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 
 /**
  * @author Alan Chen
@@ -56,7 +55,7 @@ public class EsClientDdlTool {
     public boolean deleteIndex(String indexName) {
         try {
             //创建索引请求
-            DeleteIndexRequest request = buildDeleteIndexRequest(indexName);
+            DeleteIndexRequest request = new DeleteIndexRequest(indexName);
             //获取索引客户端
             IndicesClient indices = restHighLevelClient.indices();
             AcknowledgedResponse response = indices.delete(request, EsClientOptions.OPTIONS);
@@ -160,15 +159,6 @@ public class EsClientDdlTool {
         builder.put("index.number_of_replicas", 0);
         request.settings(builder);
         return request;
-    }
-
-    /**
-     * 构建DeleteIndexRequest
-     * @param indexName
-     * @return
-     */
-    private DeleteIndexRequest buildDeleteIndexRequest(String indexName) {
-        return new DeleteIndexRequest(indexName);
     }
 
     /**
