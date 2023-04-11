@@ -33,7 +33,7 @@ import java.io.IOException;
 public class EsClientDdlTool {
 
     @Resource
-    protected RestHighLevelClient restHighLevelClient;
+    private RestHighLevelClient restHighLevelClient;
 
     /**
      * 创建index

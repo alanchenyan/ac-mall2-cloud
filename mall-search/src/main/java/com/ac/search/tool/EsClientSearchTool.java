@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 public class EsClientSearchTool {
 
     @Resource
-    protected RestHighLevelClient restHighLevelClient;
+    private RestHighLevelClient restHighLevelClient;
 
     /**
      * 精确匹配查询
