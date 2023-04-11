@@ -1,5 +1,6 @@
 package com.ac.search.qry;
 
+import com.ac.common.enums.OrderTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -25,16 +26,13 @@ public class PageSearchQry {
     private String indexName;
 
     @ApiModelProperty(value = "页码")
-    private Integer pageNo;
+    private Integer current;
 
     @ApiModelProperty(value = "每页数量")
-    private Integer pageSize;
+    private Integer size;
 
     @ApiModelProperty(value = "搜索关键字")
     private String keyword;
-
-    @ApiModelProperty(value = "精确匹配字段")
-    private String termField;
 
     @ApiModelProperty(value = "检索字段-分词(Operator.OR)")
     private List<String> fieldList;
@@ -42,9 +40,15 @@ public class PageSearchQry {
     @ApiModelProperty(value = "检索字段-不分词(Operator.AND)")
     private List<String> fieldUnSplitList;
 
+    @ApiModelProperty(value = "精确匹配字段")
+    private String termField;
+
+    @ApiModelProperty(value = "精确匹配-值")
+    private String termValue;
+
     @ApiModelProperty(value = "排序字段")
     private String orderField;
 
-    @ApiModelProperty(value = "排序方式 ASC|DESC")
-    private String orderType;
+    @ApiModelProperty(value = "排序方式")
+    private OrderTypeEnum orderType;
 }

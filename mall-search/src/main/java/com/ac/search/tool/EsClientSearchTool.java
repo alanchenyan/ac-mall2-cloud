@@ -3,10 +3,13 @@ package com.ac.search.tool;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
+import com.ac.common.enums.OrderTypeEnum;
+import com.ac.common.page.EsPage;
 import com.ac.search.factory.ElasticsearchFactory;
 import com.ac.search.highlight.BaseHighlight;
 import com.ac.search.highlight.HighlightFieldInfo;
 import com.ac.search.qry.ListSearchQry;
+import com.ac.search.qry.PageSearchQry;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.sun.deploy.util.StringUtils;
@@ -15,14 +18,13 @@ import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.text.Text;
-import org.elasticsearch.index.query.MatchQueryBuilder;
-import org.elasticsearch.index.query.MultiMatchQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.TermQueryBuilder;
+import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -65,7 +67,7 @@ public class EsClientSearchTool {
         request.source(searchSourceBuilder);
         log.info("DSL={}", searchSourceBuilder.toString());
 
-        return doSearch(clazz, request);
+        return doSearchList(clazz, request);
     }
 
     /**
@@ -85,7 +87,7 @@ public class EsClientSearchTool {
         request.source(searchSourceBuilder);
         log.info("DSL:" + searchSourceBuilder.toString());
 
-        return doSearch(clazz, request);
+        return doSearchList(clazz, request);
     }
 
     /**
@@ -108,7 +110,7 @@ public class EsClientSearchTool {
         request.source(searchSourceBuilder);
         log.info("DSL:" + searchSourceBuilder.toString());
 
-        return doSearch(clazz, request);
+        return doSearchList(clazz, request);
     }
 
     /**
@@ -130,25 +132,128 @@ public class EsClientSearchTool {
         request.source(searchSourceBuilder);
         log.info("DSL:" + searchSourceBuilder.toString());
 
-        return doSearch(clazz, request);
+        return doSearchList(clazz, request);
     }
 
     /**
-     * 执行搜索
+     * 分页-搜索
+     *
+     * @param clazz
+     * @param qry
+     * @param <T>
+     * @return
+     */
+    public <T> EsPage<T> pageSearch(Class<T> clazz, PageSearchQry qry) {
+        Integer pageNo = qry.getCurrent();
+        Integer pageSize = qry.getSize();
+        String keyword = qry.getKeyword();
+        List<String> fieldList = qry.getFieldList();
+        List<String> fieldUnSplitList = qry.getFieldUnSplitList();
+        String orderField = qry.getOrderField();
+
+        SearchRequest request = new SearchRequest(qry.getIndexName());
+        SearchSourceBuilder builder = new SearchSourceBuilder();
+
+        //分页参数
+        Integer from = (pageNo - 1) * pageSize;
+        builder.from(from);
+        builder.size(pageSize);
+
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+        //精确匹配查询
+        if (StrUtil.isNotBlank(qry.getTermField())) {
+            if (StrUtil.isBlank(qry.getTermValue())) {
+                throw new RuntimeException("termValue值不能为空");
+            }
+            TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery(qry.getTermField(), qry.getTermValue());
+            boolQueryBuilder.must(termQueryBuilder);
+        }
+
+        BoolQueryBuilder boolShouldQueryBuilder = QueryBuilders.boolQuery();
+        //检索字段-不分词
+        if (CollectionUtil.isNotEmpty(fieldUnSplitList)) {
+            MultiMatchQueryBuilder unSplitMultiMatchQueryBuilder = QueryBuilders.multiMatchQuery(keyword, ArrayUtil.toArray(fieldUnSplitList, String.class));
+            unSplitMultiMatchQueryBuilder.operator(Operator.AND);
+            boolShouldQueryBuilder.should(unSplitMultiMatchQueryBuilder);
+        }
+
+        //检索字段-分词
+        if (CollectionUtil.isNotEmpty(fieldList)) {
+            MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(keyword, ArrayUtil.toArray(fieldList, String.class));
+            multiMatchQueryBuilder.operator(Operator.OR);
+            boolShouldQueryBuilder.should(multiMatchQueryBuilder);
+        }
+        boolQueryBuilder.must(boolShouldQueryBuilder);
+
+        builder.query(boolQueryBuilder);
+
+        //排序
+        OrderTypeEnum orderType = qry.getOrderType();
+        if (StrUtil.isNotBlank(orderField) && orderType != null) {
+            FieldSortBuilder order = new FieldSortBuilder(orderField);
+            if (OrderTypeEnum.ASC == orderType) {
+                order.order(SortOrder.ASC);
+            } else {
+                order.order(SortOrder.DESC);
+            }
+            builder.sort(order);
+        }
+
+        request.source(builder);
+        log.info("DSL:" + builder.toString());
+
+        return doSearchPage(clazz, request, qry.getSize());
+    }
+
+    /**
+     * 搜索-分页
      *
      * @param clazz
      * @param request
      * @param <T>
      * @return
      */
-    private <T> List<T> doSearch(Class<T> clazz, SearchRequest request) {
-        List<T> resultList = Lists.newArrayList();
-        SearchResponse response = null;
-        try {
-            response = restHighLevelClient.search(request, EsClientOptions.OPTIONS);
-        } catch (IOException e) {
-            e.printStackTrace();
+    private <T> EsPage<T> doSearchPage(Class<T> clazz, SearchRequest request, int size) {
+        EsPage<T> esPage = new EsPage();
+
+        List<T> records = Lists.newArrayList();
+        SearchResponse response = doSearch(request);
+
+        boolean isHighlight = false;
+        //判断clazz是否为BaseHighlight的子类
+        if (BaseHighlight.class.isAssignableFrom(clazz)) {
+            isHighlight = true;
         }
+
+        for (SearchHit hit : response.getHits()) {
+            String resultString = hit.getSourceAsString();
+            T obj = JSONObject.parseObject(resultString, clazz);
+            this.dealHighlightField(isHighlight, obj, hit);
+            records.add(obj);
+        }
+        esPage.setRecords(records);
+
+        // 处理分页结果
+        long total = response.getHits().getTotalHits().value;
+        long pages = total / size + 1;
+        esPage.setTotal(total);
+        esPage.setPages(pages);
+
+        return esPage;
+    }
+
+    /**
+     * 搜索-列表
+     *
+     * @param clazz
+     * @param request
+     * @param <T>
+     * @return
+     */
+    private <T> List<T> doSearchList(Class<T> clazz, SearchRequest request) {
+        List<T> resultList = Lists.newArrayList();
+        SearchResponse response = doSearch(request);
 
         boolean isHighlight = false;
         //判断clazz是否为BaseHighlight的子类
@@ -163,6 +268,23 @@ public class EsClientSearchTool {
             resultList.add(obj);
         }
         return resultList;
+    }
+
+    /**
+     * 执行搜索
+     *
+     * @param request
+     * @return
+     */
+    private SearchResponse doSearch(SearchRequest request) {
+        SearchResponse response = null;
+        try {
+            response = restHighLevelClient.search(request, EsClientOptions.OPTIONS);
+        } catch (IOException e) {
+            log.error("查询失败");
+            e.printStackTrace();
+        }
+        return response;
     }
 
     /**
