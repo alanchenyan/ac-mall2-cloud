@@ -27,11 +27,18 @@ public interface ProductDocService {
     boolean createIndex();
 
     /**
-     * 保存
+     * 保存文档
      *
      * @param doc
      */
     void save(ProductDoc doc);
+
+    /**
+     * 修改文档
+     *
+     * @param doc
+     */
+    void update(ProductDoc doc);
 
     /**
      * 精确查询

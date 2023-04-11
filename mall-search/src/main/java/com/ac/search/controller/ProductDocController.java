@@ -24,10 +24,17 @@ public class ProductDocController {
         return productDocServiceImpl.initIndex();
     }
 
-    @ApiOperation(value = "新增")
+    @ApiOperation(value = "新增文档")
     @PostMapping
     public boolean add(@RequestBody ProductDoc doc) {
         productDocServiceImpl.save(doc);
+        return true;
+    }
+
+    @ApiOperation(value = "修改文档")
+    @PutMapping
+    public boolean update(@RequestBody ProductDoc doc) {
+        productDocServiceImpl.update(doc);
         return true;
     }
 

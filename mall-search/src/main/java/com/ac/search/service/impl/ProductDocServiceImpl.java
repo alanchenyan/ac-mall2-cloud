@@ -5,9 +5,8 @@ import com.ac.search.dto.ProductHighlight;
 import com.ac.search.entity.ProductDoc;
 import com.ac.search.mapping.ProductDocMapping;
 import com.ac.search.service.ProductDocService;
-import com.ac.search.tool.EsClientSearchTool;
 import com.ac.search.tool.EsClientDdlTool;
-import com.ac.search.tool.EsTemplateTool;
+import com.ac.search.tool.EsClientSearchTool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +16,6 @@ import java.util.List;
 @Slf4j
 @Service
 public class ProductDocServiceImpl implements ProductDocService {
-
-    @Resource
-    private EsTemplateTool esTemplateTool;
 
     @Resource
     private EsClientDdlTool esClientDdlTool;
@@ -38,14 +34,7 @@ public class ProductDocServiceImpl implements ProductDocService {
 
     @Override
     public boolean deleteIndex() {
-        boolean result;
-        try {
-            result = esTemplateTool.deleteIndex(IndexNameConstants.PRODUCT_DOC);
-        } catch (Exception e) {
-            log.info("删除index失败,indexName={}", IndexNameConstants.PRODUCT_DOC);
-            result = false;
-        }
-        return result;
+        return esClientDdlTool.deleteIndex(IndexNameConstants.PRODUCT_DOC);
     }
 
     @Override
@@ -56,6 +45,11 @@ public class ProductDocServiceImpl implements ProductDocService {
     @Override
     public void save(ProductDoc doc) {
         esClientDdlTool.insertDoc(IndexNameConstants.PRODUCT_DOC, doc.getId(), doc);
+    }
+
+    @Override
+    public void update(ProductDoc doc) {
+        esClientDdlTool.updateDoc(IndexNameConstants.PRODUCT_DOC,doc.getId(),doc);
     }
 
     @Override

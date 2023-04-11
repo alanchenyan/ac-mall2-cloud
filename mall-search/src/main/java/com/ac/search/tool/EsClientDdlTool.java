@@ -2,8 +2,12 @@ package com.ac.search.tool;
 
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.support.master.AcknowledgedResponse;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.HttpAsyncResponseConsumerFactory;
 import org.elasticsearch.client.IndicesClient;
 import org.elasticsearch.client.RequestOptions;
@@ -51,6 +55,29 @@ public class EsClientDdlTool {
         return doCreateIndex(index, setting, mapping);
     }
 
+
+    /**
+     * 删除index
+     *
+     * @param indexName 索引名
+     * @return
+     */
+    public boolean deleteIndex(String indexName) {
+        try {
+            //创建索引请求
+            DeleteIndexRequest request = buildDeleteIndexRequest(indexName);
+            //获取索引客户端
+            IndicesClient indices = restHighLevelClient.indices();
+            AcknowledgedResponse response = indices.delete(request, COMMON_OPTIONS);
+            log.info("是否所有节点都已确认请求: " + response.isAcknowledged());
+            return true;
+        } catch (IOException e) {
+            log.info("删除index失败,indexName={}",indexName);
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     /**
      * 添加文档
      *
@@ -64,8 +91,28 @@ public class EsClientDdlTool {
         try {
             return restHighLevelClient.index(indexRequest, COMMON_OPTIONS);
         } catch (IOException e) {
+            log.info("插入文档失败,indexName={},docId={},docObj={}",indexName,docId,docObj);
             e.printStackTrace();
             throw new RuntimeException("插入文档失败");
+        }
+    }
+
+    /**
+     * 修改文档
+     * @param indexName
+     * @param docId
+     * @param docObj
+     * @return
+     */
+    public UpdateResponse updateDoc(String indexName, String docId, Object docObj) {
+        UpdateRequest request = buildUpdateDocRequest(indexName, docId, docObj);
+        try {
+            request.docAsUpsert(true);
+            return restHighLevelClient.update(request, COMMON_OPTIONS);
+        } catch (IOException e) {
+            log.info("修改文档失败,indexName={},docId={},docObj={}",indexName,docId,docObj);
+            e.printStackTrace();
+            throw new RuntimeException("修改文档失败");
         }
     }
 
@@ -85,6 +132,7 @@ public class EsClientDdlTool {
             log.info("指示是否在超时之前为索引中的每个分片启动了必要数量的分片副本: " + response.isShardsAcknowledged());
             is = response.isAcknowledged();
         } catch (Exception e) {
+            log.info("创建index失败,indexName={}",indexName);
             e.printStackTrace();
         }
         return is;
@@ -107,6 +155,15 @@ public class EsClientDdlTool {
     }
 
     /**
+     * 构建DeleteIndexRequest
+     * @param indexName
+     * @return
+     */
+    protected DeleteIndexRequest buildDeleteIndexRequest(String indexName) {
+        return new DeleteIndexRequest(indexName);
+    }
+
+    /**
      * 构建InsertDocRequest
      *
      * @param indexName 索引名
@@ -120,6 +177,21 @@ public class EsClientDdlTool {
         indexRequest.id(docId);
         indexRequest.source(jsonStr, XContentType.JSON);
         return indexRequest;
+    }
+
+    /**
+     * 构建UpdateDocRequest
+     * @param indexName
+     * @param docId
+     * @param docObj
+     * @return
+     */
+    protected UpdateRequest buildUpdateDocRequest(String indexName, String docId, Object docObj) {
+        String jsonStr = JSON.toJSONString(docObj);
+        UpdateRequest request = new UpdateRequest(indexName, docId);
+        request.doc(jsonStr, XContentType.JSON);
+        request.docAsUpsert(true);
+        return request;
     }
 
     /**
