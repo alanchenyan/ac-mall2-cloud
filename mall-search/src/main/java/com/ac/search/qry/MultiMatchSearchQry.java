@@ -9,6 +9,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * @author Alan Chen
+ * @description 多字段检索
+ * @date 2023/02/22
+ */
 @Data
 @Builder
 @NoArgsConstructor
@@ -16,12 +21,12 @@ import java.util.List;
 @ApiModel("多字段检索")
 public class MultiMatchSearchQry {
 
-    @ApiModelProperty(name = "fieldList", value = "检索字段", required = true)
-    private List<String> fieldList;
+    @ApiModelProperty(value = "索引名称")
+    private String indexName;
 
-    @ApiModelProperty(name = "keyword", value = "检索内容", required = true)
+    @ApiModelProperty(value = "检索内容")
     private String keyword;
 
-    @ApiModelProperty(name = "indexName", value = "索引名称", required = true)
-    private String indexName;
+    @ApiModelProperty(value = "检索字段")
+    private List<String> fieldList;
 }
