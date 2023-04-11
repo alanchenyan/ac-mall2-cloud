@@ -4,7 +4,7 @@ import com.ac.search.constant.IndexNameConstants;
 import com.ac.search.dto.ProductHighlightDTO;
 import com.ac.search.entity.ProductDoc;
 import com.ac.search.mapping.ProductDocMapping;
-import com.ac.search.qry.MultiMatchSearchQry;
+import com.ac.search.qry.ListSearchQry;
 import com.ac.search.service.ProductDocService;
 import com.ac.search.tool.EsClientDdlTool;
 import com.ac.search.tool.EsClientSearchTool;
@@ -61,17 +61,27 @@ public class ProductDocServiceImpl implements ProductDocService {
 
     @Override
     public List<ProductDoc> listByTerm(String keyword) {
-        return esClientSearchTool.termSearch(ProductDoc.class, IndexNameConstants.PRODUCT_DOC, "category", keyword);
+        ListSearchQry qry = ListSearchQry.builder()
+                .indexName(IndexNameConstants.PRODUCT_DOC)
+                .keyword(keyword)
+                .fieldList(Arrays.asList("category"))
+                .build();
+        return esClientSearchTool.termSearch(ProductDoc.class, qry);
     }
 
     @Override
     public List<ProductDoc> listByMatch(String keyword) {
-        return esClientSearchTool.matchSearch(ProductDoc.class, IndexNameConstants.PRODUCT_DOC, "remark", keyword);
+        ListSearchQry qry = ListSearchQry.builder()
+                .indexName(IndexNameConstants.PRODUCT_DOC)
+                .keyword(keyword)
+                .fieldList(Arrays.asList("remark"))
+                .build();
+        return esClientSearchTool.matchSearch(ProductDoc.class, qry);
     }
 
     @Override
     public List<ProductDoc> listByMultiMatch(String keyword) {
-        MultiMatchSearchQry qry = MultiMatchSearchQry.builder()
+        ListSearchQry qry = ListSearchQry.builder()
                 .indexName(IndexNameConstants.PRODUCT_DOC)
                 .keyword(keyword)
                 .fieldList(Arrays.asList("productName", "remark"))
@@ -81,6 +91,11 @@ public class ProductDocServiceImpl implements ProductDocService {
 
     @Override
     public List<ProductHighlightDTO> listByMatchHighlight(String keyword) {
-        return esClientSearchTool.matchSearchHighlight(ProductHighlightDTO.class, IndexNameConstants.PRODUCT_DOC, "remark", keyword);
+        ListSearchQry qry = ListSearchQry.builder()
+                .indexName(IndexNameConstants.PRODUCT_DOC)
+                .keyword(keyword)
+                .fieldList(Arrays.asList("remark"))
+                .build();
+        return esClientSearchTool.matchSearchHighlight(ProductHighlightDTO.class, qry);
     }
 }

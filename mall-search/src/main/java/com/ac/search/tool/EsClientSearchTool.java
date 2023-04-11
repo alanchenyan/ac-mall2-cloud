@@ -1,10 +1,12 @@
 package com.ac.search.tool;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
 import com.ac.search.factory.ElasticsearchFactory;
 import com.ac.search.highlight.BaseHighlight;
 import com.ac.search.highlight.HighlightFieldInfo;
-import com.ac.search.qry.MultiMatchSearchQry;
+import com.ac.search.qry.ListSearchQry;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.sun.deploy.util.StringUtils;
@@ -48,15 +50,17 @@ public class EsClientSearchTool {
      * 类比SQL:select * from indexName where field = 'keyword'
      *
      * @param clazz
-     * @param indexName
-     * @param field
-     * @param keyword
+     * @param qry
+     * @param <T>
      * @return
      */
-    public <T> List<T> termSearch(Class<T> clazz, String indexName, String field, String keyword) {
-        SearchRequest request = new SearchRequest(indexName);
+    public <T> List<T> termSearch(Class<T> clazz, ListSearchQry qry) {
+        //参数校验
+        checkParam(qry);
+
+        SearchRequest request = new SearchRequest(qry.getIndexName());
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery(field, keyword);
+        TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery(qry.getFieldList().get(0), qry.getKeyword());
         searchSourceBuilder.query(termQueryBuilder);
         request.source(searchSourceBuilder);
         log.info("DSL={}", searchSourceBuilder.toString());
@@ -65,20 +69,18 @@ public class EsClientSearchTool {
     }
 
     /**
-     * 分词匹配查询
+     * 词匹配查询
      * 类比SQL:select * from indexName where field in (被搜索字段的分词)
      *
      * @param clazz
-     * @param indexName
-     * @param field
-     * @param keyword
+     * @param qry
      * @param <T>
      * @return
      */
-    public <T> List<T> matchSearch(Class<T> clazz, String indexName, String field, String keyword) {
-        SearchRequest request = new SearchRequest(indexName);
+    public <T> List<T> matchSearch(Class<T> clazz, ListSearchQry qry) {
+        SearchRequest request = new SearchRequest(qry.getIndexName());
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery(field, keyword);
+        MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery(qry.getFieldList().get(0), qry.getKeyword());
         searchSourceBuilder.query(matchQueryBuilder);
         request.source(searchSourceBuilder);
         log.info("DSL:" + searchSourceBuilder.toString());
@@ -95,7 +97,7 @@ public class EsClientSearchTool {
      * @param <T>
      * @return
      */
-    public <T> List<T> multiMatchSearch(Class<T> clazz, MultiMatchSearchQry qry) {
+    public <T> List<T> multiMatchSearch(Class<T> clazz, ListSearchQry qry) {
         String indexName = qry.getIndexName();
         List<String> fieldList = qry.getFieldList();
         String keyword = qry.getKeyword();
@@ -114,16 +116,14 @@ public class EsClientSearchTool {
      * 类比SQL:select * from indexName where field in (被搜索字段的分词)
      *
      * @param clazz
-     * @param index
-     * @param field
-     * @param keyword
+     * @param qry
      * @param <T>
      * @return
      */
-    public <T> List<T> matchSearchHighlight(Class<T> clazz, String index, String field, String keyword) {
-        SearchRequest request = new SearchRequest(index);
+    public <T> List<T> matchSearchHighlight(Class<T> clazz, ListSearchQry qry) {
+        SearchRequest request = new SearchRequest(qry.getIndexName());
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery(field, keyword);
+        MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery(qry.getFieldList().get(0), qry.getKeyword());
         searchSourceBuilder.query(matchQueryBuilder);
         HighlightBuilder highlightBuilder = ElasticsearchFactory.builderHighlight();
         searchSourceBuilder.highlighter(highlightBuilder);
@@ -198,5 +198,24 @@ public class EsClientSearchTool {
             highlightFields.put(entry.getKey(), info);
         }
         highlightObj.setHighlightFields(highlightFields);
+    }
+
+    /**
+     * 参数校验
+     *
+     * @param qry
+     */
+    private void checkParam(ListSearchQry qry) {
+        if (StrUtil.isEmpty(qry.getIndexName())) {
+            throw new RuntimeException("索引名称不能为空");
+        }
+
+        if (StrUtil.isEmpty(qry.getKeyword())) {
+            throw new RuntimeException("查询关键字不能为空");
+        }
+
+        if (CollectionUtil.isEmpty(qry.getFieldList())) {
+            throw new RuntimeException("检索字段不能为空");
+        }
     }
 }

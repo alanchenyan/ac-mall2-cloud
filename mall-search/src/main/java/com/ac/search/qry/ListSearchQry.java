@@ -18,8 +18,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("多字段检索")
-public class MultiMatchSearchQry {
+@ApiModel("检索")
+public class ListSearchQry {
 
     @ApiModelProperty(value = "索引名称")
     private String indexName;
