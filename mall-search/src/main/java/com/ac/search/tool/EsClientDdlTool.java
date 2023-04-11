@@ -10,9 +10,7 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
-import org.elasticsearch.client.HttpAsyncResponseConsumerFactory;
 import org.elasticsearch.client.IndicesClient;
-import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.client.indices.CreateIndexResponse;
@@ -36,15 +34,6 @@ public class EsClientDdlTool {
 
     @Resource
     protected RestHighLevelClient restHighLevelClient;
-
-    protected static final RequestOptions COMMON_OPTIONS;
-
-    static {
-        RequestOptions.Builder builder = RequestOptions.DEFAULT.toBuilder();
-        // 默认缓冲限制为100MB，此处修改为30MB。
-        builder.setHttpAsyncResponseConsumerFactory(new HttpAsyncResponseConsumerFactory.HeapBufferedResponseConsumerFactory(30 * 1024 * 1024));
-        COMMON_OPTIONS = builder.build();
-    }
 
     /**
      * 创建index
@@ -70,7 +59,7 @@ public class EsClientDdlTool {
             DeleteIndexRequest request = buildDeleteIndexRequest(indexName);
             //获取索引客户端
             IndicesClient indices = restHighLevelClient.indices();
-            AcknowledgedResponse response = indices.delete(request, COMMON_OPTIONS);
+            AcknowledgedResponse response = indices.delete(request, EsClientOptions.OPTIONS);
             log.info("是否所有节点都已确认请求: " + response.isAcknowledged());
             return true;
         } catch (IOException e) {
@@ -91,7 +80,7 @@ public class EsClientDdlTool {
     public IndexResponse insertDoc(String indexName, String docId, Object docObj) {
         IndexRequest indexRequest = buildInsertDocRequest(indexName, docId, docObj);
         try {
-            return restHighLevelClient.index(indexRequest, COMMON_OPTIONS);
+            return restHighLevelClient.index(indexRequest, EsClientOptions.OPTIONS);
         } catch (IOException e) {
             log.info("插入文档失败,indexName={},docId={},docObj={}",indexName,docId,docObj);
             e.printStackTrace();
@@ -110,7 +99,7 @@ public class EsClientDdlTool {
         UpdateRequest request = buildUpdateDocRequest(indexName, docId, docObj);
         try {
             request.docAsUpsert(true);
-            return restHighLevelClient.update(request, COMMON_OPTIONS);
+            return restHighLevelClient.update(request, EsClientOptions.OPTIONS);
         } catch (IOException e) {
             log.info("修改文档失败,indexName={},docId={},docObj={}",indexName,docId,docObj);
             e.printStackTrace();
@@ -127,7 +116,7 @@ public class EsClientDdlTool {
     public DeleteResponse deleteDoc(String indexName, String docId) {
         DeleteRequest deleteRequest = new DeleteRequest(indexName, docId);
         try {
-            return restHighLevelClient.delete(deleteRequest, COMMON_OPTIONS);
+            return restHighLevelClient.delete(deleteRequest, EsClientOptions.OPTIONS);
         } catch (IOException e) {
             log.info("删除文档失败,indexName={},docId={}",indexName,docId);
             e.printStackTrace();
@@ -146,7 +135,7 @@ public class EsClientDdlTool {
                 request.mapping(mapping);
             }
             IndicesClient indices = restHighLevelClient.indices();
-            CreateIndexResponse response = indices.create(request, COMMON_OPTIONS);
+            CreateIndexResponse response = indices.create(request, EsClientOptions.OPTIONS);
             log.info("是否所有节点都已确认请求: " + response.isAcknowledged());
             log.info("指示是否在超时之前为索引中的每个分片启动了必要数量的分片副本: " + response.isShardsAcknowledged());
             is = response.isAcknowledged();

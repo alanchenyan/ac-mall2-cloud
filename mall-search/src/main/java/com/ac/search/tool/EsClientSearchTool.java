@@ -9,7 +9,6 @@ import com.sun.deploy.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.MatchQueryBuilder;
@@ -120,7 +119,7 @@ public class EsClientSearchTool {
         List<T> resultList = Lists.newArrayList();
         SearchResponse response = null;
         try {
-            response = restHighLevelClient.search(request, RequestOptions.DEFAULT);
+            response = restHighLevelClient.search(request, EsClientOptions.OPTIONS);
         } catch (IOException e) {
             e.printStackTrace();
         }
