@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class ProductHighlight extends BaseHighlight {
+public class ProductHighlightDTO extends BaseHighlight {
 
     @ApiModelProperty(value = "ID")
     private String id;

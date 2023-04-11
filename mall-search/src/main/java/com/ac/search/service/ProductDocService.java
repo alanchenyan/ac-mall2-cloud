@@ -1,6 +1,6 @@
 package com.ac.search.service;
 
-import com.ac.search.dto.ProductHighlight;
+import com.ac.search.dto.ProductHighlightDTO;
 import com.ac.search.entity.ProductDoc;
 
 import java.util.List;
@@ -69,5 +69,5 @@ public interface ProductDocService {
      * @param keyword
      * @return
      */
-    List<ProductHighlight> listByMatchHighlight(String keyword);
+    List<ProductHighlightDTO> listByMatchHighlight(String keyword);
 }

@@ -1,6 +1,6 @@
 package com.ac.search.controller;
 
-import com.ac.search.dto.ProductHighlight;
+import com.ac.search.dto.ProductHighlightDTO;
 import com.ac.search.entity.ProductDoc;
 import com.ac.search.service.ProductDocService;
 import io.swagger.annotations.Api;
@@ -59,7 +59,7 @@ public class ProductDocController {
 
     @ApiOperation(value = "分词查询-高亮显示")
     @GetMapping("listByMatchHighlight")
-    public List<ProductHighlight> listByMatchHighlight(@RequestParam String keyword) {
+    public List<ProductHighlightDTO> listByMatchHighlight(@RequestParam String keyword) {
         return productDocServiceImpl.listByMatchHighlight(keyword);
 
         /**

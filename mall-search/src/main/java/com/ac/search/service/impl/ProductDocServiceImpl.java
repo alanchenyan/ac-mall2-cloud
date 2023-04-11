@@ -1,7 +1,7 @@
 package com.ac.search.service.impl;
 
 import com.ac.search.constant.IndexNameConstants;
-import com.ac.search.dto.ProductHighlight;
+import com.ac.search.dto.ProductHighlightDTO;
 import com.ac.search.entity.ProductDoc;
 import com.ac.search.mapping.ProductDocMapping;
 import com.ac.search.service.ProductDocService;
@@ -68,7 +68,7 @@ public class ProductDocServiceImpl implements ProductDocService {
     }
 
     @Override
-    public List<ProductHighlight> listByMatchHighlight(String keyword) {
-        return esClientSearchTool.matchSearchHighlight(ProductHighlight.class, IndexNameConstants.PRODUCT_DOC, "remark", keyword);
+    public List<ProductHighlightDTO> listByMatchHighlight(String keyword) {
+        return esClientSearchTool.matchSearchHighlight(ProductHighlightDTO.class, IndexNameConstants.PRODUCT_DOC, "remark", keyword);
     }
 }
