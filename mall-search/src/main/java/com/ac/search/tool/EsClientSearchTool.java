@@ -217,21 +217,8 @@ public class EsClientSearchTool {
     private <T> EsPage<T> doSearchPage(Class<T> clazz, SearchRequest request, int size) {
         EsPage<T> esPage = new EsPage();
 
-        List<T> records = Lists.newArrayList();
         SearchResponse response = doSearch(request);
-
-        boolean isHighlight = false;
-        //判断clazz是否为BaseHighlight的子类
-        if (BaseHighlight.class.isAssignableFrom(clazz)) {
-            isHighlight = true;
-        }
-
-        for (SearchHit hit : response.getHits()) {
-            String resultString = hit.getSourceAsString();
-            T obj = JSONObject.parseObject(resultString, clazz);
-            this.dealHighlightField(isHighlight, obj, hit);
-            records.add(obj);
-        }
+        List<T> records = fillList(clazz, response);
         esPage.setRecords(records);
 
         // 处理分页结果
@@ -252,22 +239,8 @@ public class EsClientSearchTool {
      * @return
      */
     private <T> List<T> doSearchList(Class<T> clazz, SearchRequest request) {
-        List<T> resultList = Lists.newArrayList();
         SearchResponse response = doSearch(request);
-
-        boolean isHighlight = false;
-        //判断clazz是否为BaseHighlight的子类
-        if (BaseHighlight.class.isAssignableFrom(clazz)) {
-            isHighlight = true;
-        }
-
-        for (SearchHit hit : response.getHits()) {
-            String resultString = hit.getSourceAsString();
-            T obj = JSONObject.parseObject(resultString, clazz);
-            this.dealHighlightField(isHighlight, obj, hit);
-            resultList.add(obj);
-        }
-        return resultList;
+        return fillList(clazz, response);
     }
 
     /**
@@ -285,6 +258,32 @@ public class EsClientSearchTool {
             e.printStackTrace();
         }
         return response;
+    }
+
+    /**
+     * 组装list
+     *
+     * @param clazz
+     * @param response
+     * @param <T>
+     * @return
+     */
+    private <T> List<T> fillList(Class<T> clazz, SearchResponse response) {
+        List<T> records = Lists.newArrayList();
+
+        boolean isHighlight = false;
+        //判断clazz是否为BaseHighlight的子类
+        if (BaseHighlight.class.isAssignableFrom(clazz)) {
+            isHighlight = true;
+        }
+
+        for (SearchHit hit : response.getHits()) {
+            String resultString = hit.getSourceAsString();
+            T obj = JSONObject.parseObject(resultString, clazz);
+            this.dealHighlightField(isHighlight, obj, hit);
+            records.add(obj);
+        }
+        return records;
     }
 
     /**
