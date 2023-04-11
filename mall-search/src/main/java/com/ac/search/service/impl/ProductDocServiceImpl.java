@@ -4,6 +4,7 @@ import com.ac.search.constant.IndexNameConstants;
 import com.ac.search.dto.ProductHighlightDTO;
 import com.ac.search.entity.ProductDoc;
 import com.ac.search.mapping.ProductDocMapping;
+import com.ac.search.qry.MultiMatchSearchQry;
 import com.ac.search.service.ProductDocService;
 import com.ac.search.tool.EsClientDdlTool;
 import com.ac.search.tool.EsClientSearchTool;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -65,6 +67,16 @@ public class ProductDocServiceImpl implements ProductDocService {
     @Override
     public List<ProductDoc> listByMatch(String keyword) {
         return esClientSearchTool.matchSearch(ProductDoc.class, IndexNameConstants.PRODUCT_DOC, "remark", keyword);
+    }
+
+    @Override
+    public List<ProductDoc> listByMultiMatch(String keyword) {
+        MultiMatchSearchQry qry = MultiMatchSearchQry.builder()
+                .indexName(IndexNameConstants.PRODUCT_DOC)
+                .keyword(keyword)
+                .fieldList(Arrays.asList("productName", "remark"))
+                .build();
+        return esClientSearchTool.multiMatchSearch(ProductDoc.class, qry);
     }
 
     @Override

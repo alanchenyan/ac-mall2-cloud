@@ -1,8 +1,10 @@
 package com.ac.search.tool;
 
+import cn.hutool.core.util.ArrayUtil;
 import com.ac.search.factory.ElasticsearchFactory;
 import com.ac.search.highlight.BaseHighlight;
 import com.ac.search.highlight.HighlightFieldInfo;
+import com.ac.search.qry.MultiMatchSearchQry;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.sun.deploy.util.StringUtils;
@@ -12,6 +14,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.search.SearchHit;
@@ -66,17 +69,40 @@ public class EsClientSearchTool {
      * 类比SQL:select * from indexName where field in (被搜索字段的分词)
      *
      * @param clazz
-     * @param index
+     * @param indexName
      * @param field
      * @param keyword
      * @param <T>
      * @return
      */
-    public <T> List<T> matchSearch(Class<T> clazz, String index, String field, String keyword) {
-        SearchRequest request = new SearchRequest(index);
+    public <T> List<T> matchSearch(Class<T> clazz, String indexName, String field, String keyword) {
+        SearchRequest request = new SearchRequest(indexName);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery(field, keyword);
         searchSourceBuilder.query(matchQueryBuilder);
+        request.source(searchSourceBuilder);
+        log.info("DSL:" + searchSourceBuilder.toString());
+
+        return doSearch(clazz, request);
+    }
+
+    /**
+     * 多字段分词匹配查询
+     * 类比SQL:select * from indexName where field_1 in (被搜索字段的分词) or field_2 in (被搜索字段的分词)
+     *
+     * @param clazz
+     * @param qry
+     * @param <T>
+     * @return
+     */
+    public <T> List<T> multiMatchSearch(Class<T> clazz, MultiMatchSearchQry qry) {
+        String indexName = qry.getIndexName();
+        List<String> fieldList = qry.getFieldList();
+        String keyword = qry.getKeyword();
+        SearchRequest request = new SearchRequest(indexName);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(keyword, ArrayUtil.toArray(fieldList, String.class));
+        searchSourceBuilder.query(multiMatchQueryBuilder);
         request.source(searchSourceBuilder);
         log.info("DSL:" + searchSourceBuilder.toString());
 

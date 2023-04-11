@@ -64,6 +64,14 @@ public interface ProductDocService {
     List<ProductDoc> listByMatch(String keyword);
 
     /**
+     * 多字段分词查询
+     *
+     * @param keyword
+     * @return
+     */
+    List<ProductDoc> listByMultiMatch(String keyword);
+
+    /**
      * 分词查询-高亮显示
      *
      * @param keyword

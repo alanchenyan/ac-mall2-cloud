@@ -57,6 +57,12 @@ public class ProductDocController {
         return productDocServiceImpl.listByMatch(keyword);
     }
 
+    @ApiOperation(value = "多字段分词查询")
+    @GetMapping("listByMultiMatch")
+    public List<ProductDoc> listByMultiMatch(@RequestParam String keyword) {
+        return productDocServiceImpl.listByMultiMatch(keyword);
+    }
+
     @ApiOperation(value = "分词查询-高亮显示")
     @GetMapping("listByMatchHighlight")
     public List<ProductHighlightDTO> listByMatchHighlight(@RequestParam String keyword) {
