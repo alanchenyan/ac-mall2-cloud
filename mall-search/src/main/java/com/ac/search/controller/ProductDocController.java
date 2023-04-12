@@ -120,9 +120,9 @@ public class ProductDocController {
         return productDocServiceImpl.pageSearch(current, size, keyword);
 
         /**
-         * select * from indexName where termField = 'termValue' and (field_1 in (被搜索字段的分词 AND)  or field_2 in (被搜索字段的分词 OR))
+         * select * from indexName where termField = 'termValue' and (field_1 in (被搜索字段的分词 AND)  or field_2 in (被搜索字段的分词 OR)) order by id asc
          *
-         * {
+         *{
          *     "from": 0,
          *     "size": 10,
          *     "query": {
@@ -162,7 +162,7 @@ public class ProductDocController {
          *                                     "fields": [
          *                                         "productName.pinyin^1.0",
          *                                         "remark^1.0",
-         *                                         "remark..pinyin^1.0"
+         *                                         "remark.pinyin^1.0"
          *                                     ],
          *                                     "type": "best_fields",
          *                                     "operator": "OR",
@@ -184,7 +184,14 @@ public class ProductDocController {
          *             "adjust_pure_negative": true,
          *             "boost": 1.0
          *         }
-         *     }
+         *     },
+         *     "sort": [
+         *         {
+         *             "id": {
+         *                 "order": "asc"
+         *             }
+         *         }
+         *     ]
          * }
          */
     }

@@ -1,5 +1,6 @@
 package com.ac.search.service.impl;
 
+import com.ac.common.enums.OrderTypeEnum;
 import com.ac.common.page.EsPage;
 import com.ac.search.constant.IndexNameConstants;
 import com.ac.search.dto.ProductHighlightDTO;
@@ -112,6 +113,8 @@ public class ProductDocServiceImpl implements ProductDocService {
                 .termValue("饮料")
                 .fieldList(Arrays.asList("remark","remark.pinyin","productName.pinyin"))
                 .fieldUnSplitList(Arrays.asList("productName"))
+                .orderField("id")
+                .orderType(OrderTypeEnum.ASC)
                 .build();
         return esClientSearchTool.pageSearch(ProductDoc.class, qry);
     }

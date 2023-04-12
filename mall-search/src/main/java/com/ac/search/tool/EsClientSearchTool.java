@@ -146,10 +146,6 @@ public class EsClientSearchTool {
     public <T> EsPage<T> pageSearch(Class<T> clazz, PageSearchQry qry) {
         Integer pageNo = qry.getCurrent() == null ? 1 : qry.getCurrent();
         Integer pageSize = qry.getSize() == null ? 20 : qry.getSize();
-        String keyword = qry.getKeyword();
-        List<String> fieldList = qry.getFieldList();
-        List<String> fieldUnSplitList = qry.getFieldUnSplitList();
-        String orderField = qry.getOrderField();
 
         SearchRequest request = new SearchRequest(qry.getIndexName());
         SearchSourceBuilder builder = new SearchSourceBuilder();
@@ -159,52 +155,23 @@ public class EsClientSearchTool {
         builder.from(from);
         builder.size(pageSize);
 
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-
-        //精确匹配查询
-        if (StrUtil.isNotBlank(qry.getTermField())) {
-            if (StrUtil.isBlank(qry.getTermValue())) {
-                throw new RuntimeException("termValue值不能为空");
-            }
-            TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery(qry.getTermField(), qry.getTermValue());
-            boolQueryBuilder.must(termQueryBuilder);
+        if (StrUtil.isBlank(qry.getKeyword()) && StrUtil.isBlank(qry.getTermField())) {
+            //查询所有
+            searchAll(builder);
+        } else {
+            //按搜索条件搜索
+            pageSearchByCondition(builder, qry);
         }
-
-        BoolQueryBuilder boolShouldQueryBuilder = QueryBuilders.boolQuery();
-        //检索字段-不分词
-        if (CollectionUtil.isNotEmpty(fieldUnSplitList)) {
-            MultiMatchQueryBuilder unSplitMultiMatchQueryBuilder = QueryBuilders.multiMatchQuery(keyword, ArrayUtil.toArray(fieldUnSplitList, String.class));
-            unSplitMultiMatchQueryBuilder.operator(Operator.AND);
-            boolShouldQueryBuilder.should(unSplitMultiMatchQueryBuilder);
-        }
-
-        //检索字段-分词
-        if (CollectionUtil.isNotEmpty(fieldList)) {
-            MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(keyword, ArrayUtil.toArray(fieldList, String.class));
-            multiMatchQueryBuilder.operator(Operator.OR);
-            boolShouldQueryBuilder.should(multiMatchQueryBuilder);
-        }
-        boolQueryBuilder.must(boolShouldQueryBuilder);
-
-        builder.query(boolQueryBuilder);
 
         //排序
-        OrderTypeEnum orderType = qry.getOrderType();
-        if (StrUtil.isNotBlank(orderField) && orderType != null) {
-            FieldSortBuilder order = new FieldSortBuilder(orderField);
-            if (OrderTypeEnum.ASC == orderType) {
-                order.order(SortOrder.ASC);
-            } else {
-                order.order(SortOrder.DESC);
-            }
-            builder.sort(order);
-        }
+        dealSort(builder, qry.getOrderField(), qry.getOrderType());
 
         request.source(builder);
         log.info("DSL:" + builder.toString());
 
         return doSearchPage(clazz, request, qry);
     }
+
 
     /**
      * 搜索-分页
@@ -262,6 +229,76 @@ public class EsClientSearchTool {
             e.printStackTrace();
         }
         return response;
+    }
+
+    /**
+     * 排序
+     *
+     * @param builder
+     * @param orderField
+     * @param orderType
+     */
+    private void dealSort(SearchSourceBuilder builder, String orderField, OrderTypeEnum orderType) {
+        if (StrUtil.isNotBlank(orderField) && orderType != null) {
+            FieldSortBuilder order = new FieldSortBuilder(orderField);
+            if (OrderTypeEnum.ASC == orderType) {
+                order.order(SortOrder.ASC);
+            } else {
+                order.order(SortOrder.DESC);
+            }
+            builder.sort(order);
+        }
+    }
+
+    /**
+     * 查询所有
+     *
+     * @param builder
+     */
+    private void searchAll(SearchSourceBuilder builder) {
+        QueryBuilder matchAllQuery = QueryBuilders.matchAllQuery();
+        builder.query(matchAllQuery);
+    }
+
+
+    /**
+     * 按搜索条件搜索
+     *
+     * @param builder
+     * @param qry
+     */
+    private void pageSearchByCondition(SearchSourceBuilder builder, PageSearchQry qry) {
+        String keyword = qry.getKeyword();
+        List<String> fieldList = qry.getFieldList();
+        List<String> fieldUnSplitList = qry.getFieldUnSplitList();
+
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+        //精确匹配查询
+        if (StrUtil.isNotBlank(qry.getTermField())) {
+            if (StrUtil.isBlank(qry.getTermValue())) {
+                throw new RuntimeException("termValue值不能为空");
+            }
+            TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery(qry.getTermField(), qry.getTermValue());
+            boolQueryBuilder.must(termQueryBuilder);
+        }
+
+        BoolQueryBuilder boolShouldQueryBuilder = QueryBuilders.boolQuery();
+        //检索字段-不分词
+        if (CollectionUtil.isNotEmpty(fieldUnSplitList)) {
+            MultiMatchQueryBuilder unSplitMultiMatchQueryBuilder = QueryBuilders.multiMatchQuery(keyword, ArrayUtil.toArray(fieldUnSplitList, String.class));
+            unSplitMultiMatchQueryBuilder.operator(Operator.AND);
+            boolShouldQueryBuilder.should(unSplitMultiMatchQueryBuilder);
+        }
+
+        //检索字段-分词
+        if (CollectionUtil.isNotEmpty(fieldList)) {
+            MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery(keyword, ArrayUtil.toArray(fieldList, String.class));
+            multiMatchQueryBuilder.operator(Operator.OR);
+            boolShouldQueryBuilder.should(multiMatchQueryBuilder);
+        }
+        boolQueryBuilder.must(boolShouldQueryBuilder);
+        builder.query(boolQueryBuilder);
     }
 
     /**
