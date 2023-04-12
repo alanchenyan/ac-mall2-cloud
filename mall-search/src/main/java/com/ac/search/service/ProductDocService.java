@@ -1,5 +1,6 @@
 package com.ac.search.service;
 
+import com.ac.common.page.EsPage;
 import com.ac.search.dto.ProductHighlightDTO;
 import com.ac.search.entity.ProductDoc;
 
@@ -78,4 +79,14 @@ public interface ProductDocService {
      * @return
      */
     List<ProductHighlightDTO> listByMatchHighlight(String keyword);
+
+    /**
+     * 分页查询
+     *
+     * @param current
+     * @param size
+     * @param keyword
+     * @return
+     */
+    EsPage<ProductDoc> pageSearch(Integer current, Integer size, String keyword);
 }

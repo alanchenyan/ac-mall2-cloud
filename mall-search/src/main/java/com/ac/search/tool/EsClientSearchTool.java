@@ -144,8 +144,8 @@ public class EsClientSearchTool {
      * @return
      */
     public <T> EsPage<T> pageSearch(Class<T> clazz, PageSearchQry qry) {
-        Integer pageNo = qry.getCurrent();
-        Integer pageSize = qry.getSize();
+        Integer pageNo = qry.getCurrent() == null ? 1 : qry.getCurrent();
+        Integer pageSize = qry.getSize() == null ? 20 : qry.getSize();
         String keyword = qry.getKeyword();
         List<String> fieldList = qry.getFieldList();
         List<String> fieldUnSplitList = qry.getFieldUnSplitList();
@@ -203,7 +203,7 @@ public class EsClientSearchTool {
         request.source(builder);
         log.info("DSL:" + builder.toString());
 
-        return doSearchPage(clazz, request, qry.getSize());
+        return doSearchPage(clazz, request, qry);
     }
 
     /**
@@ -214,7 +214,7 @@ public class EsClientSearchTool {
      * @param <T>
      * @return
      */
-    private <T> EsPage<T> doSearchPage(Class<T> clazz, SearchRequest request, int size) {
+    private <T> EsPage<T> doSearchPage(Class<T> clazz, SearchRequest request, PageSearchQry qry) {
         EsPage<T> esPage = new EsPage();
 
         SearchResponse response = doSearch(request);
@@ -223,9 +223,13 @@ public class EsClientSearchTool {
 
         // 处理分页结果
         long total = response.getHits().getTotalHits().value;
-        long pages = total / size + 1;
+
+        //其中Math.ceil()函数用于向上取整，确保总页数能够覆盖所有记录
+        long pages = (int) Math.ceil((double) total / qry.getSize());
         esPage.setTotal(total);
         esPage.setPages(pages);
+        esPage.setCurrent(qry.getCurrent());
+        esPage.setSize(qry.getSize());
 
         return esPage;
     }

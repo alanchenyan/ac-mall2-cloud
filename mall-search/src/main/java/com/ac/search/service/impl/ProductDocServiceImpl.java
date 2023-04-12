@@ -1,10 +1,12 @@
 package com.ac.search.service.impl;
 
+import com.ac.common.page.EsPage;
 import com.ac.search.constant.IndexNameConstants;
 import com.ac.search.dto.ProductHighlightDTO;
 import com.ac.search.entity.ProductDoc;
 import com.ac.search.mapping.ProductDocMapping;
 import com.ac.search.qry.ListSearchQry;
+import com.ac.search.qry.PageSearchQry;
 import com.ac.search.service.ProductDocService;
 import com.ac.search.tool.EsClientDdlTool;
 import com.ac.search.tool.EsClientSearchTool;
@@ -97,5 +99,20 @@ public class ProductDocServiceImpl implements ProductDocService {
                 .fieldList(Arrays.asList("remark"))
                 .build();
         return esClientSearchTool.matchSearchHighlight(ProductHighlightDTO.class, qry);
+    }
+
+    @Override
+    public EsPage<ProductDoc> pageSearch(Integer current,Integer size,String keyword) {
+        PageSearchQry qry = PageSearchQry.builder()
+                .indexName(IndexNameConstants.PRODUCT_DOC)
+                .current(current)
+                .size(size)
+                .keyword(keyword)
+                .termField("category")
+                .termValue("饮料")
+                .fieldList(Arrays.asList("remark","remark..pinyin","productName.pinyin"))
+                .fieldUnSplitList(Arrays.asList("productName"))
+                .build();
+        return esClientSearchTool.pageSearch(ProductDoc.class, qry);
     }
 }

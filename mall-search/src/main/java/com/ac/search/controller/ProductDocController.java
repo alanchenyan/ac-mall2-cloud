@@ -1,5 +1,6 @@
 package com.ac.search.controller;
 
+import com.ac.common.page.EsPage;
 import com.ac.search.dto.ProductHighlightDTO;
 import com.ac.search.entity.ProductDoc;
 import com.ac.search.service.ProductDocService;
@@ -111,5 +112,11 @@ public class ProductDocController {
          *    }
          * ]
          */
+    }
+
+    @ApiOperation(value = "分页查询")
+    @GetMapping("pageSearch")
+    public EsPage<ProductDoc> pageSearch(@RequestParam Integer current, @RequestParam Integer size, @RequestParam String keyword) {
+        return productDocServiceImpl.pageSearch(current, size, keyword);
     }
 }
