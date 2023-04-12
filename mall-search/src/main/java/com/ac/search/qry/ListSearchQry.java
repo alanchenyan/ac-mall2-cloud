@@ -1,5 +1,6 @@
 package com.ac.search.qry;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,7 @@ import java.util.List;
 @ApiModel("检索")
 public class ListSearchQry {
 
+    @JsonIgnore
     @ApiModelProperty(value = "索引名称")
     private String indexName;
 

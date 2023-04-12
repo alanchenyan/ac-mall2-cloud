@@ -6,6 +6,7 @@ import com.ac.search.constant.IndexNameConstants;
 import com.ac.search.dto.ProductHighlightDTO;
 import com.ac.search.entity.ProductDoc;
 import com.ac.search.mapping.ProductDocMapping;
+import com.ac.search.qry.GeoSearchQry;
 import com.ac.search.qry.ListSearchQry;
 import com.ac.search.qry.PageSearchQry;
 import com.ac.search.service.ProductDocService;
@@ -93,6 +94,12 @@ public class ProductDocServiceImpl implements ProductDocService {
     }
 
     @Override
+    public List<ProductDoc> listByGeo(GeoSearchQry qry) {
+        qry.setIndexName(IndexNameConstants.PRODUCT_DOC);
+        return esClientSearchTool.geoSearch(ProductDoc.class, qry);
+    }
+
+    @Override
     public List<ProductHighlightDTO> listByMatchHighlight(String keyword) {
         ListSearchQry qry = ListSearchQry.builder()
                 .indexName(IndexNameConstants.PRODUCT_DOC)
@@ -103,7 +110,7 @@ public class ProductDocServiceImpl implements ProductDocService {
     }
 
     @Override
-    public EsPage<ProductDoc> pageSearch(Integer current,Integer size,String keyword) {
+    public EsPage<ProductDoc> pageSearch(Integer current, Integer size, String keyword) {
         PageSearchQry qry = PageSearchQry.builder()
                 .indexName(IndexNameConstants.PRODUCT_DOC)
                 .current(current)
@@ -111,7 +118,7 @@ public class ProductDocServiceImpl implements ProductDocService {
                 .keyword(keyword)
                 .termField("category")
                 .termValue("饮料")
-                .fieldList(Arrays.asList("remark","remark.pinyin","productName.pinyin"))
+                .fieldList(Arrays.asList("remark", "remark.pinyin", "productName.pinyin"))
                 .fieldUnSplitList(Arrays.asList("productName"))
                 .orderField("id")
                 .orderType(OrderTypeEnum.ASC)

@@ -1,6 +1,7 @@
 package com.ac.search.qry;
 
 import com.ac.common.enums.OrderTypeEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -19,17 +20,18 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "文档分页查询对象")
+@ApiModel(value = "分页查询")
 public class PageSearchQry {
 
+    @JsonIgnore
     @ApiModelProperty(value = "索引名称")
     private String indexName;
 
     @ApiModelProperty(value = "页码")
-    private Integer current;
+    private Integer current = 1;
 
     @ApiModelProperty(value = "每页数量")
-    private Integer size;
+    private Integer size = 20;
 
     @ApiModelProperty(value = "搜索关键字")
     private String keyword;

@@ -8,6 +8,7 @@ import com.ac.common.page.EsPage;
 import com.ac.search.factory.ElasticsearchFactory;
 import com.ac.search.highlight.BaseHighlight;
 import com.ac.search.highlight.HighlightFieldInfo;
+import com.ac.search.qry.GeoSearchQry;
 import com.ac.search.qry.ListSearchQry;
 import com.ac.search.qry.PageSearchQry;
 import com.alibaba.fastjson.JSONObject;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
@@ -24,6 +26,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.stereotype.Component;
 
@@ -136,6 +139,36 @@ public class EsClientSearchTool {
     }
 
     /**
+     * GEO地理位置查询
+     *
+     * @param clazz
+     * @param qry
+     * @param <T>
+     * @return
+     */
+    public <T> List<T> geoSearch(Class<T> clazz, GeoSearchQry qry) {
+        String indexName = qry.getIndexName();
+        SearchRequest request = new SearchRequest(indexName);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+        GeoDistanceQueryBuilder builder = QueryBuilders.geoDistanceQuery("location")//查询字段
+                .point(qry.getLat(), qry.getLon())//设置经纬度
+                .distance(qry.getDistance(), qry.getDistanceUnit())//设置距离和单位
+                .geoDistance(GeoDistance.ARC);
+
+        searchSourceBuilder.query(builder);
+
+        GeoDistanceSortBuilder distanceSortBuilder = new GeoDistanceSortBuilder("location", qry.getLat(), qry.getLon());
+        distanceSortBuilder.unit(qry.getDistanceUnit());
+        distanceSortBuilder.order(SortOrder.ASC);
+        searchSourceBuilder.sort(distanceSortBuilder);
+        request.source(searchSourceBuilder);
+        log.info("DSL:" + searchSourceBuilder.toString());
+
+        return doSearchList(clazz, request);
+    }
+
+    /**
      * 分页-搜索
      *
      * @param clazz
@@ -144,8 +177,8 @@ public class EsClientSearchTool {
      * @return
      */
     public <T> EsPage<T> pageSearch(Class<T> clazz, PageSearchQry qry) {
-        Integer pageNo = qry.getCurrent() == null ? 1 : qry.getCurrent();
-        Integer pageSize = qry.getSize() == null ? 20 : qry.getSize();
+        Integer pageNo = qry.getCurrent();
+        Integer pageSize = qry.getSize();
 
         SearchRequest request = new SearchRequest(qry.getIndexName());
         SearchSourceBuilder builder = new SearchSourceBuilder();

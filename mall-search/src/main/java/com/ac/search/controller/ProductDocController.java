@@ -3,6 +3,7 @@ package com.ac.search.controller;
 import com.ac.common.page.EsPage;
 import com.ac.search.dto.ProductHighlightDTO;
 import com.ac.search.entity.ProductDoc;
+import com.ac.search.qry.GeoSearchQry;
 import com.ac.search.service.ProductDocService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,6 +31,42 @@ public class ProductDocController {
     public boolean saveDoc(@RequestBody ProductDoc doc) {
         productDocServiceImpl.saveDoc(doc);
         return true;
+
+        /**
+         * {
+         *   "id": 1001,
+         *   "productName": "迷你雪碧",
+         *   "category": "饮料",
+         *   "brand": "可口可乐",
+         *   "stock": 100,
+         *   "costPrice": 0.50,
+         *   "sellPrice": 6.00,
+         *   "discountPrice": 4.50,
+         *   "imageUrl": "https://img2.baidu.com/it/u=302349378,686513206&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
+         *   "remark": "可口可乐 迷你小瓶雪碧300ml*6/12/24瓶整箱装柠檬味汽水碳酸饮料批发 雪碧【300mlX6瓶】】 口味",
+         *   "location": {
+         *     "lat": 20.1322,
+         *     "lon": 110.2562
+         *   }
+         * }
+         *
+         * {
+         *   "id": 1002,
+         *   "productName": "大瓶雪碧",
+         *   "category": "饮料",
+         *   "brand": "可口可乐",
+         *   "stock": 200,
+         *   "costPrice": 0.50,
+         *   "sellPrice": 16.00,
+         *   "discountPrice": 14.50,
+         *   "imageUrl": "https://img2.baidu.com/it/u=302349378,686513206&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
+         *   "remark": "可口可乐 大瓶雪碧600ml*6/12/24瓶整箱装柠檬味汽水碳酸饮料批发 雪碧【600mlX6瓶】】 口味",
+         *   "location": {
+         *     "lat": 20.1321,
+         *     "lon": 110.2561
+         *   }
+         * }
+         */
     }
 
     @ApiOperation(value = "修改文档")
@@ -49,24 +86,35 @@ public class ProductDocController {
     @ApiOperation(value = "精确查询")
     @GetMapping("listByTerm")
     public List<ProductDoc> listByTerm(@RequestParam String keyword) {
+        //127.0.0.1:7040/product_doc/listByTerm?keyword=饮料
         return productDocServiceImpl.listByTerm(keyword);
     }
 
     @ApiOperation(value = "分词查询")
     @GetMapping("listByMatch")
     public List<ProductDoc> listByMatch(@RequestParam String keyword) {
+        //127.0.0.1:7040/product_doc/listByMatch?keyword=雪碧
         return productDocServiceImpl.listByMatch(keyword);
     }
 
     @ApiOperation(value = "多字段分词查询")
     @GetMapping("listByMultiMatch")
     public List<ProductDoc> listByMultiMatch(@RequestParam String keyword) {
+        //127.0.0.1:7040/product_doc/listByMultiMatch?keyword=碳酸
         return productDocServiceImpl.listByMultiMatch(keyword);
+    }
+
+    @ApiOperation(value = "GEO地理位置查询")
+    @GetMapping("listByGeo")
+    public List<ProductDoc> listByGeo(GeoSearchQry qry) {
+        //127.0.0.1:7040/product_doc/listByGeo?lat=20.1322&lon=110.2562&distance=100
+        return productDocServiceImpl.listByGeo(qry);
     }
 
     @ApiOperation(value = "分词查询-高亮显示")
     @GetMapping("listByMatchHighlight")
     public List<ProductHighlightDTO> listByMatchHighlight(@RequestParam String keyword) {
+        //127.0.0.1:7040/product_doc/listByMatchHighlight?keyword=雪碧
         return productDocServiceImpl.listByMatchHighlight(keyword);
 
         /**
@@ -117,6 +165,7 @@ public class ProductDocController {
     @ApiOperation(value = "分页查询")
     @GetMapping("pageSearch")
     public EsPage<ProductDoc> pageSearch(@RequestParam Integer current, @RequestParam Integer size, @RequestParam String keyword) {
+        //127.0.0.1:7040/product_doc/pageSearch?current=1&size=10&keyword=雪碧
         return productDocServiceImpl.pageSearch(current, size, keyword);
 
         /**

@@ -3,6 +3,7 @@ package com.ac.search.service;
 import com.ac.common.page.EsPage;
 import com.ac.search.dto.ProductHighlightDTO;
 import com.ac.search.entity.ProductDoc;
+import com.ac.search.qry.GeoSearchQry;
 
 import java.util.List;
 
@@ -71,6 +72,14 @@ public interface ProductDocService {
      * @return
      */
     List<ProductDoc> listByMultiMatch(String keyword);
+
+    /**
+     * GEO地理位置查询
+     *
+     * @param qry
+     * @return
+     */
+    List<ProductDoc> listByGeo(GeoSearchQry qry);
 
     /**
      * 分词查询-高亮显示
