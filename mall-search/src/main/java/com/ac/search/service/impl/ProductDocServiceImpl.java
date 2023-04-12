@@ -110,7 +110,7 @@ public class ProductDocServiceImpl implements ProductDocService {
                 .keyword(keyword)
                 .termField("category")
                 .termValue("饮料")
-                .fieldList(Arrays.asList("remark","remark..pinyin","productName.pinyin"))
+                .fieldList(Arrays.asList("remark","remark.pinyin","productName.pinyin"))
                 .fieldUnSplitList(Arrays.asList("productName"))
                 .build();
         return esClientSearchTool.pageSearch(ProductDoc.class, qry);
