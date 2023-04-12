@@ -29,10 +29,24 @@ public class OrderDocController {
         return orderDocServiceImpl.listAll();
     }
 
-    @ApiOperation(value = "新增")
+    @ApiOperation(value = "新增文档")
     @PostMapping
-    public boolean add(@RequestBody OrderDoc doc) {
-        orderDocServiceImpl.save(doc);
+    public boolean saveDoc(@RequestBody OrderDoc doc) {
+        orderDocServiceImpl.saveDoc(doc);
+        return true;
+    }
+
+    @ApiOperation(value = "修改文档")
+    @PutMapping
+    public boolean updateDoc(@RequestBody OrderDoc doc) {
+        orderDocServiceImpl.updateDoc(doc);
+        return true;
+    }
+
+    @ApiOperation(value = "删除文档")
+    @DeleteMapping
+    public boolean deleteDoc(@RequestParam String docId) {
+        orderDocServiceImpl.deleteDoc(docId);
         return true;
     }
 }

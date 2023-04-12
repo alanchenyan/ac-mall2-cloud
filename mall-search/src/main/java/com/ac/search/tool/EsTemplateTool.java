@@ -1,11 +1,14 @@
 package com.ac.search.tool;
 
+import cn.hutool.core.bean.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
+import org.springframework.data.elasticsearch.core.query.UpdateQuery;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * @author Alan Chen
@@ -29,5 +32,11 @@ public class EsTemplateTool {
 
     public boolean deleteIndex(String... indexNames) {
         return elasticsearchRestTemplate.indexOps(IndexCoordinates.of(indexNames)).delete();
+    }
+
+    public void updateDoc(String indexName, String docId, Object docObj) {
+        Map<String, Object> params = BeanUtil.beanToMap(docObj);
+        UpdateQuery query = UpdateQuery.builder(docId).withParams(params).build();
+        elasticsearchRestTemplate.update(query, IndexCoordinates.of(indexName));
     }
 }

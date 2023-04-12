@@ -1,8 +1,8 @@
 package com.ac.search.service.impl;
 
+import com.ac.search.constant.IndexNameConstants;
 import com.ac.search.dao.OrderDocDao;
 import com.ac.search.entity.OrderDoc;
-import com.ac.search.entity.ProductDoc;
 import com.ac.search.service.OrderDocService;
 import com.ac.search.tool.EsTemplateTool;
 import lombok.extern.slf4j.Slf4j;
@@ -24,12 +24,32 @@ public class OrderDocServiceImpl implements OrderDocService {
 
     @Override
     public boolean deleteIndex() {
-        return esTemplateTool.deleteIndex(ProductDoc.class);
+        return esTemplateTool.deleteIndex(OrderDoc.class);
     }
 
     @Override
-    public void save(OrderDoc doc) {
+    public void saveDoc(OrderDoc doc) {
         orderDocDao.save(doc);
+    }
+
+    @Override
+    public void updateDoc(OrderDoc doc) {
+        esTemplateTool.updateDoc(IndexNameConstants.ORDER_DOC, doc.getId(), doc);
+    }
+
+    @Override
+    public void deleteDoc(String docId) {
+        orderDocDao.deleteById(docId);
+    }
+
+    @Override
+    public List<OrderDoc> listByTerm(String keyword) {
+        return null;
+    }
+
+    @Override
+    public List<OrderDoc> listByMatch(String keyword) {
+        return null;
     }
 
     @Override
