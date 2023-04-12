@@ -23,12 +23,6 @@ public class OrderDocController {
         return orderDocServiceImpl.deleteIndex();
     }
 
-    @ApiOperation(value = "列表")
-    @GetMapping("list")
-    public List<OrderDoc> list() {
-        return orderDocServiceImpl.listAll();
-    }
-
     @ApiOperation(value = "新增文档")
     @PostMapping
     public boolean saveDoc(@RequestBody OrderDoc doc) {
@@ -48,5 +42,17 @@ public class OrderDocController {
     public boolean deleteDoc(@RequestParam String docId) {
         orderDocServiceImpl.deleteDoc(docId);
         return true;
+    }
+
+    @ApiOperation(value = "精确查询")
+    @GetMapping("listByTerm")
+    public List<OrderDoc> listByTerm(@RequestParam String keyword) {
+        return orderDocServiceImpl.listByTerm(keyword);
+    }
+
+    @ApiOperation(value = "列表-所有")
+    @GetMapping("list")
+    public List<OrderDoc> list() {
+        return orderDocServiceImpl.listAll();
     }
 }

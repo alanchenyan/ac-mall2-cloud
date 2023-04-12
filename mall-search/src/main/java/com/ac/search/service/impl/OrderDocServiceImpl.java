@@ -3,6 +3,7 @@ package com.ac.search.service.impl;
 import com.ac.search.constant.IndexNameConstants;
 import com.ac.search.dao.OrderDocDao;
 import com.ac.search.entity.OrderDoc;
+import com.ac.search.qry.ListSearchQry;
 import com.ac.search.service.OrderDocService;
 import com.ac.search.tool.EsTemplateTool;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -44,7 +46,11 @@ public class OrderDocServiceImpl implements OrderDocService {
 
     @Override
     public List<OrderDoc> listByTerm(String keyword) {
-        return null;
+        ListSearchQry qry = ListSearchQry.builder()
+                .keyword(keyword)
+                .fieldList(Arrays.asList("orderNo"))
+                .build();
+        return esTemplateTool.termSearch(OrderDoc.class, qry);
     }
 
     @Override
