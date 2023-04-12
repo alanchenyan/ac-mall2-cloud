@@ -2,6 +2,7 @@ package com.ac.search.entity;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 
 /**
  * @author Alan Chen
@@ -25,4 +26,7 @@ public class ProductDoc {
 
     @ApiModelProperty("产品详情描述")
     private String remark;
+
+    @ApiModelProperty(value = "地理位置")
+    private GeoPoint location;
 }

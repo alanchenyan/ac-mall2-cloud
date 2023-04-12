@@ -59,10 +59,16 @@ public class ProductDocMapping {
                                 .endObject()
                             .endObject()
 
+                            //经纬度
+                            .startObject("location")
+                                .field("type", "geo_point")
+                            .endObject()
+
                         .endObject()
                     .endObject();
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("packageMapping失败");
+            e.printStackTrace();
         }
         return mapping;
     }
