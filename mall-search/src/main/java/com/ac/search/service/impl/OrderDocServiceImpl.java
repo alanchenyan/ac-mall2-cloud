@@ -1,8 +1,8 @@
 package com.ac.search.service.impl;
 
-import com.ac.search.constant.IndexNameConstants;
 import com.ac.search.dao.OrderDocDao;
 import com.ac.search.entity.OrderDoc;
+import com.ac.search.entity.ProductDoc;
 import com.ac.search.qry.ListSearchQry;
 import com.ac.search.service.OrderDocService;
 import com.ac.search.tool.EsTemplateTool;
@@ -36,7 +36,7 @@ public class OrderDocServiceImpl implements OrderDocService {
 
     @Override
     public void updateDoc(OrderDoc doc) {
-        esTemplateTool.updateDoc(IndexNameConstants.ORDER_DOC, doc.getId(), doc);
+        esTemplateTool.updateDoc(OrderDoc.class, doc.getId(), doc);
     }
 
     @Override
@@ -45,12 +45,12 @@ public class OrderDocServiceImpl implements OrderDocService {
     }
 
     @Override
-    public List<OrderDoc> listByTerm(String keyword) {
+    public List<ProductDoc> listByTerm(String keyword) {
         ListSearchQry qry = ListSearchQry.builder()
                 .keyword(keyword)
-                .fieldList(Arrays.asList("orderNo"))
+                .fieldList(Arrays.asList("category"))
                 .build();
-        return esTemplateTool.termSearch(OrderDoc.class, qry);
+        return esTemplateTool.termSearch(ProductDoc.class, qry);
     }
 
     @Override

@@ -2,10 +2,12 @@ package com.ac.search.tool;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.ac.search.qry.ListSearchQry;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.TermsQueryBuilder;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.document.Document;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
@@ -41,13 +43,13 @@ public class EsTemplateTool {
         return elasticsearchRestTemplate.indexOps(IndexCoordinates.of(indexNames)).delete();
     }
 
-    public void updateDoc(String indexName, String docId, Object docObj) {
+    public void updateDoc(Class<?> clazz, String docId, Object docObj) {
         Document document = Document.create();
         Map<String, Object> params = BeanUtil.beanToMap(docObj);
         document.putAll(params);
 
         UpdateQuery query = UpdateQuery.builder(docId).withDocument(document).build();
-        elasticsearchRestTemplate.update(query, IndexCoordinates.of(indexName));
+        elasticsearchRestTemplate.update(query, elasticsearchRestTemplate.getIndexCoordinatesFor(clazz));
     }
 
     public <T> List<T> termSearch(Class<T> clazz, ListSearchQry qry) {
@@ -56,6 +58,12 @@ public class EsTemplateTool {
 
         NativeSearchQuery searchQuery = new NativeSearchQuery(queryBuilder);
         SearchHits searchHits = elasticsearchRestTemplate.search(searchQuery, clazz);
-        return searchHits.toList();
+
+        List<T> records = Lists.newArrayList();
+        List<SearchHit<T>> hitList = searchHits.getSearchHits();
+        for (SearchHit<T> hit : hitList) {
+            records.add(hit.getContent());
+        }
+        return records;
     }
 }

@@ -1,6 +1,7 @@
 package com.ac.search.service;
 
 import com.ac.search.entity.OrderDoc;
+import com.ac.search.entity.ProductDoc;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ public interface OrderDocService {
      * @param keyword
      * @return
      */
-    List<OrderDoc> listByTerm(String keyword);
+    List<ProductDoc> listByTerm(String keyword);
 
     /**
      * 分词查询

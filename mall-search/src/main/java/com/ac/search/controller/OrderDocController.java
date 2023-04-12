@@ -1,6 +1,7 @@
 package com.ac.search.controller;
 
 import com.ac.search.entity.OrderDoc;
+import com.ac.search.entity.ProductDoc;
 import com.ac.search.service.OrderDocService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,7 +47,7 @@ public class OrderDocController {
 
     @ApiOperation(value = "精确查询")
     @GetMapping("listByTerm")
-    public List<OrderDoc> listByTerm(@RequestParam String keyword) {
+    public List<ProductDoc> listByTerm(@RequestParam String keyword) {
         return orderDocServiceImpl.listByTerm(keyword);
     }
 
