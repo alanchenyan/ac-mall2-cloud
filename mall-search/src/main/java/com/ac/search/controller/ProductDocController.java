@@ -118,5 +118,74 @@ public class ProductDocController {
     @GetMapping("pageSearch")
     public EsPage<ProductDoc> pageSearch(@RequestParam Integer current, @RequestParam Integer size, @RequestParam String keyword) {
         return productDocServiceImpl.pageSearch(current, size, keyword);
+
+        /**
+         * select * from indexName where termField = 'termValue' and (field_1 in (被搜索字段的分词 AND)  or field_2 in (被搜索字段的分词 OR))
+         *
+         * {
+         *     "from": 0,
+         *     "size": 10,
+         *     "query": {
+         *         "bool": {
+         *             "must": [
+         *                 {
+         *                     "term": {
+         *                         "category": {
+         *                             "value": "饮料",
+         *                             "boost": 1.0
+         *                         }
+         *                     }
+         *                 },
+         *                 {
+         *                     "bool": {
+         *                         "should": [
+         *                             {
+         *                                 "multi_match": {
+         *                                     "query": "雪碧",
+         *                                     "fields": [
+         *                                         "productName^1.0"
+         *                                     ],
+         *                                     "type": "best_fields",
+         *                                     "operator": "AND",
+         *                                     "slop": 0,
+         *                                     "prefix_length": 0,
+         *                                     "max_expansions": 50,
+         *                                     "zero_terms_query": "NONE",
+         *                                     "auto_generate_synonyms_phrase_query": true,
+         *                                     "fuzzy_transpositions": true,
+         *                                     "boost": 1.0
+         *                                 }
+         *                             },
+         *                             {
+         *                                 "multi_match": {
+         *                                     "query": "雪碧",
+         *                                     "fields": [
+         *                                         "productName.pinyin^1.0",
+         *                                         "remark^1.0",
+         *                                         "remark..pinyin^1.0"
+         *                                     ],
+         *                                     "type": "best_fields",
+         *                                     "operator": "OR",
+         *                                     "slop": 0,
+         *                                     "prefix_length": 0,
+         *                                     "max_expansions": 50,
+         *                                     "zero_terms_query": "NONE",
+         *                                     "auto_generate_synonyms_phrase_query": true,
+         *                                     "fuzzy_transpositions": true,
+         *                                     "boost": 1.0
+         *                                 }
+         *                             }
+         *                         ],
+         *                         "adjust_pure_negative": true,
+         *                         "boost": 1.0
+         *                     }
+         *                 }
+         *             ],
+         *             "adjust_pure_negative": true,
+         *             "boost": 1.0
+         *         }
+         *     }
+         * }
+         */
     }
 }
