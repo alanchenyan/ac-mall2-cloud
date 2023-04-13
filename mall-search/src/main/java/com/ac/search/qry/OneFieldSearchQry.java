@@ -8,8 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 /**
  * @author Alan Chen
  * @description 多字段检索
@@ -19,8 +17,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("检索")
-public class ListSearchQry {
+@ApiModel("单个字段检索")
+public class OneFieldSearchQry {
 
     @JsonIgnore
     @ApiModelProperty(value = "索引名称")
@@ -30,5 +28,5 @@ public class ListSearchQry {
     private String keyword;
 
     @ApiModelProperty(value = "检索字段")
-    private List<String> fieldList;
+    private String field;
 }

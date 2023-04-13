@@ -7,7 +7,8 @@ import com.ac.search.dto.ProductHighlightDTO;
 import com.ac.search.entity.ProductDoc;
 import com.ac.search.mapping.ProductDocMapping;
 import com.ac.search.qry.GeoSearchQry;
-import com.ac.search.qry.ListSearchQry;
+import com.ac.search.qry.MultiSearchQry;
+import com.ac.search.qry.OneFieldSearchQry;
 import com.ac.search.qry.PageSearchQry;
 import com.ac.search.service.ProductDocService;
 import com.ac.search.tool.EsClientDdlTool;
@@ -65,27 +66,27 @@ public class ProductDocServiceImpl implements ProductDocService {
 
     @Override
     public List<ProductDoc> listByTerm(String keyword) {
-        ListSearchQry qry = ListSearchQry.builder()
+        OneFieldSearchQry qry = OneFieldSearchQry.builder()
                 .indexName(IndexNameConstants.PRODUCT_DOC)
                 .keyword(keyword)
-                .fieldList(Arrays.asList("category"))
+                .field("category")
                 .build();
         return esClientSearchTool.termSearch(ProductDoc.class, qry);
     }
 
     @Override
     public List<ProductDoc> listByMatch(String keyword) {
-        ListSearchQry qry = ListSearchQry.builder()
+        OneFieldSearchQry qry = OneFieldSearchQry.builder()
                 .indexName(IndexNameConstants.PRODUCT_DOC)
                 .keyword(keyword)
-                .fieldList(Arrays.asList("remark"))
+                .field("remark")
                 .build();
         return esClientSearchTool.matchSearch(ProductDoc.class, qry);
     }
 
     @Override
     public List<ProductDoc> listByMultiMatch(String keyword) {
-        ListSearchQry qry = ListSearchQry.builder()
+        MultiSearchQry qry = MultiSearchQry.builder()
                 .indexName(IndexNameConstants.PRODUCT_DOC)
                 .keyword(keyword)
                 .fieldList(Arrays.asList("productName", "remark"))
@@ -102,10 +103,10 @@ public class ProductDocServiceImpl implements ProductDocService {
 
     @Override
     public List<ProductHighlightDTO> listByMatchHighlight(String keyword) {
-        ListSearchQry qry = ListSearchQry.builder()
+        OneFieldSearchQry qry = OneFieldSearchQry.builder()
                 .indexName(IndexNameConstants.PRODUCT_DOC)
                 .keyword(keyword)
-                .fieldList(Arrays.asList("remark"))
+                .field("remark")
                 .build();
         return esClientSearchTool.matchSearchHighlight(ProductHighlightDTO.class, qry);
     }

@@ -1,7 +1,7 @@
 package com.ac.search.tool;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.ac.search.qry.ListSearchQry;
+import com.ac.search.qry.MultiSearchQry;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -52,7 +52,7 @@ public class EsTemplateTool {
         elasticsearchRestTemplate.update(query, elasticsearchRestTemplate.getIndexCoordinatesFor(clazz));
     }
 
-    public <T> List<T> termSearch(Class<T> clazz, ListSearchQry qry) {
+    public <T> List<T> termSearch(Class<T> clazz, MultiSearchQry qry) {
         QueryBuilder queryBuilder = new TermsQueryBuilder(qry.getFieldList().get(0), qry.getKeyword());
         log.info("DSL={}", queryBuilder.toString());
 

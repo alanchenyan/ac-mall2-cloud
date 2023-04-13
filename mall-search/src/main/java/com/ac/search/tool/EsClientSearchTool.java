@@ -8,9 +8,7 @@ import com.ac.common.page.EsPage;
 import com.ac.search.factory.ElasticsearchFactory;
 import com.ac.search.highlight.BaseHighlight;
 import com.ac.search.highlight.HighlightFieldInfo;
-import com.ac.search.qry.GeoSearchQry;
-import com.ac.search.qry.ListSearchQry;
-import com.ac.search.qry.PageSearchQry;
+import com.ac.search.qry.*;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.sun.deploy.util.StringUtils;
@@ -22,6 +20,12 @@ import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.ParsedTopHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
@@ -59,13 +63,13 @@ public class EsClientSearchTool {
      * @param <T>
      * @return
      */
-    public <T> List<T> termSearch(Class<T> clazz, ListSearchQry qry) {
+    public <T> List<T> termSearch(Class<T> clazz, OneFieldSearchQry qry) {
         //参数校验
         checkParam(qry);
 
         SearchRequest request = new SearchRequest(qry.getIndexName());
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery(qry.getFieldList().get(0), qry.getKeyword());
+        TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery(qry.getField(), qry.getKeyword());
         searchSourceBuilder.query(termQueryBuilder);
         request.source(searchSourceBuilder);
         log.info("DSL={}", searchSourceBuilder.toString());
@@ -82,10 +86,13 @@ public class EsClientSearchTool {
      * @param <T>
      * @return
      */
-    public <T> List<T> matchSearch(Class<T> clazz, ListSearchQry qry) {
+    public <T> List<T> matchSearch(Class<T> clazz, OneFieldSearchQry qry) {
+        //参数校验
+        checkParam(qry);
+
         SearchRequest request = new SearchRequest(qry.getIndexName());
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery(qry.getFieldList().get(0), qry.getKeyword());
+        MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery(qry.getField(), qry.getKeyword());
         searchSourceBuilder.query(matchQueryBuilder);
         request.source(searchSourceBuilder);
         log.info("DSL:" + searchSourceBuilder.toString());
@@ -102,7 +109,10 @@ public class EsClientSearchTool {
      * @param <T>
      * @return
      */
-    public <T> List<T> multiMatchSearch(Class<T> clazz, ListSearchQry qry) {
+    public <T> List<T> multiMatchSearch(Class<T> clazz, MultiSearchQry qry) {
+        //参数校验
+        checkMultiParam(qry);
+
         String indexName = qry.getIndexName();
         List<String> fieldList = qry.getFieldList();
         String keyword = qry.getKeyword();
@@ -125,10 +135,13 @@ public class EsClientSearchTool {
      * @param <T>
      * @return
      */
-    public <T> List<T> matchSearchHighlight(Class<T> clazz, ListSearchQry qry) {
+    public <T> List<T> matchSearchHighlight(Class<T> clazz, OneFieldSearchQry qry) {
+        //参数校验
+        checkParam(qry);
+
         SearchRequest request = new SearchRequest(qry.getIndexName());
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery(qry.getFieldList().get(0), qry.getKeyword());
+        MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery(qry.getField(), qry.getKeyword());
         searchSourceBuilder.query(matchQueryBuilder);
         HighlightBuilder highlightBuilder = ElasticsearchFactory.builderHighlight();
         searchSourceBuilder.highlighter(highlightBuilder);
@@ -166,6 +179,47 @@ public class EsClientSearchTool {
         log.info("DSL:" + searchSourceBuilder.toString());
 
         return doSearchList(clazz, request);
+    }
+
+    public <T> List<T> aggregationSearch(Class<T> clazz, AggregationSearchQry qry) {
+        SearchRequest request = new SearchRequest(qry.getIndexName());
+        SearchSourceBuilder builder = new SearchSourceBuilder();
+
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+        if (StrUtil.isNotBlank(qry.getTermField()) && StrUtil.isNotBlank(qry.getTermValue())) {
+            TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery(qry.getTermField(), qry.getTermValue());
+            boolQueryBuilder.must(termQueryBuilder);
+        }
+        builder.query(boolQueryBuilder);
+
+        //按品牌分组
+        TermsAggregationBuilder termsAggregationBuilder = AggregationBuilders.terms("calc_brand").field("brand")
+                .subAggregation(AggregationBuilders.topHits("details").size(1));
+        builder.aggregation(termsAggregationBuilder);
+
+        request.source(builder);
+        log.info("DSL={}", builder.toString());
+
+        SearchResponse response = doSearch(request);
+
+        Aggregations aggregations = response.getAggregations();
+        Map<String, Aggregation> aggregationMap = aggregations.getAsMap();
+        Terms terms = (Terms) aggregationMap.get("calc_brand");
+        List<? extends Terms.Bucket> buckets = terms.getBuckets();
+        for (Terms.Bucket bucket : buckets) {
+            String brand = bucket.getKeyAsString();
+            long count = bucket.getDocCount();
+
+            Aggregations bucketAggregations = bucket.getAggregations();
+            ParsedTopHits topHits = bucketAggregations.get("details");
+            Map<String, Object> sourceAsMap = topHits.getHits().getHits()[0].getSourceAsMap();
+            if (sourceAsMap != null && sourceAsMap.size() > 0) {
+                System.out.println("a");
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -400,7 +454,26 @@ public class EsClientSearchTool {
      *
      * @param qry
      */
-    private void checkParam(ListSearchQry qry) {
+    private void checkParam(OneFieldSearchQry qry) {
+        if (StrUtil.isEmpty(qry.getIndexName())) {
+            throw new RuntimeException("索引名称不能为空");
+        }
+
+        if (StrUtil.isEmpty(qry.getKeyword())) {
+            throw new RuntimeException("查询关键字不能为空");
+        }
+
+        if (StrUtil.isEmpty(qry.getField())) {
+            throw new RuntimeException("检索字段不能为空");
+        }
+    }
+
+    /**
+     * 参数校验
+     *
+     * @param qry
+     */
+    private void checkMultiParam(MultiSearchQry qry) {
         if (StrUtil.isEmpty(qry.getIndexName())) {
             throw new RuntimeException("索引名称不能为空");
         }
