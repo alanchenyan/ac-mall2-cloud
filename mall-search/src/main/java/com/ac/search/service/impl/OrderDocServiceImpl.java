@@ -24,6 +24,17 @@ public class OrderDocServiceImpl implements OrderDocService {
     private EsTemplateTool esTemplateTool;
 
     @Override
+    public boolean initIndex() {
+        deleteIndex();
+        return createIndex();
+    }
+
+    @Override
+    public boolean createIndex() {
+        return esTemplateTool.createIndex(OrderDoc.class);
+    }
+
+    @Override
     public boolean deleteIndex() {
         return esTemplateTool.deleteIndex(OrderDoc.class);
     }

@@ -1,7 +1,6 @@
 package com.ac.search.controller;
 
 import com.ac.search.entity.OrderDoc;
-import com.ac.search.entity.ProductDoc;
 import com.ac.search.service.OrderDocService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,10 +17,10 @@ public class OrderDocController {
     @Resource
     private OrderDocService orderDocServiceImpl;
 
-    @ApiOperation(value = "删除index")
-    @DeleteMapping("deleteIndex")
-    public boolean deleteIndex() {
-        return orderDocServiceImpl.deleteIndex();
+    @ApiOperation(value = "初始化index")
+    @PostMapping("initIndex")
+    public boolean initIndex() {
+        return orderDocServiceImpl.initIndex();
     }
 
     @ApiOperation(value = "新增文档")

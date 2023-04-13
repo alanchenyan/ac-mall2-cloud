@@ -7,6 +7,20 @@ import java.util.List;
 public interface OrderDocService {
 
     /**
+     * 初始化index
+     *
+     * @return
+     */
+    boolean initIndex();
+
+    /**
+     * 创建index
+     *
+     * @return
+     */
+    boolean createIndex();
+
+    /**
      * 删除index
      */
     boolean deleteIndex();

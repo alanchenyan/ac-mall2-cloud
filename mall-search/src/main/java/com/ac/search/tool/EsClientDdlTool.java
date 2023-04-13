@@ -36,11 +36,12 @@ public class EsClientDdlTool {
 
     /**
      * 创建index
+     *
      * @param index
      * @param mapping
      * @return
      */
-    public boolean createIndex(String index,XContentBuilder mapping) {
+    public boolean createIndex(String index, XContentBuilder mapping) {
         XContentBuilder setting = packageSetting();
         return doCreateIndex(index, setting, mapping);
     }
@@ -62,7 +63,7 @@ public class EsClientDdlTool {
             log.info("是否所有节点都已确认请求: " + response.isAcknowledged());
             return true;
         } catch (Exception e) {
-            log.error("删除index失败,indexName={}",indexName);
+            log.error("删除index失败,indexName={}", indexName);
             e.printStackTrace();
         }
         return false;
@@ -81,7 +82,7 @@ public class EsClientDdlTool {
         try {
             return restHighLevelClient.index(indexRequest, EsClientOptions.OPTIONS);
         } catch (Exception e) {
-            log.error("插入文档失败,indexName={},docId={},docObj={}",indexName,docId,docObj);
+            log.error("插入文档失败,indexName={},docId={},docObj={}", indexName, docId, docObj);
             e.printStackTrace();
             throw new RuntimeException("插入文档失败");
         }
@@ -89,6 +90,7 @@ public class EsClientDdlTool {
 
     /**
      * 修改文档
+     *
      * @param indexName
      * @param docId
      * @param docObj
@@ -100,7 +102,7 @@ public class EsClientDdlTool {
             request.docAsUpsert(true);
             return restHighLevelClient.update(request, EsClientOptions.OPTIONS);
         } catch (Exception e) {
-            log.error("修改文档失败,indexName={},docId={},docObj={}",indexName,docId,docObj);
+            log.error("修改文档失败,indexName={},docId={},docObj={}", indexName, docId, docObj);
             e.printStackTrace();
             throw new RuntimeException("修改文档失败");
         }
@@ -108,6 +110,7 @@ public class EsClientDdlTool {
 
     /**
      * 删除文档
+     *
      * @param indexName
      * @param docId
      * @return
@@ -117,7 +120,7 @@ public class EsClientDdlTool {
         try {
             return restHighLevelClient.delete(deleteRequest, EsClientOptions.OPTIONS);
         } catch (Exception e) {
-            log.error("删除文档失败,indexName={},docId={}",indexName,docId);
+            log.error("删除文档失败,indexName={},docId={}", indexName, docId);
             e.printStackTrace();
             throw new RuntimeException("删除文档失败");
         }
@@ -139,7 +142,7 @@ public class EsClientDdlTool {
             log.info("指示是否在超时之前为索引中的每个分片启动了必要数量的分片副本: " + response.isShardsAcknowledged());
             is = response.isAcknowledged();
         } catch (Exception e) {
-            log.error("创建index失败,indexName={}",indexName);
+            log.error("创建index失败,indexName={}", indexName);
             e.printStackTrace();
         }
         return is;
@@ -147,6 +150,7 @@ public class EsClientDdlTool {
 
     /**
      * 构建CreateIndexRequest
+     *
      * @param indexName
      * @return
      */
@@ -179,6 +183,7 @@ public class EsClientDdlTool {
 
     /**
      * 构建UpdateDocRequest
+     *
      * @param indexName
      * @param docId
      * @param docObj
@@ -221,104 +226,104 @@ public class EsClientDdlTool {
         try {
             setting = XContentFactory.jsonBuilder()
                     .startObject()
-                        .field("index.max_ngram_diff", "6")
-                        .startObject("analysis")
-                            .startObject("filter")
-                                .startObject("edge_ngram_filter")
-                                    .field("type", "edge_ngram")
-                                    .field("min_gram", "1")
-                                    .field("max_gram", "50")
-                                .endObject()
+                    .field("index.max_ngram_diff", "6")
+                    .startObject("analysis")
+                    .startObject("filter")
+                    .startObject("edge_ngram_filter")
+                    .field("type", "edge_ngram")
+                    .field("min_gram", "1")
+                    .field("max_gram", "50")
+                    .endObject()
 
-                                .startObject("pinyin_edge_ngram_filter")
-                                    .field("type", "edge_ngram")
-                                    .field("min_gram", 1)
-                                    .field("max_gram", 50)
-                                .endObject()
+                    .startObject("pinyin_edge_ngram_filter")
+                    .field("type", "edge_ngram")
+                    .field("min_gram", 1)
+                    .field("max_gram", 50)
+                    .endObject()
 
-                                //简拼
-                                .startObject("pinyin_simple_filter")
-                                    .field("type", "pinyin")
-                                    .field("keep_first_letter", true)
-                                    .field("keep_separate_first_letter", false)
-                                    .field("keep_full_pinyin", false)
-                                    .field("keep_original", false)
-                                    .field("limit_first_letter_length", 50)
-                                    .field("lowercase", true)
-                                .endObject()
+                    //简拼
+                    .startObject("pinyin_simple_filter")
+                    .field("type", "pinyin")
+                    .field("keep_first_letter", true)
+                    .field("keep_separate_first_letter", false)
+                    .field("keep_full_pinyin", false)
+                    .field("keep_original", false)
+                    .field("limit_first_letter_length", 50)
+                    .field("lowercase", true)
+                    .endObject()
 
-                                //全拼
-                                .startObject("pinyin_full_filter")
-                                    .field("type", "pinyin")
-                                    .field("keep_first_letter", false)
-                                    .field("keep_separate_first_letter", false)
-                                    .field("keep_full_pinyin", true)
-                                    .field("keep_original", false)
-                                    .field("limit_first_letter_length", 50)
-                                    .field("lowercase", true)
-                                .endObject()
+                    //全拼
+                    .startObject("pinyin_full_filter")
+                    .field("type", "pinyin")
+                    .field("keep_first_letter", false)
+                    .field("keep_separate_first_letter", false)
+                    .field("keep_full_pinyin", true)
+                    .field("keep_original", false)
+                    .field("limit_first_letter_length", 50)
+                    .field("lowercase", true)
+                    .endObject()
 
-                            .endObject()
+                    .endObject()
 
-                            //简2繁
-                            .startObject("char_filter")
-                                .startObject("tsconvert")
-                                    .field("type", "stconvert")
-                                    .field("convert_type", "t2s")
-                                .endObject()
-                            .endObject()
+                    //简2繁
+                    .startObject("char_filter")
+                    .startObject("tsconvert")
+                    .field("type", "stconvert")
+                    .field("convert_type", "t2s")
+                    .endObject()
+                    .endObject()
 
-                            .startObject("analyzer")
-                                //模糊搜索、忽略大小写(按字符切分)
-                                .startObject("ngram")
-                                    .field("tokenizer", "my_tokenizer")
-                                    .field("filter", "lowercase")
-                                .endObject()
+                    .startObject("analyzer")
+                    //模糊搜索、忽略大小写(按字符切分)
+                    .startObject("ngram")
+                    .field("tokenizer", "my_tokenizer")
+                    .field("filter", "lowercase")
+                    .endObject()
 
-                                //ik+简体、繁体转换(ik最小切分)-用于查询关键字分词
-                                .startObject("ikSmartAnalyzer")
-                                    .field("type", "custom")
-                                    .field("tokenizer", "ik_smart")
-                                    .field("char_filter", "tsconvert")
-                                .endObject()
+                    //ik+简体、繁体转换(ik最小切分)-用于查询关键字分词
+                    .startObject("ikSmartAnalyzer")
+                    .field("type", "custom")
+                    .field("tokenizer", "ik_smart")
+                    .field("char_filter", "tsconvert")
+                    .endObject()
 
-                                //ik+简体、繁体转换(ik最大切分)-用于文档存储
-                                .startObject("ikMaxAnalyzer")
-                                    .field("type", "custom")
-                                    .field("tokenizer", "ik_max_word")
-                                    .field("char_filter", "tsconvert")
-                                .endObject()
+                    //ik+简体、繁体转换(ik最大切分)-用于文档存储
+                    .startObject("ikMaxAnalyzer")
+                    .field("type", "custom")
+                    .field("tokenizer", "ik_max_word")
+                    .field("char_filter", "tsconvert")
+                    .endObject()
 
-                                //简拼搜索
-                                .startObject("pinyinSimpleIndexAnalyzer")
-                                    .field("type", "custom")
-                                    .field("tokenizer", "keyword")
-                                    .array("filter", "pinyin_simple_filter", "pinyin_edge_ngram_filter", "lowercase")
-                                .endObject()
+                    //简拼搜索
+                    .startObject("pinyinSimpleIndexAnalyzer")
+                    .field("type", "custom")
+                    .field("tokenizer", "keyword")
+                    .array("filter", "pinyin_simple_filter", "pinyin_edge_ngram_filter", "lowercase")
+                    .endObject()
 
-                                //全拼搜索
-                                .startObject("pinyinFullIndexAnalyzer")
-                                    .field("type", "custom")
-                                    .field("tokenizer", "keyword")
-                                    .array("filter", "pinyin_full_filter", "lowercase")
-                                .endObject()
-                            .endObject()
+                    //全拼搜索
+                    .startObject("pinyinFullIndexAnalyzer")
+                    .field("type", "custom")
+                    .field("tokenizer", "keyword")
+                    .array("filter", "pinyin_full_filter", "lowercase")
+                    .endObject()
+                    .endObject()
 
-                            .startObject("tokenizer")
-                                .startObject("my_tokenizer")
-                                    .field("type", "ngram")
-                                    .field("min_gram", "1")
-                                    .field("max_gram", "6")
-                                .endObject()
-                            .endObject()
+                    .startObject("tokenizer")
+                    .startObject("my_tokenizer")
+                    .field("type", "ngram")
+                    .field("min_gram", "1")
+                    .field("max_gram", "6")
+                    .endObject()
+                    .endObject()
 
-                            .startObject("normalizer")
-                                .startObject("lowercase")
-                                    .field("type", "custom")
-                                    .field("filter", "lowercase")
-                                .endObject()
-                            .endObject()
-                        .endObject()
+                    .startObject("normalizer")
+                    .startObject("lowercase")
+                    .field("type", "custom")
+                    .field("filter", "lowercase")
+                    .endObject()
+                    .endObject()
+                    .endObject()
                     .endObject();
         } catch (Exception e) {
             log.error("setting构建失败");

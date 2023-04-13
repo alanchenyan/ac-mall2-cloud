@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.TermsQueryBuilder;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.IndexOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.document.Document;
@@ -31,16 +32,38 @@ public class EsTemplateTool {
     @Resource
     private ElasticsearchRestTemplate elasticsearchRestTemplate;
 
-    public boolean createIndex(String indexName, Object settings) {
-        return elasticsearchRestTemplate.indexOps(IndexCoordinates.of(indexName)).create();
+    public boolean createIndex(Class<?> clazz) {
+        IndexOperations indexOperations = elasticsearchRestTemplate.indexOps(clazz);
+        indexOperations.create();
+        Document document = indexOperations.createMapping(clazz);
+        indexOperations.putMapping(document);
+        return true;
     }
 
     public boolean deleteIndex(Class<?> clazz) {
-        return elasticsearchRestTemplate.indexOps(clazz).delete();
+        try {
+            IndexOperations indexOperations = elasticsearchRestTemplate.indexOps(clazz);
+            if (indexOperations.exists()) {
+                return indexOperations.delete();
+            }
+        } catch (Exception e) {
+            log.error("删除index失败,clazzName={}", clazz.getSimpleName());
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public boolean deleteIndex(String... indexNames) {
-        return elasticsearchRestTemplate.indexOps(IndexCoordinates.of(indexNames)).delete();
+        try {
+            IndexOperations indexOperations = elasticsearchRestTemplate.indexOps(IndexCoordinates.of(indexNames));
+            if (indexOperations.exists()) {
+                return indexOperations.delete();
+            }
+        } catch (Exception e) {
+            log.error("删除index失败,clazzName={}", indexNames);
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public void updateDoc(Class<?> clazz, String docId, Object docObj) {
