@@ -151,14 +151,14 @@ public class EsClientSearchTool {
         SearchRequest request = new SearchRequest(indexName);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
-        GeoDistanceQueryBuilder builder = QueryBuilders.geoDistanceQuery("location")//查询字段
+        GeoDistanceQueryBuilder builder = QueryBuilders.geoDistanceQuery(qry.getGeoPointField())//查询字段
                 .point(qry.getLat(), qry.getLon())//设置经纬度
                 .distance(qry.getDistance(), qry.getDistanceUnit())//设置距离和单位
                 .geoDistance(GeoDistance.ARC);
 
         searchSourceBuilder.query(builder);
 
-        GeoDistanceSortBuilder distanceSortBuilder = new GeoDistanceSortBuilder("location", qry.getLat(), qry.getLon());
+        GeoDistanceSortBuilder distanceSortBuilder = new GeoDistanceSortBuilder(qry.getGeoPointField(), qry.getLat(), qry.getLon());
         distanceSortBuilder.unit(qry.getDistanceUnit());
         distanceSortBuilder.order(SortOrder.ASC);
         searchSourceBuilder.sort(distanceSortBuilder);

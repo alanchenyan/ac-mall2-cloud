@@ -20,6 +20,10 @@ public class GeoSearchQry {
     @ApiModelProperty(value = "索引名称")
     private String indexName;
 
+    @JsonIgnore
+    @ApiModelProperty(value = "地理位置字段")
+    private String geoPointField;
+
     @ApiModelProperty(value = "纬度")
     private Double lat;
 

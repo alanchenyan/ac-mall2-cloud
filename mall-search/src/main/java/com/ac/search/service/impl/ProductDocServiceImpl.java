@@ -96,6 +96,7 @@ public class ProductDocServiceImpl implements ProductDocService {
     @Override
     public List<ProductDoc> listByGeo(GeoSearchQry qry) {
         qry.setIndexName(IndexNameConstants.PRODUCT_DOC);
+        qry.setGeoPointField("location");
         return esClientSearchTool.geoSearch(ProductDoc.class, qry);
     }
 
