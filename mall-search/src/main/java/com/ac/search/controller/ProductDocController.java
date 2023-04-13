@@ -1,6 +1,7 @@
 package com.ac.search.controller;
 
 import com.ac.common.page.EsPage;
+import com.ac.search.dto.AggregationDTO;
 import com.ac.search.dto.ProductHighlightDTO;
 import com.ac.search.entity.ProductDoc;
 import com.ac.search.qry.GeoSearchQry;
@@ -109,6 +110,41 @@ public class ProductDocController {
     public List<ProductDoc> listByGeo(GeoSearchQry qry) {
         //127.0.0.1:7040/product_doc/listByGeo?lat=20.1322&lon=110.2562&distance=100
         return productDocServiceImpl.listByGeo(qry);
+    }
+
+    @ApiOperation(value = "分组查询")
+    @GetMapping("aggregationSearch")
+    public List<AggregationDTO> aggregationSearch() {
+        return productDocServiceImpl.aggregationSearch();
+
+        /**
+         * [
+         *    {
+         * 		"aggregationItem": "可口可乐",
+         * 		"count": 2,
+         * 		"firstDoc": {
+         * 			"id": "1001",
+         * 			"productName": "迷你雪碧",
+         * 			"category": "饮料",
+         * 			"brand": "可口可乐",
+         * 			"remark": "可口可乐 迷你小瓶雪碧300ml*6/12/24瓶整箱装柠檬味汽水碳酸饮料批发 雪碧【300mlX6瓶】】 口味",
+         * 			"location": null
+         *        }
+         *    },
+         *    {
+         * 		"aggregationItem": "哇哈哈",
+         * 		"count": 1,
+         * 		"firstDoc": {
+         * 			"id": "1003",
+         * 			"productName": "哇哈哈矿泉水",
+         * 			"category": "饮料",
+         * 			"brand": "哇哈哈",
+         * 			"remark": "哇哈哈 大瓶600ml*6/12/24瓶整箱装批发 【600mlX6瓶】】 口味",
+         * 			"location": null
+         *        }
+         *    }
+         * ]
+         */
     }
 
     @ApiOperation(value = "分词查询-高亮显示")

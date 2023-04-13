@@ -1,10 +1,13 @@
 package com.ac.search.tool;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.ac.common.enums.OrderTypeEnum;
 import com.ac.common.page.EsPage;
+import com.ac.search.dto.AggregationDTO;
 import com.ac.search.factory.ElasticsearchFactory;
 import com.ac.search.highlight.BaseHighlight;
 import com.ac.search.highlight.HighlightFieldInfo;
@@ -36,10 +39,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -181,7 +181,7 @@ public class EsClientSearchTool {
         return doSearchList(clazz, request);
     }
 
-    public <T> List<T> aggregationSearch(Class<T> clazz, AggregationSearchQry qry) {
+    public <T> List<AggregationDTO> aggregationSearch(Class<T> clazz, AggregationSearchQry qry) {
         SearchRequest request = new SearchRequest(qry.getIndexName());
         SearchSourceBuilder builder = new SearchSourceBuilder();
 
@@ -193,8 +193,8 @@ public class EsClientSearchTool {
         }
         builder.query(boolQueryBuilder);
 
-        //按品牌分组
-        TermsAggregationBuilder termsAggregationBuilder = AggregationBuilders.terms("calc_brand").field("brand")
+        //分组统计
+        TermsAggregationBuilder termsAggregationBuilder = AggregationBuilders.terms("aggregation_terms").field(qry.getAggregationField())
                 .subAggregation(AggregationBuilders.topHits("details").size(1));
         builder.aggregation(termsAggregationBuilder);
 
@@ -202,24 +202,41 @@ public class EsClientSearchTool {
         log.info("DSL={}", builder.toString());
 
         SearchResponse response = doSearch(request);
-
         Aggregations aggregations = response.getAggregations();
         Map<String, Aggregation> aggregationMap = aggregations.getAsMap();
-        Terms terms = (Terms) aggregationMap.get("calc_brand");
+        Terms terms = (Terms) aggregationMap.get("aggregation_terms");
         List<? extends Terms.Bucket> buckets = terms.getBuckets();
+        if (CollectionUtil.isEmpty(buckets)) {
+            return new ArrayList<>();
+        }
+
+        List<AggregationDTO> records = new ArrayList<>();
         for (Terms.Bucket bucket : buckets) {
-            String brand = bucket.getKeyAsString();
+            String aggregationItem = bucket.getKeyAsString();
             long count = bucket.getDocCount();
 
-            Aggregations bucketAggregations = bucket.getAggregations();
-            ParsedTopHits topHits = bucketAggregations.get("details");
-            Map<String, Object> sourceAsMap = topHits.getHits().getHits()[0].getSourceAsMap();
-            if (sourceAsMap != null && sourceAsMap.size() > 0) {
-                System.out.println("a");
+            AggregationDTO dto = AggregationDTO.builder()
+                    .aggregationItem(aggregationItem)
+                    .count(count)
+                    .build();
+            records.add(dto);
+
+            if (qry.isReturnFirstDoc()) {
+                Aggregations bucketAggregations = bucket.getAggregations();
+                ParsedTopHits topHits = bucketAggregations.get("details");
+                Map<String, Object> sourceAsMap = topHits.getHits().getHits()[0].getSourceAsMap();
+                if (sourceAsMap != null && sourceAsMap.size() > 0) {
+                    CopyOptions copyOptions = new CopyOptions();
+
+                    List<String> ignoreProperties = qry.getDocIgnoreProperties();
+                    copyOptions.setIgnoreProperties(ignoreProperties.toArray(new String[ignoreProperties.size()]));
+                    Object firstDoc = BeanUtil.mapToBean(sourceAsMap, clazz, copyOptions);
+                    dto.setFirstDoc(firstDoc);
+                }
             }
         }
 
-        return null;
+        return records;
     }
 
     /**

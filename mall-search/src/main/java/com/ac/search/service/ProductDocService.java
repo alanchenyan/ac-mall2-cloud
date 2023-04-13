@@ -1,6 +1,7 @@
 package com.ac.search.service;
 
 import com.ac.common.page.EsPage;
+import com.ac.search.dto.AggregationDTO;
 import com.ac.search.dto.ProductHighlightDTO;
 import com.ac.search.entity.ProductDoc;
 import com.ac.search.qry.GeoSearchQry;
@@ -88,6 +89,13 @@ public interface ProductDocService {
      * @return
      */
     List<ProductHighlightDTO> listByMatchHighlight(String keyword);
+
+    /**
+     * 分组查询
+     *
+     * @return
+     */
+    List<AggregationDTO> aggregationSearch();
 
     /**
      * 分页查询

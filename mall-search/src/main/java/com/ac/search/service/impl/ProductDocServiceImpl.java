@@ -3,13 +3,11 @@ package com.ac.search.service.impl;
 import com.ac.common.enums.OrderTypeEnum;
 import com.ac.common.page.EsPage;
 import com.ac.search.constant.IndexNameConstants;
+import com.ac.search.dto.AggregationDTO;
 import com.ac.search.dto.ProductHighlightDTO;
 import com.ac.search.entity.ProductDoc;
 import com.ac.search.mapping.ProductDocMapping;
-import com.ac.search.qry.GeoSearchQry;
-import com.ac.search.qry.MultiSearchQry;
-import com.ac.search.qry.OneFieldSearchQry;
-import com.ac.search.qry.PageSearchQry;
+import com.ac.search.qry.*;
 import com.ac.search.service.ProductDocService;
 import com.ac.search.tool.EsClientDdlTool;
 import com.ac.search.tool.EsClientSearchTool;
@@ -109,6 +107,19 @@ public class ProductDocServiceImpl implements ProductDocService {
                 .field("remark")
                 .build();
         return esClientSearchTool.matchSearchHighlight(ProductHighlightDTO.class, qry);
+    }
+
+    @Override
+    public List<AggregationDTO> aggregationSearch() {
+        AggregationSearchQry qry = AggregationSearchQry.builder()
+                .indexName(IndexNameConstants.PRODUCT_DOC)
+                .aggregationField("brand")
+                .termField("category")
+                .termValue("饮料")
+                .returnFirstDoc(true)
+                .docIgnoreProperties(Arrays.asList("location"))
+                .build();
+        return esClientSearchTool.aggregationSearch(ProductDoc.class, qry);
     }
 
     @Override
