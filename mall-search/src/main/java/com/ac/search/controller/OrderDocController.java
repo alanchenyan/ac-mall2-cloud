@@ -28,6 +28,14 @@ public class OrderDocController {
     public boolean saveDoc(@RequestBody OrderDoc doc) {
         orderDocServiceImpl.saveDoc(doc);
         return true;
+
+        /**
+         * {
+         *   "id": "1001",
+         *   "orderNo": "P1001",
+         *   "productName": "大瓶雪碧"
+         * }
+         */
     }
 
     @ApiOperation(value = "修改文档")
@@ -47,7 +55,15 @@ public class OrderDocController {
     @ApiOperation(value = "精确查询")
     @GetMapping("listByTerm")
     public List<OrderDoc> listByTerm(@RequestParam String keyword) {
+        //127.0.0.1:7040/order_doc/listByTerm?keyword=P1001
         return orderDocServiceImpl.listByTerm(keyword);
+    }
+
+    @ApiOperation(value = "分词查询")
+    @GetMapping("listByMatch")
+    public List<OrderDoc> listByMatch(@RequestParam String keyword) {
+        //127.0.0.1:7040/order_doc/listByMatch?keyword=雪碧
+        return orderDocServiceImpl.listByMatch(keyword);
     }
 
     @ApiOperation(value = "列表-所有")

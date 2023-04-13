@@ -2,7 +2,7 @@ package com.ac.search.service.impl;
 
 import com.ac.search.dao.OrderDocDao;
 import com.ac.search.entity.OrderDoc;
-import com.ac.search.qry.MultiSearchQry;
+import com.ac.search.qry.OneFieldSearchQry;
 import com.ac.search.service.OrderDocService;
 import com.ac.search.tool.EsTemplateDdlTool;
 import com.ac.search.tool.EsTemplateSearchTool;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -60,16 +59,20 @@ public class OrderDocServiceImpl implements OrderDocService {
 
     @Override
     public List<OrderDoc> listByTerm(String keyword) {
-        MultiSearchQry qry = MultiSearchQry.builder()
+        OneFieldSearchQry qry = OneFieldSearchQry.builder()
                 .keyword(keyword)
-                .fieldList(Arrays.asList("orderNo"))
+                .field("orderNo")
                 .build();
         return esTemplateSearchTool.termSearch(OrderDoc.class, qry);
     }
 
     @Override
     public List<OrderDoc> listByMatch(String keyword) {
-        return null;
+        OneFieldSearchQry qry = OneFieldSearchQry.builder()
+                .keyword(keyword)
+                .field("productName")
+                .build();
+        return esTemplateSearchTool.matchSearch(OrderDoc.class, qry);
     }
 
     @Override

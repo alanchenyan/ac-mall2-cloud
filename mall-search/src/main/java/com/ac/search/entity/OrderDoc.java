@@ -12,6 +12,7 @@ import org.springframework.data.elasticsearch.annotations.Setting;
  * @date 2023/02/22
  *
  * 提示：ElasticsearchRestTemplate不读@Filed注解，所以你在@Field里面写再多代码也没用
+ * 参考：https://blog.csdn.net/QQ401476683/article/details/121422427
  */
 @Data
 @Setting(settingPath = "/json/common-setting.json")
