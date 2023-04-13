@@ -4,7 +4,8 @@ import com.ac.search.dao.OrderDocDao;
 import com.ac.search.entity.OrderDoc;
 import com.ac.search.qry.MultiSearchQry;
 import com.ac.search.service.OrderDocService;
-import com.ac.search.tool.EsTemplateTool;
+import com.ac.search.tool.EsTemplateDdlTool;
+import com.ac.search.tool.EsTemplateSearchTool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,10 @@ public class OrderDocServiceImpl implements OrderDocService {
     private OrderDocDao orderDocDao;
 
     @Resource
-    private EsTemplateTool esTemplateTool;
+    private EsTemplateSearchTool esTemplateSearchTool;
+
+    @Resource
+    private EsTemplateDdlTool esTemplateDdlTool;
 
     @Override
     public boolean initIndex() {
@@ -31,12 +35,12 @@ public class OrderDocServiceImpl implements OrderDocService {
 
     @Override
     public boolean createIndex() {
-        return esTemplateTool.createIndex(OrderDoc.class);
+        return esTemplateDdlTool.createIndex(OrderDoc.class);
     }
 
     @Override
     public boolean deleteIndex() {
-        return esTemplateTool.deleteIndex(OrderDoc.class);
+        return esTemplateDdlTool.deleteIndex(OrderDoc.class);
     }
 
     @Override
@@ -46,7 +50,7 @@ public class OrderDocServiceImpl implements OrderDocService {
 
     @Override
     public void updateDoc(OrderDoc doc) {
-        esTemplateTool.updateDoc(OrderDoc.class, doc.getId(), doc);
+        esTemplateDdlTool.updateDoc(OrderDoc.class, doc.getId(), doc);
     }
 
     @Override
@@ -60,7 +64,7 @@ public class OrderDocServiceImpl implements OrderDocService {
                 .keyword(keyword)
                 .fieldList(Arrays.asList("orderNo"))
                 .build();
-        return esTemplateTool.termSearch(OrderDoc.class, qry);
+        return esTemplateSearchTool.termSearch(OrderDoc.class, qry);
     }
 
     @Override
