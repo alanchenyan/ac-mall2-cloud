@@ -147,5 +147,6 @@ public class EsClientSetting {
             e.printStackTrace();
         }
         return setting;
+
     }
 }

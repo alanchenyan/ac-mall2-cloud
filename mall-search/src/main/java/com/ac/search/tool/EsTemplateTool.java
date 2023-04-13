@@ -37,6 +37,7 @@ public class EsTemplateTool {
         indexOperations.create();
         Document document = indexOperations.createMapping(clazz);
         indexOperations.putMapping(document);
+        indexOperations.getSettings();
         return true;
     }
 
