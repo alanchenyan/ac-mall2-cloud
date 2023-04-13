@@ -139,6 +139,7 @@ public class EsClientDdlTool {
                 request.mapping(mapping);
             }
             IndicesClient indices = restHighLevelClient.indices();
+            log.info("该内容可以直接粘贴到common-setting.json进行使用，settings={}", request.settings());
             CreateIndexResponse response = indices.create(request, EsClientOptions.OPTIONS);
             log.info("是否所有节点都已确认请求: " + response.isAcknowledged());
             log.info("指示是否在超时之前为索引中的每个分片启动了必要数量的分片副本: " + response.isShardsAcknowledged());
