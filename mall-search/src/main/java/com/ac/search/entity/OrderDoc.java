@@ -2,6 +2,7 @@ package com.ac.search.entity;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -15,6 +16,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 @Document(indexName = "order_doc", shards = 1, replicas = 0)
 public class OrderDoc {
 
+    @Id
     @ApiModelProperty(value = "ID")
     private String id;
 

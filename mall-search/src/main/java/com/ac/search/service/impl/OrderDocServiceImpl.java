@@ -2,7 +2,6 @@ package com.ac.search.service.impl;
 
 import com.ac.search.dao.OrderDocDao;
 import com.ac.search.entity.OrderDoc;
-import com.ac.search.entity.ProductDoc;
 import com.ac.search.qry.MultiSearchQry;
 import com.ac.search.service.OrderDocService;
 import com.ac.search.tool.EsTemplateTool;
@@ -45,12 +44,12 @@ public class OrderDocServiceImpl implements OrderDocService {
     }
 
     @Override
-    public List<ProductDoc> listByTerm(String keyword) {
+    public List<OrderDoc> listByTerm(String keyword) {
         MultiSearchQry qry = MultiSearchQry.builder()
                 .keyword(keyword)
-                .fieldList(Arrays.asList("category"))
+                .fieldList(Arrays.asList("orderNo"))
                 .build();
-        return esTemplateTool.termSearch(ProductDoc.class, qry);
+        return esTemplateTool.termSearch(OrderDoc.class, qry);
     }
 
     @Override

@@ -47,7 +47,7 @@ public class OrderDocController {
 
     @ApiOperation(value = "精确查询")
     @GetMapping("listByTerm")
-    public List<ProductDoc> listByTerm(@RequestParam String keyword) {
+    public List<OrderDoc> listByTerm(@RequestParam String keyword) {
         return orderDocServiceImpl.listByTerm(keyword);
     }
 
