@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Mapping;
+import org.springframework.data.elasticsearch.annotations.Setting;
 
 /**
  * @author Alan Chen
@@ -13,8 +14,9 @@ import org.springframework.data.elasticsearch.annotations.Mapping;
  * 提示：ElasticsearchRestTemplate不读@Filed注解，所以你在@Field里面写再多代码也没用
  */
 @Data
-@Document(indexName = "order_doc", shards = 1, replicas = 0)
+@Setting(settingPath = "/json/common-setting.json")
 @Mapping(mappingPath = "/json/order-mapping.json")
+@Document(indexName = "order_doc", shards = 1, replicas = 0)
 public class OrderDoc {
 
     //@Id

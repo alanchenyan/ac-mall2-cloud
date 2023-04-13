@@ -8,8 +8,14 @@
     },
     "productName": {
       "type": "text",
-      "analyzer": "ik_smart",
-      "search_analyzer": "whitespace"
+      "fields": {
+        "pinyin": {
+          "type": "text",
+          "analyzer": "pinyinFullIndexAnalyzer"
+        }
+      },
+      "analyzer": "ngram",
+      "search_analyzer": "ikSmartAnalyzer"
     }
   }
 }
