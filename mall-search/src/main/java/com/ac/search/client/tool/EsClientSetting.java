@@ -150,7 +150,8 @@ public class EsClientSetting {
 
         BytesReference bytes = BytesReference.bytes(setting);
         String json = bytes.utf8ToString();
-        log.info("json={}",json);
+        log.info("settingJson={}",json);
+
         return setting;
     }
 }

@@ -32,6 +32,12 @@ public class ProductDocServiceImpl implements ProductDocService {
     private ProductDocMapping productDocMapping;
 
     @Override
+    public boolean initIndexByJson() {
+        deleteIndex();
+        return createIndexByJson();
+    }
+
+    @Override
     public boolean initIndex() {
         deleteIndex();
         return createIndex();
@@ -45,6 +51,11 @@ public class ProductDocServiceImpl implements ProductDocService {
     @Override
     public boolean createIndex() {
         return esClientDdlTool.createIndex(IndexNameConstants.PRODUCT_DOC, productDocMapping.packageMapping());
+    }
+
+    @Override
+    public boolean createIndexByJson() {
+        return esClientDdlTool.createIndexByJson(IndexNameConstants.PRODUCT_DOC, "/json/product-mapping.json");
     }
 
     @Override

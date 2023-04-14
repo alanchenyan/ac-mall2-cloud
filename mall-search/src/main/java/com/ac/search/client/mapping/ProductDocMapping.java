@@ -1,6 +1,7 @@
 package com.ac.search.client.mapping;
 
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.springframework.stereotype.Component;
@@ -70,6 +71,11 @@ public class ProductDocMapping {
             log.error("packageMapping失败");
             e.printStackTrace();
         }
+
+        BytesReference bytes = BytesReference.bytes(mapping);
+        String json = bytes.utf8ToString();
+        log.info("ProductDocMapping={}",json);
+
         return mapping;
     }
 }

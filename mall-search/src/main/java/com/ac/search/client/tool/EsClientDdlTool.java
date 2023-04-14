@@ -39,13 +39,28 @@ public class EsClientDdlTool {
     /**
      * 创建index
      *
-     * @param index
+     * @param indexName
+     * @return
+     */
+    public boolean createIndexByJson(String indexName, String mappingPath) {
+        CreateIndexRequest request = buildCreateIndexRequest(indexName);
+        request.settings("/json/common-setting.json", XContentType.JSON);
+        request.mapping(mappingPath, XContentType.JSON);
+        return doCreateIndex(request);
+    }
+
+    /**
+     * 创建index
+     *
+     * @param indexName
      * @param mapping
      * @return
      */
-    public boolean createIndex(String index, XContentBuilder mapping) {
-        XContentBuilder setting = esClientSetting.packageSetting();
-        return doCreateIndex(index, setting, mapping);
+    public boolean createIndex(String indexName, XContentBuilder mapping) {
+        CreateIndexRequest request = buildCreateIndexRequest(indexName);
+        request.settings(esClientSetting.packageSetting());
+        request.mapping(mapping);
+        return doCreateIndex(request);
     }
 
 
@@ -128,23 +143,16 @@ public class EsClientDdlTool {
         }
     }
 
-    private boolean doCreateIndex(String indexName, XContentBuilder settings, XContentBuilder mapping) {
+    private boolean doCreateIndex(CreateIndexRequest request) {
         boolean is = false;
         try {
-            CreateIndexRequest request = buildCreateIndexRequest(indexName);
-            if (settings != null) {
-                request.settings(settings);
-            }
-            if (mapping != null) {
-                request.mapping(mapping);
-            }
             IndicesClient indices = restHighLevelClient.indices();
             CreateIndexResponse response = indices.create(request, EsClientOptions.OPTIONS);
             log.info("是否所有节点都已确认请求: " + response.isAcknowledged());
             log.info("指示是否在超时之前为索引中的每个分片启动了必要数量的分片副本: " + response.isShardsAcknowledged());
             is = response.isAcknowledged();
         } catch (Exception e) {
-            log.error("创建index失败,indexName={}", indexName);
+            log.error("创建index失败");
             e.printStackTrace();
         }
         return is;

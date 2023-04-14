@@ -15,6 +15,13 @@ public interface ProductDocService {
      *
      * @return
      */
+    boolean initIndexByJson();
+
+    /**
+     * 初始化index
+     *
+     * @return
+     */
     boolean initIndex();
 
     /**
@@ -28,6 +35,12 @@ public interface ProductDocService {
      * @return
      */
     boolean createIndex();
+
+    /**
+     * 创建index
+     * @return
+     */
+    boolean createIndexByJson();
 
     /**
      * 保存文档

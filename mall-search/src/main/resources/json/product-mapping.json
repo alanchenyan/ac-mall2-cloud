@@ -1,0 +1,41 @@
+{
+  "dynamic": true,
+  "properties": {
+    "id": {
+      "type": "keyword"
+    },
+    "category": {
+      "type": "keyword"
+    },
+    "brand": {
+      "type": "keyword"
+    },
+    "productName": {
+      "type": "text",
+      "analyzer": "ngram",
+      "search_analyzer": "ikSmartAnalyzer",
+      "fields": {
+        "pinyin": {
+          "type": "text",
+          "index": true,
+          "analyzer": "pinyinFullIndexAnalyzer"
+        }
+      }
+    },
+    "remark": {
+      "type": "text",
+      "analyzer": "ikMaxAnalyzer",
+      "search_analyzer": "ikSmartAnalyzer",
+      "fields": {
+        "pinyin": {
+          "type": "text",
+          "index": true,
+          "analyzer": "pinyinFullIndexAnalyzer"
+        }
+      }
+    },
+    "location": {
+      "type": "geo_point"
+    }
+  }
+}

@@ -27,6 +27,12 @@ public class ProductDocController {
         return productDocServiceImpl.initIndex();
     }
 
+    @ApiOperation(value = "初始化index-json")
+    @PostMapping("initIndexByJson")
+    public boolean initIndexByJson() {
+        return productDocServiceImpl.initIndexByJson();
+    }
+
     @ApiOperation(value = "新增文档")
     @PostMapping
     public boolean saveDoc(@RequestBody ProductDoc doc) {
