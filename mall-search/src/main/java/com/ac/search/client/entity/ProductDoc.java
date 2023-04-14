@@ -2,7 +2,6 @@ package com.ac.search.client.entity;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 
 /**
@@ -11,7 +10,6 @@ import org.springframework.data.elasticsearch.core.geo.GeoPoint;
  * @date 2023/02/22
  */
 @Data
-@Document(indexName = "product_doc", shards = 1, replicas = 0)
 public class ProductDoc {
 
     @ApiModelProperty(value = "ID")
