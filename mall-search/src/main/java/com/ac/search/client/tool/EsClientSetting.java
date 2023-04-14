@@ -1,6 +1,7 @@
 package com.ac.search.client.tool;
 
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.springframework.stereotype.Component;
@@ -146,7 +147,10 @@ public class EsClientSetting {
             log.error("setting构建失败");
             e.printStackTrace();
         }
-        return setting;
 
+        BytesReference bytes = BytesReference.bytes(setting);
+        String json = bytes.utf8ToString();
+        log.info("json={}",json);
+        return setting;
     }
 }

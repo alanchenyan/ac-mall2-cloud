@@ -1,51 +1,87 @@
 {
-  "analysis.analyzer.ikMaxAnalyzer.char_filter": "tsconvert",
-  "analysis.analyzer.ikMaxAnalyzer.tokenizer": "ik_max_word",
-  "analysis.analyzer.ikMaxAnalyzer.type": "custom",
-  "analysis.analyzer.ikSmartAnalyzer.char_filter": "tsconvert",
-  "analysis.analyzer.ikSmartAnalyzer.tokenizer": "ik_smart",
-  "analysis.analyzer.ikSmartAnalyzer.type": "custom",
-  "analysis.analyzer.ngram.filter": "lowercase",
-  "analysis.analyzer.ngram.tokenizer": "my_tokenizer",
-  "analysis.analyzer.pinyinFullIndexAnalyzer.filter": [
-    "pinyin_full_filter",
-    "lowercase"
-  ],
-  "analysis.analyzer.pinyinFullIndexAnalyzer.tokenizer": "keyword",
-  "analysis.analyzer.pinyinFullIndexAnalyzer.type": "custom",
-  "analysis.analyzer.pinyinSimpleIndexAnalyzer.filter": [
-    "pinyin_simple_filter",
-    "pinyin_edge_ngram_filter",
-    "lowercase"
-  ],
-  "analysis.analyzer.pinyinSimpleIndexAnalyzer.tokenizer": "keyword",
-  "analysis.analyzer.pinyinSimpleIndexAnalyzer.type": "custom",
-  "analysis.char_filter.tsconvert.convert_type": "t2s",
-  "analysis.char_filter.tsconvert.type": "stconvert",
-  "analysis.filter.edge_ngram_filter.max_gram": "50",
-  "analysis.filter.edge_ngram_filter.min_gram": "1",
-  "analysis.filter.edge_ngram_filter.type": "edge_ngram",
-  "analysis.filter.pinyin_edge_ngram_filter.max_gram": "50",
-  "analysis.filter.pinyin_edge_ngram_filter.min_gram": "1",
-  "analysis.filter.pinyin_edge_ngram_filter.type": "edge_ngram",
-  "analysis.filter.pinyin_full_filter.keep_first_letter": "false",
-  "analysis.filter.pinyin_full_filter.keep_full_pinyin": "true",
-  "analysis.filter.pinyin_full_filter.keep_original": "false",
-  "analysis.filter.pinyin_full_filter.keep_separate_first_letter": "false",
-  "analysis.filter.pinyin_full_filter.limit_first_letter_length": "50",
-  "analysis.filter.pinyin_full_filter.lowercase": "true",
-  "analysis.filter.pinyin_full_filter.type": "pinyin",
-  "analysis.filter.pinyin_simple_filter.keep_first_letter": "true",
-  "analysis.filter.pinyin_simple_filter.keep_full_pinyin": "false",
-  "analysis.filter.pinyin_simple_filter.keep_original": "false",
-  "analysis.filter.pinyin_simple_filter.keep_separate_first_letter": "false",
-  "analysis.filter.pinyin_simple_filter.limit_first_letter_length": "50",
-  "analysis.filter.pinyin_simple_filter.lowercase": "true",
-  "analysis.filter.pinyin_simple_filter.type": "pinyin",
-  "analysis.normalizer.lowercase.filter": "lowercase",
-  "analysis.normalizer.lowercase.type": "custom",
-  "analysis.tokenizer.my_tokenizer.max_gram": "6",
-  "analysis.tokenizer.my_tokenizer.min_gram": "1",
-  "analysis.tokenizer.my_tokenizer.type": "ngram",
-  "index.max_ngram_diff": "6"
+  "index.max_ngram_diff": "6",
+  "analysis": {
+    "filter": {
+      "edge_ngram_filter": {
+        "type": "edge_ngram",
+        "min_gram": "1",
+        "max_gram": "50"
+      },
+      "pinyin_edge_ngram_filter": {
+        "type": "edge_ngram",
+        "min_gram": 1,
+        "max_gram": 50
+      },
+      "pinyin_simple_filter": {
+        "type": "pinyin",
+        "keep_first_letter": true,
+        "keep_separate_first_letter": false,
+        "keep_full_pinyin": false,
+        "keep_original": false,
+        "limit_first_letter_length": 50,
+        "lowercase": true
+      },
+      "pinyin_full_filter": {
+        "type": "pinyin",
+        "keep_first_letter": false,
+        "keep_separate_first_letter": false,
+        "keep_full_pinyin": true,
+        "keep_original": false,
+        "limit_first_letter_length": 50,
+        "lowercase": true
+      }
+    },
+    "char_filter": {
+      "tsconvert": {
+        "type": "stconvert",
+        "convert_type": "t2s"
+      }
+    },
+    "analyzer": {
+      "ngram": {
+        "tokenizer": "my_tokenizer",
+        "filter": "lowercase"
+      },
+      "ikSmartAnalyzer": {
+        "type": "custom",
+        "tokenizer": "ik_smart",
+        "char_filter": "tsconvert"
+      },
+      "ikMaxAnalyzer": {
+        "type": "custom",
+        "tokenizer": "ik_max_word",
+        "char_filter": "tsconvert"
+      },
+      "pinyinSimpleIndexAnalyzer": {
+        "type": "custom",
+        "tokenizer": "keyword",
+        "filter": [
+          "pinyin_simple_filter",
+          "pinyin_edge_ngram_filter",
+          "lowercase"
+        ]
+      },
+      "pinyinFullIndexAnalyzer": {
+        "type": "custom",
+        "tokenizer": "keyword",
+        "filter": [
+          "pinyin_full_filter",
+          "lowercase"
+        ]
+      }
+    },
+    "tokenizer": {
+      "my_tokenizer": {
+        "type": "ngram",
+        "min_gram": "1",
+        "max_gram": "6"
+      }
+    },
+    "normalizer": {
+      "lowercase": {
+        "type": "custom",
+        "filter": "lowercase"
+      }
+    }
+  }
 }
