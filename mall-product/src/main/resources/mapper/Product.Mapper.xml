@@ -8,7 +8,7 @@
         t.category,
         t.brand,
         t.stock,
-        t.sellNum,
+        t.sell_num,
         t.cost_price,
         t.sell_price,
         t.discount_price,
