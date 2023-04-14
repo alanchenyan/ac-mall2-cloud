@@ -23,9 +23,13 @@ spring:
         - id: mall-search-route
           uri: lb://mall-search
           predicates:
-            - Path=/product_doc/**
+            - Path=/mall-search/**
+          filters:
+            - StripPrefix=1
 
         - id: mall-product-route
           uri: lb://mall-product
           predicates:
-            - Path=/product/**
+            - Path=/mall-product/**
+          filters:
+            - StripPrefix=1
