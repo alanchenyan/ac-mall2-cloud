@@ -81,7 +81,6 @@ public class EsClientDdlTool {
             return true;
         } catch (Exception e) {
             log.error("删除index失败,indexName={}", indexName);
-            e.printStackTrace();
         }
         return false;
     }
