@@ -11,6 +11,7 @@
         <module>../mall-product</module>
         <module>../mall-order</module>
         <module>../mall-search</module>
+        <module>../mall-gateway</module>
     </modules>
 
     <groupId>com.ac</groupId>
