@@ -17,6 +17,7 @@ import org.elasticsearch.client.indices.CreateIndexResponse;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.springframework.data.elasticsearch.core.ResourceUtil;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -44,8 +45,11 @@ public class EsClientDdlTool {
      */
     public boolean createIndexByJson(String indexName, String mappingPath) {
         CreateIndexRequest request = buildCreateIndexRequest(indexName);
-        request.settings("/json/common-setting.json", XContentType.JSON);
-        request.mapping(mappingPath, XContentType.JSON);
+        String settings = ResourceUtil.readFileFromClasspath("/json/common-setting.json");
+        String mapping = ResourceUtil.readFileFromClasspath(mappingPath);
+
+        request.settings(settings, XContentType.JSON);
+        request.mapping(mapping, XContentType.JSON);
         return doCreateIndex(request);
     }
 

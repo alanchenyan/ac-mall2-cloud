@@ -1,4 +1,5 @@
 {
+  "dynamic": true,
   "properties": {
     "id": {
       "type": "keyword"
