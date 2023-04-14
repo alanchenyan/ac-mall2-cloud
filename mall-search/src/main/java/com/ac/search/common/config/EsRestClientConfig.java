@@ -19,7 +19,6 @@ public class EsRestClientConfig extends AbstractElasticsearchConfiguration {
     @Override
     @Bean
     public RestHighLevelClient elasticsearchClient() {
-        System.out.println(esUrl);
         final ClientConfiguration clientConfiguration = ClientConfiguration.builder()
                 .connectedTo(esUrl)
                 .build();
