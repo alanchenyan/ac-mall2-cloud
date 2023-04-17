@@ -12,6 +12,7 @@
         <module>../mall-order</module>
         <module>../mall-search</module>
         <module>../mall-gateway</module>
+        <module>../mall-auth</module>
     </modules>
 
     <groupId>com.ac</groupId>
