@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@Component
 @Slf4j
+@Component
 public class OauthLogoutSuccessHandler implements LogoutSuccessHandler {
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 

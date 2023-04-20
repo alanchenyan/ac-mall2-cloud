@@ -1,24 +1,28 @@
 package com.ac.auth.config;
 
 import com.ac.auth.domain.SecurityUser;
+import com.ac.auth.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
+import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
+import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
+import org.springframework.security.oauth2.common.exceptions.UnsupportedResponseTypeException;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.TokenGranter;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.code.RandomValueAuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.error.DefaultWebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -37,32 +41,50 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private AuthenticationManager authenticationManager;
 
     @Resource
-    private UserDetailsService userDetailsService;
+    private CustomUserDetailsService customUserDetailsServiceImpl;
 
     @Resource
     private WebResponseExceptionTranslator webResponseExceptionTranslator;
 
     @Resource
-    private ClientDetailsService customUserDetailsServiceImpl;
+    private RandomValueAuthorizationCodeServices redisAuthorizationCodeServiceImpl;
 
     @Resource
-    private RandomValueAuthorizationCodeServices authorizationCodeServices;
+    private JdbcClientDetailsService customJdbcClientDetailsServiceImpl;
 
     @Resource
-    private RedisConnectionFactory redisConnectionFactory;
+    private TokenStore tokenStore;
 
     @Resource
     private TokenGranter tokenGranter;
 
-    /**
-     * 配置token存储，这个配置token存到redis中
-     * 还有一种常用的是JwkTokenStore,jwt的缺点已发布令牌不可控
-     *
-     * @return
-     */
     @Bean
-    public TokenStore tokenStore() {
-        return new RedisTokenStore(redisConnectionFactory);
+    public WebResponseExceptionTranslator webResponseExceptionTranslator() {
+        return new DefaultWebResponseExceptionTranslator() {
+            private static final String BAD_MSG = "坏的凭证";
+            private static final String BAD_MSG_EN = "Bad credentials";
+
+            @Override
+            public ResponseEntity<OAuth2Exception> translate(Exception e) throws Exception {
+                OAuth2Exception oAuth2Exception;
+                if (e.getMessage() != null
+                        && (BAD_MSG.equals(e.getMessage()) || BAD_MSG_EN.equals(e.getMessage()))) {
+                    oAuth2Exception = new InvalidGrantException("用户名或密码错误", e);
+                } else if (e instanceof InternalAuthenticationServiceException) {
+                    oAuth2Exception = new InvalidGrantException(e.getMessage(), e);
+                } else if (e instanceof OAuth2Exception) {
+                    oAuth2Exception = (OAuth2Exception) e;
+                } else {
+                    oAuth2Exception = new UnsupportedResponseTypeException("服务内部错误", e);
+                }
+                ResponseEntity<OAuth2Exception> response = super.translate(oAuth2Exception);
+                ResponseEntity.status(oAuth2Exception.getHttpErrorCode());
+                response.getBody().addAdditionalInformation("resp_code", oAuth2Exception.getHttpErrorCode() + "");
+                response.getBody().addAdditionalInformation("resp_msg", oAuth2Exception.getMessage());
+
+                return response;
+            }
+        };
     }
 
     /**
@@ -73,15 +95,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         // 配置token存储，一般配置redis存储
-        endpoints.tokenStore(tokenStore())
+        endpoints.tokenStore(tokenStore)
                 //配置认证管理器
                 .authenticationManager(authenticationManager)
 
                 //配置用户详情server，密码模式必须
-                .userDetailsService(userDetailsService)
+                .userDetailsService(customUserDetailsServiceImpl)
 
                 //配置授权码模式授权码服务,不配置默认为内存模式
-                .authorizationCodeServices(authorizationCodeServices)
+                .authorizationCodeServices(redisAuthorizationCodeServiceImpl)
 
                 //配置响应异常转换器
                 .exceptionTranslator(webResponseExceptionTranslator)
@@ -100,7 +122,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         //设置客户端信息，可以将客户端信息放在内存、数据库等。前端请求时将做校验
-        clients.withClientDetails(customUserDetailsServiceImpl);
+        clients.withClientDetails(customJdbcClientDetailsServiceImpl);
     }
 
     /**
