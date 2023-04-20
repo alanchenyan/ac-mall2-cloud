@@ -1,5 +1,8 @@
 package com.ac.auth.config;
 
+import com.ac.auth.admin.AdminAuthenticationSecurityConfig;
+import com.ac.auth.handler.OauthLogoutHandler;
+import com.ac.auth.handler.OauthLogoutSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +18,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import javax.annotation.Resource;
 
@@ -40,16 +42,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
 
     @Resource
-    private LogoutHandler oauthLogoutHandler;
+    private OauthLogoutHandler oauthLogoutHandler;
+
+    @Resource
+    private OauthLogoutSuccessHandler oauthLogoutSuccessHandler;
 
     @Resource
     private AuthenticationSecurityConfig authenticationSecurityConfig;
 
     @Resource
     private AdminAuthenticationSecurityConfig adminAuthenticationSecurityConfig;
-
-    @Resource
-    private OauthLogoutSuccessHandler oauthLogoutSuccessHandler;
 
     /**
      * 这一步的配置是必不可少的，否则SpringBoot会自动配置一个AuthenticationManager,覆盖掉内存中的用户

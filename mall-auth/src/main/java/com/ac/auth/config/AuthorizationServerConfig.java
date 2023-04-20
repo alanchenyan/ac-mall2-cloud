@@ -1,7 +1,6 @@
 package com.ac.auth.config;
 
 import com.ac.auth.domain.SecurityUser;
-import com.ac.auth.granter.MobileCodeTokenGranter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -14,22 +13,15 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
-import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
-import org.springframework.security.oauth2.provider.code.AuthorizationCodeTokenGranter;
 import org.springframework.security.oauth2.provider.code.RandomValueAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
-import org.springframework.security.oauth2.provider.implicit.ImplicitTokenGranter;
-import org.springframework.security.oauth2.provider.password.ResourceOwnerPasswordTokenGranter;
-import org.springframework.security.oauth2.provider.refresh.RefreshTokenGranter;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -58,6 +50,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Resource
     private RedisConnectionFactory redisConnectionFactory;
+
+    @Resource
+    private TokenGranter tokenGranter;
 
     /**
      * 配置token存储，这个配置token存到redis中
@@ -93,7 +88,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
                 // 配置grant_type模式，如果不配置则默认使用密码模式、简化模式、验证码模式以及刷新token模式，如果配置了只使用配置中，默认配置失效
                 // 具体可以查询AuthorizationServerEndpointsConfigurer中的getDefaultTokenGranters方法
-                .tokenGranter(tokenGranter(endpoints));
+                .tokenGranter(tokenGranter);
     }
 
     /**
@@ -147,23 +142,4 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
             return accessToken;
         };
     }
-
-
-    /**
-     * 创建grant_type列表
-     *
-     * @param endpoints
-     * @return
-     */
-    private TokenGranter tokenGranter(AuthorizationServerEndpointsConfigurer endpoints) {
-        List<TokenGranter> list = new ArrayList<>();
-        // 这里配置密码模式、刷新token模式、自定义手机号验证码模式、授权码模式、简化模式
-        list.add(new ResourceOwnerPasswordTokenGranter(authenticationManager, endpoints.getTokenServices(), endpoints.getClientDetailsService(), endpoints.getOAuth2RequestFactory()));
-        list.add(new RefreshTokenGranter(endpoints.getTokenServices(), endpoints.getClientDetailsService(), endpoints.getOAuth2RequestFactory()));
-        list.add(new MobileCodeTokenGranter(authenticationManager, endpoints.getTokenServices(), endpoints.getClientDetailsService(), endpoints.getOAuth2RequestFactory()));
-        list.add(new AuthorizationCodeTokenGranter(endpoints.getTokenServices(), endpoints.getAuthorizationCodeServices(), endpoints.getClientDetailsService(), endpoints.getOAuth2RequestFactory()));
-        list.add(new ImplicitTokenGranter(endpoints.getTokenServices(), endpoints.getClientDetailsService(), endpoints.getOAuth2RequestFactory()));
-        return new CompositeTokenGranter(list);
-    }
-
 }
