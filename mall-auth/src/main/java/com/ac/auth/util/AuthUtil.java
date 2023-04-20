@@ -10,8 +10,8 @@ import java.util.Base64;
 import java.util.Enumeration;
 
 @Slf4j
-public class AuthUtils {
-    private AuthUtils() {
+public class AuthUtil {
+    private AuthUtil() {
         throw new IllegalStateException("Utility class");
     }
 

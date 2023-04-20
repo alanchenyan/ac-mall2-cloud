@@ -1,7 +1,7 @@
 package com.ac.auth.handler;
 
 import cn.hutool.core.util.StrUtil;
-import com.ac.auth.util.AuthUtils;
+import com.ac.auth.util.AuthUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -27,7 +27,7 @@ public class OauthLogoutHandler implements LogoutHandler {
 		Assert.notNull(tokenStore, "tokenStore must be set");
 		String token = request.getParameter("token");
 		if (StrUtil.isEmpty(token)) {
-			token = AuthUtils.extractToken(request);
+			token = AuthUtil.extractToken(request);
 		}
 		if(StrUtil.isNotEmpty(token)){
 			OAuth2AccessToken existingAccessToken = tokenStore.readAccessToken(token);
