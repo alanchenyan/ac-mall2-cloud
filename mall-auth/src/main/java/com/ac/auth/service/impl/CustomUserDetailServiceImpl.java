@@ -19,47 +19,22 @@ public class CustomUserDetailServiceImpl implements CustomUserDetailsService {
 
     @Override
     public SecurityUser loadUserByMobile(String mobile) {
-       return packageTestUser();
+        return packageTestUser();
     }
 
     @Override
     public SecurityUser loadUserByOpenId(String openId, String socialType) {
-        return null;
+        return packageTestUser();
     }
 
     @Override
     public SecurityUser loadUserByIeMi(String ieMi) {
-        return null;
+        return packageTestUser();
     }
 
     @Override
     public SecurityUser loadAdminUser(String mobileOrUserName) {
-        return null;
-    }
-
-    @Override
-    public SecurityUser createUserBySocial(MemberAddSocialVO vo) {
-        return null;
-    }
-
-    @Override
-    public SecurityUser createUserByMobile(String globalCode, String mobile) {
-        return this.createUserByMobile(globalCode, mobile, null);
-    }
-
-    @Override
-    public SecurityUser createUserByMobile(String globalCode, String mobile, String platform) {
-        return null;
-    }
-
-    @Override
-    public SecurityUser createUserByMobile(MemberAddVO vo) {
-        return null;
-    }
-
-    @Override
-    public SecurityUser createVisitor(Map<String, String> map) {
-        return null;
+        return packageTestUser();
     }
 
     @Override
@@ -69,11 +44,35 @@ public class CustomUserDetailServiceImpl implements CustomUserDetailsService {
 
     @Override
     public SecurityUser loadUserById(Long id) {
-        return null;
+        return packageTestUser();
     }
 
+    @Override
+    public SecurityUser createUserBySocial(MemberAddSocialVO vo) {
+        return packageTestUser();
+    }
 
-    private SecurityUser packageTestUser(){
+    @Override
+    public SecurityUser createUserByMobile(String globalCode, String mobile) {
+        return this.createUserByMobile(globalCode, mobile, null);
+    }
+
+    @Override
+    public SecurityUser createUserByMobile(String globalCode, String mobile, String platform) {
+        return packageTestUser();
+    }
+
+    @Override
+    public SecurityUser createUserByMobile(MemberAddVO vo) {
+        return packageTestUser();
+    }
+
+    @Override
+    public SecurityUser createVisitor(Map<String, String> map) {
+        return packageTestUser();
+    }
+
+    private SecurityUser packageTestUser() {
         SecurityUser user = SecurityUser.builder()
                 .userType(SecurityUserTypeEnum.APP)
                 .grantType(SecurityLoginTypeEnum.APP_PWD)
@@ -83,7 +82,6 @@ public class CustomUserDetailServiceImpl implements CustomUserDetailsService {
                 .enabled(true)
                 .niceName("AC")
                 .build();
-
         return user;
     }
 }
