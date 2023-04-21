@@ -82,7 +82,7 @@ public class ApiLogAspect {
             apiLog.setUrl(request.getRequestURL().toString());
             apiLog.setHttpMethod(request.getMethod());
             apiLog.setClassMethod(point.getSignature().getDeclaringTypeName() + "." + point.getSignature().getName());
-            apiLog.setRequestParams(extractNameAndValue(point));
+            apiLog.setRequestParams(extractParams(point));
 
             apiLog.setAppVersion(appVersion);
             apiLog.setMemberId(memberId);
@@ -160,12 +160,12 @@ public class ApiLogAspect {
     }
 
     /**
-     * 提取方法参数名和参数值
+     * 提取请求参数
      *
      * @param joinPoint
      * @return
      */
-    private Map<String, Object> extractNameAndValue(ProceedingJoinPoint joinPoint) {
+    private Map<String, Object> extractParams(ProceedingJoinPoint joinPoint) {
         final Signature signature = joinPoint.getSignature();
         MethodSignature methodSignature = (MethodSignature) signature;
         final String[] names = methodSignature.getParameterNames();
