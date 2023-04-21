@@ -19,18 +19,7 @@ public class CustomUserDetailServiceImpl implements CustomUserDetailsService {
 
     @Override
     public SecurityUser loadUserByMobile(String mobile) {
-        SecurityUser user = SecurityUser.builder()
-                .userType(SecurityUserTypeEnum.APP)
-                .grantType(SecurityLoginTypeEnum.APP_PWD)
-                .id(101L)
-                .username(mobile)
-                //123abc
-                .password("$2a$10$Ugj9R8tLB3QLv531oU91jOb9t9Yx493WroQbksrXYhZCJGSPwNIPK")
-                .enabled(true)
-                .niceName("AC")
-                .build();
-
-        return user;
+       return packageTestUser();
     }
 
     @Override
@@ -81,5 +70,20 @@ public class CustomUserDetailServiceImpl implements CustomUserDetailsService {
     @Override
     public SecurityUser loadUserById(Long id) {
         return null;
+    }
+
+
+    private SecurityUser packageTestUser(){
+        SecurityUser user = SecurityUser.builder()
+                .userType(SecurityUserTypeEnum.APP)
+                .grantType(SecurityLoginTypeEnum.APP_PWD)
+                .id(101L)
+                //123abc
+                .password("$2a$10$Ugj9R8tLB3QLv531oU91jOb9t9Yx493WroQbksrXYhZCJGSPwNIPK")
+                .enabled(true)
+                .niceName("AC")
+                .build();
+
+        return user;
     }
 }
