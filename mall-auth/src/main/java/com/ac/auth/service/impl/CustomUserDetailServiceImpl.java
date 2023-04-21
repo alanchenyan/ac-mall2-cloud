@@ -1,6 +1,8 @@
 package com.ac.auth.service.impl;
 
 import com.ac.auth.domain.SecurityUser;
+import com.ac.auth.enums.SecurityLoginTypeEnum;
+import com.ac.auth.enums.SecurityUserTypeEnum;
 import com.ac.auth.service.CustomUserDetailsService;
 import com.ac.auth.vo.MemberAddSocialVO;
 import com.ac.auth.vo.MemberAddVO;
@@ -17,7 +19,18 @@ public class CustomUserDetailServiceImpl implements CustomUserDetailsService {
 
     @Override
     public SecurityUser loadUserByMobile(String mobile) {
-        return null;
+        SecurityUser user = SecurityUser.builder()
+                .userType(SecurityUserTypeEnum.APP)
+                .grantType(SecurityLoginTypeEnum.APP_PWD)
+                .id(101L)
+                .username(mobile)
+                //123abc
+                .password("$2a$10$Ugj9R8tLB3QLv531oU91jOb9t9Yx493WroQbksrXYhZCJGSPwNIPK")
+                .enabled(true)
+                .niceName("AC")
+                .build();
+
+        return user;
     }
 
     @Override
