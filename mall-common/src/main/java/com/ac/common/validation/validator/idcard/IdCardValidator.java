@@ -1,4 +1,4 @@
-package com.ac.common.validation.validator.mobile;
+package com.ac.common.validation.validator.idcard;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -7,10 +7,9 @@ import javax.validation.ConstraintValidatorContext;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MobileValidator implements ConstraintValidator<Mobile, String> {
+public class IdCardValidator implements ConstraintValidator<IdCard, String> {
 
     /**
-     * 大陆手机号码：
      * ^ 表示匹配字符串的开始位置。
      * 1 表示手机号码开头必须是数字 1。
      * [3-9] 表示第二个数字必须是 3、4、5、6、7、8、9 中的任意一个。
@@ -23,7 +22,7 @@ public class MobileValidator implements ConstraintValidator<Mobile, String> {
     private boolean require = false;
 
     @Override
-    public void initialize(Mobile constraintAnnotation) {
+    public void initialize(IdCard constraintAnnotation) {
         require = constraintAnnotation.required();
     }
 
