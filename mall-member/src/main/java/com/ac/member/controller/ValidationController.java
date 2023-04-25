@@ -1,13 +1,13 @@
 package com.ac.member.controller;
 
-import com.ac.member.vo.PersonAddVO;
-import com.ac.member.vo.PersonUpdateVO;
+import com.ac.common.validation.action.AddAction;
+import com.ac.common.validation.action.EditAction;
+import com.ac.member.vo.PersonEditVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @Slf4j
 @Api(tags = "Validation校验测试")
@@ -17,14 +17,14 @@ public class ValidationController {
 
     @ApiOperation(value = "新增")
     @PostMapping
-    public boolean add(@RequestBody @Valid PersonAddVO vo) {
+    public boolean add(@RequestBody @Validated(AddAction.class) PersonEditVO vo) {
         log.info("add,vo={}", vo);
         return true;
     }
 
     @ApiOperation(value = "修改")
     @PutMapping
-    public boolean update(@RequestBody @Valid PersonUpdateVO vo) {
+    public boolean update(@RequestBody @Validated(EditAction.class) PersonEditVO vo) {
         log.info("update,vo={}", vo);
         return true;
     }
