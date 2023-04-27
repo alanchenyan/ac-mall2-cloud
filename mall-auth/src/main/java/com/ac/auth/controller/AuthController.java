@@ -3,7 +3,7 @@ package com.ac.auth.controller;
 import com.ac.auth.component.AuthRedisHelper;
 import com.ac.auth.component.AuthTokenComponent;
 import com.ac.auth.dto.Oauth2TokenDTO;
-import com.ac.auth.enums.SecurityLoginTypeEnum;
+import com.ac.oauth2.enums.SecurityLoginTypeEnum;
 import com.ac.auth.util.IpUtil;
 import com.ac.auth.vo.*;
 import io.swagger.annotations.Api;

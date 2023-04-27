@@ -1,7 +1,7 @@
-package com.ac.auth.domain;
+package com.ac.oauth2.domain;
 
-import com.ac.auth.enums.SecurityLoginTypeEnum;
-import com.ac.auth.enums.SecurityUserTypeEnum;
+import com.ac.oauth2.enums.SecurityLoginTypeEnum;
+import com.ac.oauth2.enums.SecurityUserTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.ac.auth.enums;
+package com.ac.oauth2.enums;
 
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;

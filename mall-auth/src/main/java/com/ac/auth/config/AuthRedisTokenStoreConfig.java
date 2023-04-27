@@ -1,6 +1,6 @@
 package com.ac.auth.config;
 
-import com.ac.auth.stroe.CustomRedisTokenStore;
+import com.ac.oauth2.stroe.CustomRedisTokenStore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;

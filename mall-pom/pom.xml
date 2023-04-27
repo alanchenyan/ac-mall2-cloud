@@ -13,6 +13,7 @@
         <module>../mall-search</module>
         <module>../mall-gateway</module>
         <module>../mall-auth</module>
+        <module>../mall-oauth2</module>
     </modules>
 
     <groupId>com.ac</groupId>

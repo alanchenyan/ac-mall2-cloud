@@ -1,6 +1,6 @@
 package com.ac.auth.granter;
 
-import com.ac.auth.enums.SecurityLoginTypeEnum;
+import com.ac.oauth2.enums.SecurityLoginTypeEnum;
 import com.ac.auth.token.MobilePasswordAuthenticationToken;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;

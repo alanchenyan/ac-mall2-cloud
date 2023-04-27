@@ -1,8 +1,8 @@
 package com.ac.auth.service.impl;
 
-import com.ac.auth.domain.SecurityUser;
-import com.ac.auth.enums.SecurityLoginTypeEnum;
-import com.ac.auth.enums.SecurityUserTypeEnum;
+import com.ac.oauth2.domain.SecurityUser;
+import com.ac.oauth2.enums.SecurityLoginTypeEnum;
+import com.ac.oauth2.enums.SecurityUserTypeEnum;
 import com.ac.auth.service.CustomUserDetailsService;
 import com.ac.auth.vo.MemberAddSocialVO;
 import com.ac.auth.vo.MemberAddVO;

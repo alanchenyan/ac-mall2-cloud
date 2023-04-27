@@ -1,6 +1,6 @@
 package com.ac.auth.service;
 
-import com.ac.auth.domain.SecurityUser;
+import com.ac.oauth2.domain.SecurityUser;
 import com.ac.auth.vo.MemberAddSocialVO;
 import com.ac.auth.vo.MemberAddVO;
 import org.springframework.security.core.userdetails.UserDetailsService;

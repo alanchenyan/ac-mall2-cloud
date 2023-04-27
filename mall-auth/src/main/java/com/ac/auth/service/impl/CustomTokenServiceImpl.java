@@ -1,6 +1,6 @@
 package com.ac.auth.service.impl;
 
-import com.ac.auth.domain.SecurityUser;
+import com.ac.oauth2.domain.SecurityUser;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;

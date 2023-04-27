@@ -1,4 +1,4 @@
-package com.ac.auth.enums;
+package com.ac.oauth2.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;

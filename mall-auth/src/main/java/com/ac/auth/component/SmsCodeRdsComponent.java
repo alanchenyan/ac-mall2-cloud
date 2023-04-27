@@ -1,6 +1,6 @@
 package com.ac.auth.component;
 
-import com.ac.auth.enums.SmsBuzTypeEnum;
+import com.ac.oauth2.enums.SmsBuzTypeEnum;
 import org.springframework.stereotype.Component;
 
 @Component

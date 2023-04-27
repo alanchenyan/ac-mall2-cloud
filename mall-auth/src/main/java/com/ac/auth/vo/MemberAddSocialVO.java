@@ -1,7 +1,7 @@
 package com.ac.auth.vo;
 
-import com.ac.auth.enums.MemberSocialTypeEnum;
-import com.ac.auth.enums.PlatformEnum;
+import com.ac.oauth2.enums.MemberSocialTypeEnum;
+import com.ac.oauth2.enums.PlatformEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;

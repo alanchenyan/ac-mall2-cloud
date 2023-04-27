@@ -1,6 +1,6 @@
 package com.ac.auth.provider;
 
-import com.ac.auth.domain.SecurityUser;
+import com.ac.oauth2.domain.SecurityUser;
 import com.ac.auth.service.CustomUserDetailsService;
 import com.ac.auth.token.VisitorAuthenticationToken;
 import lombok.extern.slf4j.Slf4j;

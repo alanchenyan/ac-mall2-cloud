@@ -1,6 +1,6 @@
-package com.ac.auth.stroe;
+package com.ac.oauth2.stroe;
 
-import com.ac.auth.domain.SecurityUser;
+import com.ac.oauth2.domain.SecurityUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;

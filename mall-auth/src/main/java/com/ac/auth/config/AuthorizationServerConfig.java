@@ -1,6 +1,6 @@
 package com.ac.auth.config;
 
-import com.ac.auth.domain.SecurityUser;
+import com.ac.oauth2.domain.SecurityUser;
 import com.ac.auth.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
