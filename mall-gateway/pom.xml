@@ -16,6 +16,12 @@
     <description>网关服务</description>
 
     <dependencies>
+        <dependency>
+            <groupId>com.ac</groupId>
+            <artifactId>mall-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
         <!-- Spring Cloud Gateway 是使用 netty+webflux 实现因此不需要再引入 web 模块 -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -27,6 +33,21 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway</artifactId>
             <version>4.0.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-resource-server</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-client</artifactId>
         </dependency>
     </dependencies>
 

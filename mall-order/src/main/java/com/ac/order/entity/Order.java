@@ -1,6 +1,6 @@
 package com.ac.order.entity;
 
-import com.ac.core.base.BaseEntity;
+import com.ac.common.base.BaseEntity;
 import com.ac.order.enums.OrderStateEnum;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;

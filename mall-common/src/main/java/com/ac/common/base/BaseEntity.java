@@ -1,4 +1,4 @@
-package com.ac.core.base;
+package com.ac.common.base;
 
 import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModelProperty;
