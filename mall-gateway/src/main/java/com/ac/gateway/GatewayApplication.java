@@ -3,8 +3,11 @@ package com.ac.gateway;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 
-@ComponentScan("com.ac.*")
+@ComponentScan(
+        value = "com.ac.*",
+        excludeFilters = {@ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.ac.core.config.*")})
 @SpringBootApplication
 public class GatewayApplication {
 
