@@ -2,7 +2,7 @@ package com.ac.auth.provider;
 
 import com.ac.oauth2.domain.SecurityUser;
 import com.ac.auth.service.CustomUserDetailsService;
-import com.ac.auth.token.QRCodeAuthenticationToken;
+import com.ac.oauth2.token.QRCodeAuthenticationToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;

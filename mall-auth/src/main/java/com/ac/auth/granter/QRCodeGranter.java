@@ -1,7 +1,7 @@
 package com.ac.auth.granter;
 
 import com.ac.oauth2.enums.SecurityLoginTypeEnum;
-import com.ac.auth.token.QRCodeAuthenticationToken;
+import com.ac.oauth2.token.QRCodeAuthenticationToken;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;

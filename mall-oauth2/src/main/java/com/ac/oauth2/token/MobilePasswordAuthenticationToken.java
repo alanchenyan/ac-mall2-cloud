@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ac.auth.token;
+package com.ac.oauth2.token;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,7 +9,7 @@ import org.springframework.security.core.SpringSecurityCoreVersion;
 
 import java.util.Collection;
 
-public class MobileSmsAuthenticationToken extends AbstractAuthenticationToken {
+public class MobilePasswordAuthenticationToken extends AbstractAuthenticationToken {
 
 	private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 
@@ -22,10 +22,10 @@ public class MobileSmsAuthenticationToken extends AbstractAuthenticationToken {
 	 * will return <code>false</code>.
 	 *
 	 */
-	public MobileSmsAuthenticationToken(String mobile, String code) {
+	public MobilePasswordAuthenticationToken(String mobile, String password) {
 		super(null);
 		this.principal = mobile;
-		this.credentials = code;
+		this.credentials = password;
 		setAuthenticated(false);
 	}
 
@@ -38,8 +38,8 @@ public class MobileSmsAuthenticationToken extends AbstractAuthenticationToken {
 	 * @param principal
 	 * @param authorities
 	 */
-	public MobileSmsAuthenticationToken(Object principal, Object credentials,
-										Collection<? extends GrantedAuthority> authorities) {
+	public MobilePasswordAuthenticationToken(Object principal, Object credentials,
+											 Collection<? extends GrantedAuthority> authorities) {
 		super(authorities);
 		this.principal = principal;
 		this.credentials = credentials;

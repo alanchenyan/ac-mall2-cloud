@@ -5,7 +5,7 @@ import com.ac.oauth2.domain.SecurityUser;
 import com.ac.oauth2.enums.PlatformEnum;
 import com.ac.oauth2.enums.SmsBuzTypeEnum;
 import com.ac.auth.service.CustomUserDetailsService;
-import com.ac.auth.token.MobileSmsAuthenticationToken;
+import com.ac.oauth2.token.MobileSmsAuthenticationToken;
 import com.ac.auth.vo.MemberAddVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
