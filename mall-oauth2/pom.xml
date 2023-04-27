@@ -16,10 +16,6 @@
     <description>oauth2服务</description>
 
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-starter-oauth2</artifactId>-->
-<!--        </dependency>-->
 
         <dependency>
             <groupId>org.springframework.security.oauth</groupId>
@@ -27,11 +23,6 @@
             <version>2.3.4.RELEASE</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.nimbusds</groupId>-->
-<!--            <artifactId>nimbus-jose-jwt</artifactId>-->
-<!--            <version>9.31</version>-->
-<!--        </dependency>-->
     </dependencies>
 
     <build>
