@@ -20,6 +20,13 @@ spring:
 
     gateway:
       routes:
+        - id: mall-member-route            # 当前路由的标识, 要求唯一
+          uri: lb://mall-member            # lb指的是从nacos中按照名称获取微服务,并遵循负载均衡策略
+          predicates:
+            - Path=/mall-member/**         # 当请求路径满足Path指定的规则时,才进行路由转发
+          filters:
+            - StripPrefix=1                # 转发之前去掉1层路径
+
         - id: mall-search-route
           uri: lb://mall-search
           predicates:
@@ -31,5 +38,12 @@ spring:
           uri: lb://mall-product
           predicates:
             - Path=/mall-product/**
+          filters:
+            - StripPrefix=1
+
+        - id: mall-order-route
+          uri: lb://mall-order
+          predicates:
+            - Path=/mall-order/**
           filters:
             - StripPrefix=1
