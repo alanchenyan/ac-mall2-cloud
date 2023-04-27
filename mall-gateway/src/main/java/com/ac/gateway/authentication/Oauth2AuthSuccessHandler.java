@@ -1,10 +1,10 @@
 package com.ac.gateway.authentication;
 
 import cn.hutool.core.net.URLEncoder;
+import com.ac.oauth2.domain.SecurityUser;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.security.web.server.authentication.ServerAuthenticationSuccessHandler;
 import org.springframework.util.LinkedMultiValueMap;
@@ -20,8 +20,10 @@ public class Oauth2AuthSuccessHandler implements ServerAuthenticationSuccessHand
         MultiValueMap<String, String> headerValues = new LinkedMultiValueMap(4);
         Object principal = authentication.getPrincipal();
         //客户端模式只返回一个clientId
-        if (principal instanceof UserDetails) {
-            UserDetails user = (UserDetails) authentication.getPrincipal();
+        if (principal instanceof SecurityUser) {
+            SecurityUser user = (SecurityUser)authentication.getPrincipal();
+            user.setAuthorities(null);
+            headerValues.add("uid", String.valueOf(user.getId()));
             headerValues.add("uname", user.getUsername());
             headerValues.add("user", URLEncoder.DEFAULT.encode(JSONObject.toJSONString(user), Charset.defaultCharset()));
         }
