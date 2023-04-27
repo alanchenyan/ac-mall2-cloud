@@ -1,4 +1,4 @@
-package com.ac.common.validation.action;
+package com.ac.core.validation.action;
 
 import javax.validation.groups.Default;
 

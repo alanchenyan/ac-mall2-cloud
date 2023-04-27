@@ -1,6 +1,6 @@
-package com.ac.common.validation.validator.mobile;
+package com.ac.core.validation.validator.mobile;
 
-public class MobilePattern {
+public class MobileRegExp {
 
     /**
      * 中国大陆、澳门、香港和台湾：
@@ -15,7 +15,7 @@ public class MobilePattern {
      * () 表示分组，用于将三个表达式组合在一起。
      * $ 表示匹配字符串的结束位置。
      */
-    public final static String MOBILE_PATTERN = "/^(1[3-9]\\d{9}|[5689]\\d{7}|09\\d{8})$/";
+    public final static String MOBILE_REG_EXP = "^(1[3-9]\\d{9}|[5689]\\d{7}|09\\d{8})$";
 
     /**
      * 中国-大陆：
@@ -26,7 +26,7 @@ public class MobilePattern {
      * {9}表示前面的数字必须出现9次。
      * $ 表示匹配字符串的结束位置。
      */
-    public final static String MOBILE_PATTERN_ZH_CN = "/^1[3-9]\\d{9}$/";
+    public final static String MOBILE_REG_EXP_ZH_CN = "^1[3-9]\\d{9}$";
 
     /**
      * 中国-澳门：
@@ -37,7 +37,7 @@ public class MobilePattern {
      * {7} 表示前面的数字必须重复出现 7 次。
      * $ 表示匹配字符串的结束位置。
      */
-    public final static String MOBILE_PATTERN_ZH_MO = "/^6\\d{7}$/";
+    public final static String MOBILE_REG_EXP_ZH_MO = "^6\\d{7}$";
 
     /**
      * 中国-香港：
@@ -48,7 +48,7 @@ public class MobilePattern {
      * {7} 表示前面的数字必须重复出现 7 次。
      * $ 表示匹配字符串的结束位置。
      */
-    public final static String MOBILE_PATTERN_ZH_HK = "/^[5689]\\d{7}$/";
+    public final static String MOBILE_REG_EXP_ZH_HK = "^[5689]\\d{7}$";
 
     /**
      * 中国-台湾：
@@ -59,5 +59,5 @@ public class MobilePattern {
      * {8} 表示前面的数字必须重复出现 8 次。
      * $ 表示匹配字符串的结束位置。
      */
-    public final static String MOBILE_PATTERN_ZH_TW = "/^09\\d{8}$/";
+    public final static String MOBILE_REG_EXP_ZH_TW = "^09\\d{8}$";
 }

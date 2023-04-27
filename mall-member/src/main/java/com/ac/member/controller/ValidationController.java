@@ -1,7 +1,7 @@
 package com.ac.member.controller;
 
-import com.ac.common.validation.action.AddAction;
-import com.ac.common.validation.action.EditAction;
+import com.ac.core.validation.action.AddAction;
+import com.ac.core.validation.action.EditAction;
 import com.ac.member.vo.PersonEditVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

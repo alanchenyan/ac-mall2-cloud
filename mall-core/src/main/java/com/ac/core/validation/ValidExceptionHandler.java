@@ -1,4 +1,4 @@
-package com.ac.common.validation;
+package com.ac.core.validation;
 
 import cn.hutool.core.collection.CollectionUtil;
 import lombok.extern.slf4j.Slf4j;

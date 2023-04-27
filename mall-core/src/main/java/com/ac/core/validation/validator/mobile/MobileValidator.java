@@ -1,4 +1,4 @@
-package com.ac.common.validation.validator.mobile;
+package com.ac.core.validation.validator.mobile;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -10,12 +10,12 @@ public class MobileValidator implements ConstraintValidator<Mobile, String> {
 
     private boolean require = false;
 
-    private String pattern;
+    private String regExp;
 
     @Override
     public void initialize(Mobile mobile) {
         require = mobile.required();
-        pattern = mobile.pattern();
+        regExp = mobile.regExp();
     }
 
     @Override
@@ -30,6 +30,6 @@ public class MobileValidator implements ConstraintValidator<Mobile, String> {
         if (StringUtils.isEmpty(value)) {
             return false;
         }
-        return Pattern.compile(pattern).matcher(value).matches();
+        return Pattern.compile(regExp).matcher(value).matches();
     }
 }
