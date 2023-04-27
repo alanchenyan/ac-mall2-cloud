@@ -1,5 +1,10 @@
 package com.ac.core.validation.validator.mobile;
 
+/**
+ * @author Alan Chen
+ * @description 手机号码校验正则表达式
+ * @date 2023/04/27
+ */
 public class MobileRegExp {
 
     /**

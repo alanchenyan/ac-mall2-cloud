@@ -12,7 +12,7 @@
         t.refund_time,
         t.member_id,
         t.member_name,
-        t.mobile,
+        t.idNo,
         t.product_amount,
         t.discount_amount,
         t.pay_amount
@@ -37,8 +37,8 @@
                 and t.member_name like concat('%', #{qry.memberName}, '%')
             </if>
 
-            <if test="qry.mobile!=null and qry.mobile!=''">
-                and t.mobile = #{qry.mobile}
+            <if test="qry.idNo!=null and qry.idNo!=''">
+                and t.idNo = #{qry.idNo}
             </if>
         </where>
         order by t.create_time desc

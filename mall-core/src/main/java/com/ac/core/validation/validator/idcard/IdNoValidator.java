@@ -1,4 +1,4 @@
-package com.ac.core.validation.validator.mobile;
+package com.ac.core.validation.validator.idcard;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -8,19 +8,19 @@ import java.util.regex.Pattern;
 
 /**
  * @author Alan Chen
- * @description 手机号码校验器
+ * @description 证件号码校验器
  * @date 2023/04/27
  */
-public class MobileValidator implements ConstraintValidator<Mobile, String> {
+public class IdNoValidator implements ConstraintValidator<IdNo, String> {
 
     private boolean require = false;
 
     private String regExp;
 
     @Override
-    public void initialize(Mobile mobile) {
-        require = mobile.required();
-        regExp = mobile.regExp();
+    public void initialize(IdNo idNo) {
+        require = idNo.required();
+        regExp = idNo.regExp();
     }
 
     @Override

@@ -8,7 +8,7 @@ CREATE TABLE `t_order` (
   `refund_time` datetime DEFAULT NULL COMMENT '退单时间',
   `member_id` bigint NOT NULL COMMENT '用户ID',
   `member_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '' COMMENT '用户姓名',
-  `mobile` char(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '' COMMENT '用户手机号码',
+  `idNo` char(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '' COMMENT '用户手机号码',
   `product_amount` decimal(16,2) NOT NULL DEFAULT '0.00' COMMENT '商品总金额',
   `discount_amount` decimal(16,2) NOT NULL DEFAULT '0.00' COMMENT '优惠总金额',
   `pay_amount` decimal(16,2) NOT NULL DEFAULT '0.00' COMMENT '支付金额',

@@ -2,6 +2,7 @@ package com.ac.member.vo;
 
 import com.ac.core.validation.action.AddAction;
 import com.ac.core.validation.action.EditAction;
+import com.ac.core.validation.validator.idcard.IdNo;
 import com.ac.core.validation.validator.mobile.Mobile;
 import com.ac.core.validation.validator.mobile.MobileRegExp;
 import io.swagger.annotations.ApiModelProperty;
@@ -27,4 +28,9 @@ public class PersonEditVO {
     @Mobile(message = "手机号格式不正确", regExp = MobileRegExp.MOBILE_REG_EXP_ZH_CN, groups = {AddAction.class, EditAction.class})
     @ApiModelProperty("手机号")
     private String mobile;
+
+    @NotBlank(message = "证件号不能为空")
+    @IdNo(message = "证件号格式不正确")
+    @ApiModelProperty("证件号(身份证/港澳通行证/台湾通行证/护照)")
+    private String idNo;
 }
