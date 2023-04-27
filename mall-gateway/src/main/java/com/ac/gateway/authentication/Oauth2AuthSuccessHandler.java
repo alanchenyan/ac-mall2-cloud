@@ -24,7 +24,7 @@ public class Oauth2AuthSuccessHandler implements ServerAuthenticationSuccessHand
             SecurityUser user = (SecurityUser)authentication.getPrincipal();
             user.setAuthorities(null);
             headerValues.add("uid", String.valueOf(user.getId()));
-            headerValues.add("uname", user.getUsername());
+            headerValues.add("username", user.getUsername());
             headerValues.add("user", URLEncoder.DEFAULT.encode(JSONObject.toJSONString(user), Charset.defaultCharset()));
         }
 
