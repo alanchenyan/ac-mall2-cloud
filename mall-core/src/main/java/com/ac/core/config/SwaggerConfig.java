@@ -1,4 +1,4 @@
-package com.ac.core.config.swagger;
+package com.ac.core.config;
 
 import com.ac.core.enums.LanguageEnum;
 import lombok.Data;

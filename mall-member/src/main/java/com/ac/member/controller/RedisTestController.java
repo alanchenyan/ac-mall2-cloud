@@ -1,6 +1,6 @@
 package com.ac.member.controller;
 
-import com.ac.core.util.redis.RdsComponent;
+import com.ac.core.redis.util.RdsComponent;
 import com.ac.member.dto.MemberDTO;
 import com.ac.member.enums.MemberSexEnum;
 import io.swagger.annotations.Api;
