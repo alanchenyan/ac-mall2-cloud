@@ -18,10 +18,6 @@ import org.springframework.security.web.server.authentication.ServerAuthenticati
 
 import javax.annotation.Resource;
 
-/**
- * 资源服务器配置
- *
- */
 @EnableWebFluxSecurity
 @Slf4j
 @Configuration

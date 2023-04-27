@@ -1,4 +1,4 @@
-package com.ac.core.config.mybatis;
+package com.ac.core.mybatis;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;

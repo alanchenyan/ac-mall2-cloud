@@ -1,4 +1,4 @@
-package com.ac.auth.config;
+package com.ac.oauth2.config;
 
 import com.ac.oauth2.stroe.CustomRedisTokenStore;
 import org.springframework.context.annotation.Bean;

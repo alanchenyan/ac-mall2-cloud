@@ -1,4 +1,4 @@
-package com.ac.core.config.mybatis;
+package com.ac.core.mybatis;
 
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import lombok.extern.slf4j.Slf4j;

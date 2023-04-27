@@ -1,4 +1,4 @@
-package com.ac.core.config.redis;
+package com.ac.core.redis;
 
 import com.ac.core.properties.RedissonRepository;
 import lombok.extern.slf4j.Slf4j;
