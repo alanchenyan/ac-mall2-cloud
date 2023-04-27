@@ -1,6 +1,6 @@
 package com.ac.gateway.controller;
 
-import com.ac.gateway.config.SwaggerConfig;
+import com.ac.gateway.config.GateWaySwaggerConfig;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 public class SwaggerController {
 
     @Resource
-    private SwaggerConfig swaggerConfig;
+    private GateWaySwaggerConfig gateWaySwaggerConfig;
 
     @GetMapping("/swagger-resources/configuration/ui")
     public Mono<ResponseEntity<UiConfiguration>> uiConfiguration() {
@@ -24,16 +24,16 @@ public class SwaggerController {
 
     @GetMapping("/swagger-resources")
     public Mono<ResponseEntity> swaggerResources() {
-        return Mono.just((new ResponseEntity<>(swaggerConfig.get(), HttpStatus.OK)));
+        return Mono.just((new ResponseEntity<>(gateWaySwaggerConfig.get(), HttpStatus.OK)));
     }
 
     @GetMapping("/")
     public Mono<ResponseEntity> swaggerResourcesN() {
-        return Mono.just((new ResponseEntity<>(swaggerConfig.get(), HttpStatus.OK)));
+        return Mono.just((new ResponseEntity<>(gateWaySwaggerConfig.get(), HttpStatus.OK)));
     }
 
     @GetMapping("/csrf")
     public Mono<ResponseEntity> swaggerResourcesCsrf() {
-        return Mono.just((new ResponseEntity<>(swaggerConfig.get(), HttpStatus.OK)));
+        return Mono.just((new ResponseEntity<>(gateWaySwaggerConfig.get(), HttpStatus.OK)));
     }
 }

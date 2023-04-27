@@ -13,12 +13,12 @@ import java.util.List;
 
 @Configuration
 @Primary
-public class SwaggerConfig implements SwaggerResourcesProvider {
+public class GateWaySwaggerConfig implements SwaggerResourcesProvider {
     public static final String API_URI = "/v2/api-docs";
     private final RouteLocator routeLocator;
     private final GatewayProperties gatewayProperties;
 
-    public SwaggerConfig(RouteLocator routeLocator, GatewayProperties gatewayProperties) {
+    public GateWaySwaggerConfig(RouteLocator routeLocator, GatewayProperties gatewayProperties) {
         this.routeLocator = routeLocator;
         this.gatewayProperties = gatewayProperties;
     }
