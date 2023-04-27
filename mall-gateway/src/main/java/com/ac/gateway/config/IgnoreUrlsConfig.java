@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,5 +20,5 @@ import java.util.List;
 @RefreshScope
 @ConfigurationProperties(prefix = "mall.security.ignore")
 public class IgnoreUrlsConfig {
-    private List<String> urls;
+    private List<String> urls = new ArrayList<>();
 }
