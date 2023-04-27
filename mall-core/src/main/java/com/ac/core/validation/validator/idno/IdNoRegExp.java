@@ -1,4 +1,4 @@
-package com.ac.core.validation.validator.idcard;
+package com.ac.core.validation.validator.idno;
 
 /**
  * @author Alan Chen

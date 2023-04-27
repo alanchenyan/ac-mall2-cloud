@@ -1,4 +1,4 @@
-package com.ac.core.validation.validator.idcard;
+package com.ac.core.validation.validator.idno;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

@@ -2,7 +2,7 @@ package com.ac.member.vo;
 
 import com.ac.core.validation.action.AddAction;
 import com.ac.core.validation.action.EditAction;
-import com.ac.core.validation.validator.idcard.IdNo;
+import com.ac.core.validation.validator.idno.IdNo;
 import com.ac.core.validation.validator.mobile.Mobile;
 import com.ac.core.validation.validator.mobile.MobileRegExp;
 import io.swagger.annotations.ApiModelProperty;
