@@ -1,6 +1,6 @@
 package com.ac.auth.service.impl;
 
-import com.ac.core.util.redis.RdsComponent;
+import com.ac.core.redis.util.RdsComponent;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.code.RandomValueAuthorizationCodeServices;
 import org.springframework.stereotype.Service;

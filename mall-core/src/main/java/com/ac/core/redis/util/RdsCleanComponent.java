@@ -1,4 +1,4 @@
-package com.ac.core.util.redis;
+package com.ac.core.redis.util;
 
 import cn.hutool.core.collection.CollUtil;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,6 @@
-package com.ac.core.redis;
+package com.ac.core.redis.config;
 
-import com.ac.core.properties.RedissonRepository;
+import com.ac.core.redis.properties.RedissonRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;

@@ -1,4 +1,4 @@
-package com.ac.core.util.redis.tool;
+package com.ac.core.redis.util.tool;
 
 import org.springframework.data.redis.core.RedisConnectionUtils;
 import org.springframework.data.redis.core.RedisTemplate;

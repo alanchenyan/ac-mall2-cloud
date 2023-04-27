@@ -1,6 +1,6 @@
 package com.ac.auth.service.impl;
 
-import com.ac.core.util.redis.RdsComponent;
+import com.ac.core.redis.util.RdsComponent;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.common.exceptions.InvalidClientException;

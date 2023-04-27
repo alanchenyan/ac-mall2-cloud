@@ -1,4 +1,4 @@
-package com.ac.core.properties;
+package com.ac.core.redis.properties;
 
 import lombok.Data;
 

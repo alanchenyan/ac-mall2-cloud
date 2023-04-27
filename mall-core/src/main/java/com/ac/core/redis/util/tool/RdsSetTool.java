@@ -1,6 +1,5 @@
-package com.ac.core.util.redis.tool;
+package com.ac.core.redis.util.tool;
 
-import com.ac.core.util.redis.tool.RdsCommonTool;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;

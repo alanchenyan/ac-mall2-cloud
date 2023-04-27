@@ -2,7 +2,7 @@ package com.ac.gateway.authentication;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
-import com.ac.core.util.redis.RdsComponent;
+import com.ac.core.redis.util.RdsComponent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.server.reactive.ServerHttpRequest;

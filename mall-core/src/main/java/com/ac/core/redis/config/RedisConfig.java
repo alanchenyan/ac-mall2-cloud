@@ -1,4 +1,4 @@
-package com.ac.core.redis;
+package com.ac.core.redis.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;

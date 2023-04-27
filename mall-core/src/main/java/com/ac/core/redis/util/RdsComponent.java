@@ -1,6 +1,6 @@
-package com.ac.core.util.redis;
+package com.ac.core.redis.util;
 
-import com.ac.core.util.redis.tool.*;
+import com.ac.core.redis.util.tool.*;
 import org.springframework.data.geo.*;
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;

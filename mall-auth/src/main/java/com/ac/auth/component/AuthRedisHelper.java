@@ -1,6 +1,6 @@
 package com.ac.auth.component;
 
-import com.ac.core.util.redis.RdsComponent;
+import com.ac.core.redis.util.RdsComponent;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
