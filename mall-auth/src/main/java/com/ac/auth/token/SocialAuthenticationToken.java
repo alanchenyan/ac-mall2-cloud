@@ -10,13 +10,8 @@ public class SocialAuthenticationToken extends AbstractAuthenticationToken {
 
 	private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 
-	// ~ Instance fields
-	// ================================================================================================
-
 	private final Object principal;
 	private Object credentials;
-	// ~ Constructors
-	// ===================================================================================================
 
 	/**
 	 * This constructor can be safely used by any code that wishes to create a
@@ -46,9 +41,6 @@ public class SocialAuthenticationToken extends AbstractAuthenticationToken {
 		this.principal = principal;
 		super.setAuthenticated(true);
 	}
-
-	// ~ Methods
-	// ========================================================================================================
 
 	@Override
 	public Object getCredentials() {

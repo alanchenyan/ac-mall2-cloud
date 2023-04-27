@@ -21,7 +21,6 @@ public class AuthRedisHelper {
         } else {
             rdsComponent.incr(KEY + mobile);
         }
-
     }
 
     public Boolean hasLock(String mobile) {

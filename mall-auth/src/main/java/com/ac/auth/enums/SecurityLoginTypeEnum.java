@@ -26,21 +26,10 @@ public enum SecurityLoginTypeEnum {
     private String code;
     private String name;
 
-    /**
-     * 解析登录方式类型
-     *
-     * @param type 平台用户类型
-     */
     public static SecurityLoginTypeEnum parse(String type) {
         return parse(type, null);
     }
 
-    /**
-     * 解析登录方式类型
-     *
-     * @param type 登录方式类型
-     * @param dau  缺省类型
-     */
     public static SecurityLoginTypeEnum parse(String type, SecurityLoginTypeEnum dau) {
         if (null != type && !type.isEmpty()) {
             try {
@@ -50,5 +39,4 @@ public enum SecurityLoginTypeEnum {
         }
         return dau;
     }
-
 }

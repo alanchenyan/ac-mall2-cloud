@@ -10,12 +10,7 @@ public class QRCodeAuthenticationToken extends AbstractAuthenticationToken {
 
 	private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 
-	// ~ Instance fields
-	// ================================================================================================
-
 	private final Object principal;
-	// ~ Constructors
-	// ===================================================================================================
 
 	/**
 	 * This constructor can be safely used by any code that wishes to create a
@@ -44,9 +39,6 @@ public class QRCodeAuthenticationToken extends AbstractAuthenticationToken {
 		this.principal = principal;
 		super.setAuthenticated(true);
 	}
-
-	// ~ Methods
-	// ========================================================================================================
 
 	@Override
 	public Object getCredentials() {

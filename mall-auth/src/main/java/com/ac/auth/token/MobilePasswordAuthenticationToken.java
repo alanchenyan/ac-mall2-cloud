@@ -13,15 +13,8 @@ public class MobilePasswordAuthenticationToken extends AbstractAuthenticationTok
 
 	private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 
-	// ~ Instance fields
-	// ================================================================================================
-
 	private final Object principal;
 	private Object credentials;
-
-
-	// ~ Constructors
-	// ===================================================================================================
 
 	/**
 	 * This constructor can be safely used by any code that wishes to create a
@@ -52,9 +45,6 @@ public class MobilePasswordAuthenticationToken extends AbstractAuthenticationTok
 		this.credentials = credentials;
 		super.setAuthenticated(true);
 	}
-
-	// ~ Methods
-	// ========================================================================================================
 
 	@Override
 	public Object getCredentials() {
