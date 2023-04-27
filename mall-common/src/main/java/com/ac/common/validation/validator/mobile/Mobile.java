@@ -14,6 +14,8 @@ public @interface Mobile {
 
     String message() default "参数不正确";
 
+    String pattern() default MobilePattern.MOBILE_PATTERN;
+
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};

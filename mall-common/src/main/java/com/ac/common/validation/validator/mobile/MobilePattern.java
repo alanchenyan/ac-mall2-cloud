@@ -1,9 +1,5 @@
 package com.ac.common.validation.validator.mobile;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.regex.Pattern;
-
 public class MobilePattern {
 
     /**
@@ -19,8 +15,7 @@ public class MobilePattern {
      * () 表示分组，用于将三个表达式组合在一起。
      * $ 表示匹配字符串的结束位置。
      */
-    private final static Pattern MOBILE_PATTERN = Pattern.compile("/^(1[3-9]\\d{9}|[5689]\\d{7}|09\\d{8})$/");
-
+    public final static String MOBILE_PATTERN = "/^(1[3-9]\\d{9}|[5689]\\d{7}|09\\d{8})$/";
 
     /**
      * 中国-大陆：
@@ -31,7 +26,7 @@ public class MobilePattern {
      * {9}表示前面的数字必须出现9次。
      * $ 表示匹配字符串的结束位置。
      */
-    private final static Pattern MOBILE_PATTERN_ZH_CN = Pattern.compile("/^1[3-9]\\d{9}$/");
+    public final static String MOBILE_PATTERN_ZH_CN = "/^1[3-9]\\d{9}$/";
 
     /**
      * 中国-澳门：
@@ -42,7 +37,7 @@ public class MobilePattern {
      * {7} 表示前面的数字必须重复出现 7 次。
      * $ 表示匹配字符串的结束位置。
      */
-    private final static Pattern MOBILE_PATTERN_ZH_MO = Pattern.compile("/^6\\d{7}$/");
+    public final static String MOBILE_PATTERN_ZH_MO = "/^6\\d{7}$/";
 
     /**
      * 中国-香港：
@@ -53,7 +48,7 @@ public class MobilePattern {
      * {7} 表示前面的数字必须重复出现 7 次。
      * $ 表示匹配字符串的结束位置。
      */
-    private final static Pattern MOBILE_PATTERN_ZH_HK = Pattern.compile("/^[5689]\\d{7}$/");
+    public final static String MOBILE_PATTERN_ZH_HK = "/^[5689]\\d{7}$/";
 
     /**
      * 中国-台湾：
@@ -64,62 +59,5 @@ public class MobilePattern {
      * {8} 表示前面的数字必须重复出现 8 次。
      * $ 表示匹配字符串的结束位置。
      */
-    private final static Pattern MOBILE_PATTERN_ZH_TW = Pattern.compile("/^09\\d{8}$/");
-
-    /**
-     * 手机号码
-     *
-     * @param mobile
-     * @return
-     */
-    public static boolean isMobile(String mobile) {
-        return matchMobile(mobile, MOBILE_PATTERN);
-    }
-
-    /**
-     * 中国-大陆
-     *
-     * @param mobile
-     * @return
-     */
-    public static boolean isMobileZhCn(String mobile) {
-        return matchMobile(mobile, MOBILE_PATTERN_ZH_CN);
-    }
-
-    /**
-     * 中国-澳门
-     *
-     * @param mobile
-     * @return
-     */
-    public static boolean isMobileZhMo(String mobile) {
-        return matchMobile(mobile, MOBILE_PATTERN_ZH_MO);
-    }
-
-    /**
-     * 中国-香港
-     *
-     * @param mobile
-     * @return
-     */
-    public static boolean isMobileZhHk(String mobile) {
-        return matchMobile(mobile, MOBILE_PATTERN_ZH_HK);
-    }
-
-    /**
-     * 中国-台湾
-     *
-     * @param mobile
-     * @return
-     */
-    public static boolean isMobileZhTw(String mobile) {
-        return matchMobile(mobile, MOBILE_PATTERN_ZH_TW);
-    }
-
-    private static boolean matchMobile(String mobile, Pattern pattern) {
-        if (StringUtils.isEmpty(mobile)) {
-            return false;
-        }
-        return pattern.matcher(mobile).matches();
-    }
+    public final static String MOBILE_PATTERN_ZH_TW = "/^09\\d{8}$/";
 }

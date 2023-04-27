@@ -4,42 +4,32 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MobileValidator implements ConstraintValidator<Mobile, String> {
 
-    /**
-     * 大陆手机号码：
-     * ^ 表示匹配字符串的开始位置。
-     * 1 表示手机号码开头必须是数字 1。
-     * [3-9] 表示第二个数字必须是 3、4、5、6、7、8、9 中的任意一个。
-     * \d 表示任意数字。
-     * {9}表示前面的数字必须出现9次。
-     * $ 表示匹配字符串的结束位置。
-     */
-    private final static Pattern MOBILE_PATTERN = Pattern.compile("/^1[3-9]\\d{9}$/");
-
     private boolean require = false;
 
+    private String pattern;
+
     @Override
-    public void initialize(Mobile constraintAnnotation) {
-        require = constraintAnnotation.required();
+    public void initialize(Mobile mobile) {
+        require = mobile.required();
+        pattern = mobile.pattern();
     }
 
     @Override
-    public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
         if (require == false) {
             return true;
         }
-        return isMobile(s);
+        return isMobile(value);
     }
 
-    private boolean isMobile(String src) {
-        if (StringUtils.isEmpty(src)) {
+    private boolean isMobile(String value) {
+        if (StringUtils.isEmpty(value)) {
             return false;
         }
-        Matcher m = MOBILE_PATTERN.matcher(src);
-        return m.matches();
+        return Pattern.compile(pattern).matcher(value).matches();
     }
 }
