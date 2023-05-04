@@ -1,6 +1,7 @@
 package com.ac.gateway.controller;
 
 import com.ac.gateway.config.GateWaySwaggerConfig;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import javax.annotation.Resource;
  * http://127.0.0.1:6001/swagger-ui.html
  * @date 2023/02/22
  */
+@ConditionalOnProperty(name = "swagger.enable", havingValue = "true")
 @RestController
 public class SwaggerController {
 

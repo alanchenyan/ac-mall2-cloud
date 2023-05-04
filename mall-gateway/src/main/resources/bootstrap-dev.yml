@@ -47,7 +47,11 @@ spring:
             - Path=/mall-order/**
           filters:
             - StripPrefix=1
-            -
+
+#gateway swagger开关
+swagger:
+  enable: true
+
 #配置白名单路径
 mall:
   security:

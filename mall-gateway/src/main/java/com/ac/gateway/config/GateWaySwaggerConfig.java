@@ -1,5 +1,6 @@
 package com.ac.gateway.config;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.gateway.config.GatewayProperties;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.support.NameUtils;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Configuration
 @Primary
+@ConditionalOnProperty(name = "swagger.enable", havingValue = "true")
 public class GateWaySwaggerConfig implements SwaggerResourcesProvider {
     public static final String API_URI = "/v2/api-docs";
     private final RouteLocator routeLocator;
