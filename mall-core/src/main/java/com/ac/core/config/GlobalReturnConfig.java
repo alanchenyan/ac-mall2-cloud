@@ -23,8 +23,8 @@ import java.util.List;
 /**
  * @author Alan Chen
  * @description Controller返回参数全局包装成ResponseResult对象
- *              使用是一般需要指定basePackages，@RestControllerAdvice(basePackages = {"com.netx.web.controller"})
- *              只拦截controller包下的类；否则swagger也会拦截影响swagger正常使用
+ * 使用是一般需要指定basePackages，@RestControllerAdvice(basePackages = {"com.netx.web.controller"})
+ * 只拦截controller包下的类；否则swagger也会拦截影响swagger正常使用
  * @date 2023/04/15
  */
 @EnableWebMvc
@@ -34,14 +34,19 @@ public class GlobalReturnConfig implements ResponseBodyAdvice<Object>, WebMvcCon
 
     /**
      * 支持返回 text/plan 格式  字符串不会带双引号
+     *
      * @return
      */
-    public boolean supportTextPlan(){
+    public boolean supportTextPlan() {
         return false;
     }
 
     @Override
     public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass) {
+        //排除swagger的请求 springfox.documentation.swagger2.web.Swagger2Controller
+        if (methodParameter.getDeclaringClass().getName().contains("swagger")) {
+            return false;
+        }
         return true;
     }
 
@@ -49,27 +54,28 @@ public class GlobalReturnConfig implements ResponseBodyAdvice<Object>, WebMvcCon
     public Object beforeBodyWrite(Object returnObj, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
 
         // 返回值为void
-        if(returnObj==null){
+        if (returnObj == null) {
             return RepResult.success();
         }
 
         //全局异常会拦截统一封装成ResponseResult对象，因此不需要再包装了
-        if(returnObj instanceof RepResult){
+        if (returnObj instanceof RepResult) {
             return returnObj;
         }
 
-        return  RepResult.success(returnObj);
+        return RepResult.success(returnObj);
 
     }
 
     /**
      * 解决不能返回单个字符的问题
+     *
      * @param converters
      */
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
 
-        if(supportTextPlan()){
+        if (supportTextPlan()) {
             converters.add(stringHttpMessageConverter());
         }
 
