@@ -5,7 +5,6 @@
     <sql id="MemberDTO_Column">
         t.id,
         t.member_name,
-        t.idNo,
         t.sex,
         t.birthday
     </sql>
@@ -19,10 +18,6 @@
             t.deleted = 0
             <if test="qry.memberName!=null and qry.memberName!=''">
                 and t.member_name like concat('%', #{qry.memberName}, '%')
-            </if>
-
-            <if test="qry.idNo!=null and qry.idNo!=''">
-                and t.idNo = #{qry.idNo}
             </if>
         </where>
         order by t.create_time desc

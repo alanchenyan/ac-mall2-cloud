@@ -40,9 +40,8 @@ public class ResourceServerConfig {
 
     @Bean
     SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-        for(String ignore:ignoreUrlsConfig.getUrls()){
-            log.info("ignore="+ignore);
-        }
+        log.info("ignoreUrlsConfig={}", ignoreUrlsConfig.getUrls());
+
         //认证处理器
         ReactiveAuthenticationManager customAuthenticationManager = new CustomAuthenticationManager(tokenStore);
 
@@ -60,31 +59,31 @@ public class ResourceServerConfig {
         ServerHttpSecurity.AuthorizeExchangeSpec authorizeExchange = http.authorizeExchange();
 
         if (ignoreUrlsConfig.getUrls().size() > 0) {
-            authorizeExchange.pathMatchers(ArrayUtil.toArray(ignoreUrlsConfig.getUrls(),String.class)).permitAll();
+            authorizeExchange.pathMatchers(ArrayUtil.toArray(ignoreUrlsConfig.getUrls(), String.class)).permitAll();
         }
-                authorizeExchange
+        authorizeExchange
                 .pathMatchers(HttpMethod.OPTIONS).permitAll()
-                        .pathMatchers("/").permitAll()
-                        .pathMatchers(HttpMethod.POST, "/oauth/**").permitAll()
-                        // swagger
-                        .pathMatchers("/swagger-ui.html").permitAll()
-                        .pathMatchers("/swagger-resources/**").permitAll()
-                        .pathMatchers("/images/**").permitAll()
-                        .pathMatchers("/webjars/**").permitAll()
-                        .pathMatchers("/**/v2/api-docs").permitAll()
+                .pathMatchers("/").permitAll()
+                .pathMatchers(HttpMethod.POST, "/oauth/**").permitAll()
+                // swagger
+                .pathMatchers("/swagger-ui.html").permitAll()
+                .pathMatchers("/swagger-resources/**").permitAll()
+                .pathMatchers("/images/**").permitAll()
+                .pathMatchers("/webjars/**").permitAll()
+                .pathMatchers("/**/v2/api-docs").permitAll()
                 .anyExchange()
-                    .access(permissionAuthManager)
+                .access(permissionAuthManager)
                 .and()
-                    .exceptionHandling()
-                        .accessDeniedHandler(restfulAccessDeniedHandler)
-                        .authenticationEntryPoint(restAuthenticationEntryPoint)
+                .exceptionHandling()
+                .accessDeniedHandler(restfulAccessDeniedHandler)
+                .authenticationEntryPoint(restAuthenticationEntryPoint)
                 .and()
-                    .headers()
-                        .frameOptions()
-                        .disable()
+                .headers()
+                .frameOptions()
+                .disable()
                 .and()
-                    .httpBasic().disable()
-                    .csrf().disable();
+                .httpBasic().disable()
+                .csrf().disable();
         return http.build();
     }
 }

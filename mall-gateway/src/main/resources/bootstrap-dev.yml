@@ -47,3 +47,11 @@ spring:
             - Path=/mall-order/**
           filters:
             - StripPrefix=1
+            -
+#配置白名单路径
+mall:
+  security:
+    ignore:
+      urls:
+        - "/**/member/list"
+        - "/**/redis/**"
