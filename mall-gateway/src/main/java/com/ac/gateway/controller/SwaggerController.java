@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 
 /**
  * @author Alan Chen
- * @description 在浏览器中打开gateway的swagger地址时，会将请求打到下面API
+ * @description 在浏览器中打开gateway的swagger地址时，会将请求自动打到下面API
  * http://127.0.0.1:6001/swagger-ui.html
  * @date 2023/02/22
  */

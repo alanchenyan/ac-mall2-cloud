@@ -1,4 +1,4 @@
-package com.ac.common.apilog;
+package com.ac.core.apilog;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.http.useragent.UserAgent;

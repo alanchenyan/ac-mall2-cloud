@@ -1,4 +1,4 @@
-package com.ac.common.apilog;
+package com.ac.core.apilog;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
