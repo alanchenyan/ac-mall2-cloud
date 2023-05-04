@@ -1,5 +1,6 @@
 package com.ac.member.service.impl;
 
+import com.ac.core.exception.ServerException;
 import com.ac.member.convert.MemberConvert;
 import com.ac.member.dao.MemberDao;
 import com.ac.member.dto.MemberDTO;
@@ -27,7 +28,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member findById(Long id) {
-        return Optional.ofNullable(memberDaoImpl.getById(id)).orElseThrow(() -> new RuntimeException("数据不存在"));
+        return Optional.ofNullable(memberDaoImpl.getById(id)).orElseThrow(() -> new ServerException("数据不存在"));
     }
 
     @Override

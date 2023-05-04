@@ -2,7 +2,6 @@ package com.ac.core.exception;
 
 import com.ac.core.i18n.I18nResource;
 import com.ac.core.response.RepResult;
-import com.google.protobuf.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
@@ -104,7 +103,7 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ResponseBody
-    @ExceptionHandler(value = ServiceException.class)
+    @ExceptionHandler(value = ServerException.class)
     public RepResult commonExceptionHandler(ServerException ex) {
 
         ex.printStackTrace();
