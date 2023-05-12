@@ -26,6 +26,17 @@ import java.util.UUID;
 public class CustomTokenServiceImpl extends DefaultTokenServices {
     private TokenStore tokenStore;
     private TokenEnhancer accessTokenEnhancer;
+    private static RSAKey rsaJWK;
+
+    static {
+        try {
+            RSAKeyGenerator rsaKeyGenerator = new RSAKeyGenerator(2048);
+            rsaJWK = rsaKeyGenerator.generate();
+        } catch (Exception e) {
+            log.error("RSAKey generate fail");
+            e.printStackTrace();
+        }
+    }
 
     /**
      * 是否登录同应用同账号互踢
@@ -56,13 +67,13 @@ public class CustomTokenServiceImpl extends DefaultTokenServices {
                     tokenStore.removeRefreshToken(refreshToken);
                 }
                 tokenStore.removeAccessToken(existingAccessToken);
-                log.info("createAccessToken,isExpired B={}",existingAccessToken);
+                log.info("createAccessToken,isExpired B={}", existingAccessToken);
             } else {
                 // oidc每次授权都刷新id_token
                 existingAccessToken = refreshIdToken(existingAccessToken, authentication);
                 // Re-store the access token in case the authentication has changed
                 tokenStore.storeAccessToken(existingAccessToken, authentication);
-                log.info("createAccessToken,isExpired C={}",existingAccessToken);
+                log.info("createAccessToken,isExpired C={}", existingAccessToken);
                 return existingAccessToken;
             }
         }
@@ -91,7 +102,7 @@ public class CustomTokenServiceImpl extends DefaultTokenServices {
         if (refreshToken != null) {
             tokenStore.storeRefreshToken(refreshToken, authentication);
         }
-        log.info("createAccessToken,end accessToken={}",accessToken);
+        log.info("createAccessToken,end accessToken={}", accessToken);
         return accessToken;
     }
 
@@ -177,7 +188,7 @@ public class CustomTokenServiceImpl extends DefaultTokenServices {
 
             } catch (JOSEException e) {
                 e.printStackTrace();
-                log.error("生成token失败：{}",e);
+                log.error("生成token失败：{}", e);
             }
         }
         return null;
@@ -187,13 +198,6 @@ public class CustomTokenServiceImpl extends DefaultTokenServices {
      * 创建加密key
      */
     private RSAKey getKey() {
-        try {
-            RSAKeyGenerator rsaKeyGenerator = new RSAKeyGenerator(2048);
-            RSAKey rsaJWK = rsaKeyGenerator.generate();
-            return rsaJWK;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        return rsaJWK;
     }
 }
