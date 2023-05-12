@@ -1,4 +1,4 @@
-package com.ac.xxljob;
+package com.ac.member.config;
 
 import com.xxl.job.core.executor.impl.XxlJobSpringExecutor;
 import lombok.extern.slf4j.Slf4j;
