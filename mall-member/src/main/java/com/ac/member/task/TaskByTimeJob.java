@@ -27,6 +27,7 @@ public class TaskByTimeJob {
                 return;
             }
 
+            // 业务逻辑
             String memberId = params[0];
             String memberName = params[1];
             String logInfo = StrUtil.format("TaskByTimeJob.doJob,成功,memberId={},memberName={}", memberId, memberName);
