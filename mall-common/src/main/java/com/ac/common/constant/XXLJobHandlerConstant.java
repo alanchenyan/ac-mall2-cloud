@@ -3,7 +3,12 @@ package com.ac.common.constant;
 public class XXLJobHandlerConstant {
 
     /**
-     * 定时打印用户名
+     * xxl-job-admin平台创建定时任务
      */
-    public static final String PRINT_NAME_BY_TIME = "PRINT_NAME_BY_TIME";
+    public static final String TASK_BY_ADMIN_CREATE = "TASK_BY_ADMIN_CREATE";
+
+    /**
+     * 动态创建定时任务
+     */
+    public static final String TASK_BY_DYNAMIC_CREATE = "TASK_BY_DYNAMIC_CREATE";
 }

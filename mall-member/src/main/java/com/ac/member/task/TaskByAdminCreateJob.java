@@ -7,11 +7,16 @@ import com.xxl.job.core.handler.annotation.XxlJob;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author Alan Chen
+ * @description xxl-job-admin平台创建定时任务
+ * @date 2023/05/17
+ */
 @Slf4j
 @Component
-public class TaskByTimeJob {
+public class TaskByAdminCreateJob {
 
-    @XxlJob(value = XXLJobHandlerConstant.PRINT_NAME_BY_TIME)
+    @XxlJob(value = XXLJobHandlerConstant.TASK_BY_ADMIN_CREATE)
     public void doJob() {
         try {
             // 获取任务ID
