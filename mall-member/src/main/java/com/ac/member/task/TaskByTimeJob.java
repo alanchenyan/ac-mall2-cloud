@@ -21,16 +21,21 @@ public class TaskByTimeJob {
             // 获取任务参数
             String[] params = StrUtil.splitToArray(XxlJobHelper.getJobParam(), ',');
             if (params.length <= 1) {
-                String logInfo = StrUtil.format("TaskByTimeJob,失败, 原因: 参数缺失, 任务ID: {}", jobId);
-                log.info(logInfo);
-                XxlJobHelper.handleSuccess(logInfo);
+                String error = StrUtil.format("TaskByTimeJob.doJob,失败, 原因: 参数缺失, 任务ID: {}", jobId);
+                log.info(error);
+                XxlJobHelper.handleFail(error);
+                return;
             }
 
             String memberId = params[0];
             String memberName = params[1];
-            log.info("TaskByTimeJob.doJob,memberId={},memberName={}", memberId, memberName);
+            String logInfo = StrUtil.format("TaskByTimeJob.doJob,成功,memberId={},memberName={}", memberId, memberName);
+            log.info(logInfo);
+            XxlJobHelper.handleSuccess(logInfo);
         } catch (Exception e) {
-            log.info("执行定时任务失败,msg={}", e.getMessage());
+            String error = StrUtil.format("TaskByTimeJob.doJob,失败, msg={}", e.getMessage());
+            log.info(error);
+            XxlJobHelper.handleFail(error);
         }
     }
 }
