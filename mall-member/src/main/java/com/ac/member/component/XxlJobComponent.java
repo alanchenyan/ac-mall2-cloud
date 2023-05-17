@@ -1,8 +1,6 @@
 package com.ac.member.component;
 
 import com.ac.member.cmd.AddDefaultXxlJobCmd;
-import com.xxl.job.admin.core.model.XxlJobInfo;
-import com.xxl.job.admin.service.XxlJobService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -12,13 +10,13 @@ import javax.annotation.Resource;
 @Component
 public class XxlJobComponent {
 
-    @Resource
-    private XxlJobService xxlJobService;
+    //@Resource
+    //private XxlJobService xxlJobService;
 
     public void addAndStartJob(AddDefaultXxlJobCmd cmd) {
-        XxlJobInfo jobInfo = convertXxlJobInfo(cmd);
+        //XxlJobInfo jobInfo = convertXxlJobInfo(cmd);
         try {
-            xxlJobService.add(jobInfo);
+            //xxlJobService.add(jobInfo);
         } catch (Exception e) {
             log.error("创建定时任务失败");
             e.printStackTrace();

@@ -198,7 +198,7 @@
                 <artifactId>xxl-job-core</artifactId>
                 <version>${xxljob.version}</version>
             </dependency>
-            
+
         </dependencies>
     </dependencyManagement>
 
