@@ -1,5 +1,8 @@
 package com.ac.order.controller;
 
+import com.ac.common.constant.XXLJobHandlerConstant;
+import com.ac.core.util.DateUtil;
+import com.ac.order.cmd.AddDefaultXxlJobCmd;
 import com.ac.order.component.XxlJobComponent;
 import com.ac.order.dto.OrderDTO;
 import com.ac.order.qry.OrderPageQry;
@@ -12,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Api(tags = "订单")
 @RestController
@@ -46,5 +51,25 @@ public class OrderController {
     @GetMapping("getCookie")
     public String getCookie() {
         return xxlJobComponent.getCookie();
+    }
+
+    @ApiOperation(value = "xxl-job创建任务")
+    @GetMapping("addJob")
+    public boolean addJob(@RequestParam String memberId, @RequestParam String memberName) {
+        String executorParam = memberId + "," + memberName;
+
+        LocalDateTime now = LocalDateTime.now();
+        //6小时后执行
+        LocalDateTime offset = DateUtil.offset(now, 6, ChronoUnit.HOURS);
+        String scheduleConf = DateUtil.getCron(cn.hutool.core.date.DateUtil.date(offset));
+
+        AddDefaultXxlJobCmd cmd = AddDefaultXxlJobCmd.builder()
+                .jobGroup(3)  // 执行器管理的ID，在xxl-job-admin管理平台通过F2查看
+                .jobDesc("订单未付款自动关闭1小时倒计时")
+                .scheduleConf(scheduleConf)
+                .executorHandler(XXLJobHandlerConstant.TASK_BY_DYNAMIC_CREATE)
+                .executorParam(executorParam)
+                .build();
+        return xxlJobComponent.addAndStartJob(cmd);
     }
 }
