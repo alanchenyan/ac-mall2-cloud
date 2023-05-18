@@ -64,7 +64,7 @@ public class OrderController {
         String scheduleConf = DateUtil.getCron(cn.hutool.core.date.DateUtil.date(offset));
 
         AddDefaultXxlJobCmd cmd = AddDefaultXxlJobCmd.builder()
-                .jobGroup(3)  // 执行器管理的ID，在xxl-job-admin管理平台通过F2查看
+                .appName("executor-order")
                 .jobDesc("订单未付款自动关闭1小时倒计时")
                 .scheduleConf(scheduleConf)
                 .executorHandler(XXLJobHandlerConstant.TASK_BY_DYNAMIC_CREATE)

@@ -1,5 +1,6 @@
 package com.ac.order.cmd;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -17,8 +18,12 @@ import lombok.NoArgsConstructor;
 @ApiModel
 public class AddDefaultXxlJobCmd {
 
-    @ApiModelProperty("执行器主键ID")
+    @JsonIgnore
+    @ApiModelProperty("执行器主键ID(后端自己取)")
     private int jobGroup;
+
+    @ApiModelProperty("执行器名称")
+    private String appName;
 
     @ApiModelProperty("任务描述")
     private String jobDesc;
