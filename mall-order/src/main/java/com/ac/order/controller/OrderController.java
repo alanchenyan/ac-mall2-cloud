@@ -60,12 +60,12 @@ public class OrderController {
 
         LocalDateTime now = LocalDateTime.now();
         //6小时后执行
-        LocalDateTime offset = DateUtil.offset(now, 6, ChronoUnit.HOURS);
+        LocalDateTime offset = DateUtil.offset(now, 15, ChronoUnit.MINUTES);
         String scheduleConf = DateUtil.getCron(cn.hutool.core.date.DateUtil.date(offset));
 
         AddDefaultXxlJobCmd cmd = AddDefaultXxlJobCmd.builder()
                 .appName("executor-order")
-                .jobDesc("订单未付款自动关闭1小时倒计时")
+                .jobDesc("订单未付款自动关闭15分钟倒计时")
                 .scheduleConf(scheduleConf)
                 .executorHandler(XXLJobHandlerConstant.TASK_BY_DYNAMIC_CREATE)
                 .executorParam(executorParam)
