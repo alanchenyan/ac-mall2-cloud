@@ -1,5 +1,6 @@
 package com.ac.order.controller;
 
+import com.ac.order.component.XxlJobComponent;
 import com.ac.order.dto.OrderDTO;
 import com.ac.order.qry.OrderPageQry;
 import com.ac.order.service.OrderService;
@@ -20,6 +21,9 @@ public class OrderController {
     @Resource
     private OrderService orderServiceImpl;
 
+    @Resource
+    private XxlJobComponent xxlJobComponent;
+
     @ApiOperation(value = "新增订单")
     @PostMapping
     public Long createOrder(@RequestBody @Valid OrderAddVO addVO) {
@@ -30,5 +34,17 @@ public class OrderController {
     @GetMapping("page")
     public IPage<OrderDTO> pageOrder(@Valid OrderPageQry qry) {
         return orderServiceImpl.pageOrder(qry);
+    }
+
+    @ApiOperation(value = "xxl-job登录")
+    @GetMapping("login")
+    public String login() {
+        return xxlJobComponent.login();
+    }
+
+    @ApiOperation(value = "xxl-job获取cookie")
+    @GetMapping("getCookie")
+    public String getCookie() {
+        return xxlJobComponent.getCookie();
     }
 }
