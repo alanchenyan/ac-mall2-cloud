@@ -66,7 +66,7 @@ public class AutoCancelOrderJob {
             String orderNo = XxlJobHelper.getJobParam();
             // 业务逻辑
 
-            log.info("AutoCancelOrderJob.doJob,关闭订单,orderNo={}", orderNo);
+            log.info("模拟业务逻辑,AutoCancelOrderJob.doJob,关闭订单,orderNo={}", orderNo);
 
             String logInfo = StrUtil.format("AutoCancelOrderJob.doJob,成功关闭订单,orderNo={}", orderNo);
             log.info(logInfo);
