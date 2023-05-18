@@ -121,7 +121,6 @@ public class XxlJobComponent {
         String url = adminAddresses + "/jobgroup/pageList";
         HttpResponse response = HttpRequest.post(url)
                 .form("appname", appName)
-                //.form("title", title)
                 .cookie(getCookie())
                 .execute();
 
