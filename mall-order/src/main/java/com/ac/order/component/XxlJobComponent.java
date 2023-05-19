@@ -98,7 +98,7 @@ public class XxlJobComponent {
     }
 
     /**
-     * 获取执行管理器ID
+     * 通过appName获取执行管理器ID
      *
      * @param appName
      * @return
