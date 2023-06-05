@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Sort;
 
 @Data
 @NoArgsConstructor
@@ -15,19 +16,19 @@ import lombok.NoArgsConstructor;
 public class MongoPage {
 
     @ApiModelProperty(value = "当前页数", position = 1, dataType = "int", example = "1")
-    int current = 1;
+    private int current = 1;
 
     @ApiModelProperty(value = "每页记录数", position = 1, dataType = "int", example = "10")
-    int size = 10;
+    private int size = 10;
 
     @ApiModelProperty(value = "总记录数", position = 4, dataType = "int", example = "100")
-    int total = 0;
+    private int total = 0;
 
-    @ApiModelProperty(value = "排序方式  升序:asc，降序:desc", position = 2)
-    String sortType = "desc";
+    @ApiModelProperty(value = "排序方式  升序:ASC，降序:DESC", position = 2)
+    private Sort.Direction sortType = Sort.Direction.DESC;
 
     @ApiModelProperty(value = "排序字段", position = 3, example = "id")
-    String sort = "id";
+    private String sort;
 
     public MongoPage(int current, int size) {
         this.current = current;
