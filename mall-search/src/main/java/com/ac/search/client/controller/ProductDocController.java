@@ -1,6 +1,6 @@
 package com.ac.search.client.controller;
 
-import com.ac.common.page.EsPage;
+import com.ac.core.es.EsPage;
 import com.ac.search.client.dto.AggregationDTO;
 import com.ac.search.client.dto.ProductHighlightDTO;
 import com.ac.search.client.entity.ProductDoc;

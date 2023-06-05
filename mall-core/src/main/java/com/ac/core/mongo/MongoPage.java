@@ -1,4 +1,4 @@
-package com.ac.common.page;
+package com.ac.core.mongo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;

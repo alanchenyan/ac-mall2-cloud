@@ -1,4 +1,4 @@
-package com.ac.common.page;
+package com.ac.core.es;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

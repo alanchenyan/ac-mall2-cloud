@@ -1,6 +1,6 @@
 package com.ac.product.qry;
 
-import com.ac.common.page.MongoPage;
+import com.ac.core.mongo.MongoPage;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

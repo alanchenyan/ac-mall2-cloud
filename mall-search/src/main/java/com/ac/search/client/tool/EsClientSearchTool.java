@@ -6,7 +6,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.ac.common.enums.OrderTypeEnum;
-import com.ac.common.page.EsPage;
+import com.ac.core.es.EsPage;
 import com.ac.search.client.dto.AggregationDTO;
 import com.ac.search.client.factory.ElasticsearchFactory;
 import com.ac.search.client.highlight.BaseHighlight;

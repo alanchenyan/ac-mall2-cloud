@@ -1,7 +1,7 @@
 package com.ac.search.client.service.impl;
 
 import com.ac.common.enums.OrderTypeEnum;
-import com.ac.common.page.EsPage;
+import com.ac.core.es.EsPage;
 import com.ac.search.client.constant.IndexNameConstants;
 import com.ac.search.client.dto.AggregationDTO;
 import com.ac.search.client.dto.ProductHighlightDTO;
