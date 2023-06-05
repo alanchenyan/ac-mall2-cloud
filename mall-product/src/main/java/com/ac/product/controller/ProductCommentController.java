@@ -1,13 +1,13 @@
 package com.ac.product.controller;
 
+import com.ac.product.dto.ProductCommentDTO;
 import com.ac.product.mongo.ProductComment;
+import com.ac.product.qry.CommentQry;
 import com.ac.product.service.ProductCommentService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -24,5 +24,11 @@ public class ProductCommentController {
     @PostMapping
     public String addProduct(@RequestBody @Valid ProductComment doc) {
         return productCommentServiceImpl.save(doc);
+    }
+
+    @ApiOperation(value = "分页查询")
+    @GetMapping("page")
+    public IPage<ProductCommentDTO> page(@Valid CommentQry qry) {
+        return productCommentServiceImpl.page(qry);
     }
 }
