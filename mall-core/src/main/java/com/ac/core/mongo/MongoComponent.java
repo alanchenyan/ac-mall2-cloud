@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -49,15 +50,16 @@ public class MongoComponent {
 
     public <T> IPage<T> pageSearch(MongoPage mongoPage, List<AggregationOperation> operations, Class<T> entityClass, String collectionName) {
         //分页参数
-        PageRequest pageable = this.pageRequest(mongoPage);
+        List<AggregationOperation> pageable = fillPageable(mongoPage);
 
         //总记录数(不用带分页参数)
-        long total = this.getTotal(operations, "product_comment", entityClass);
+        long total = this.getTotal(operations, collectionName, entityClass);
 
         //当前页记录(带分页参数)
+        operations.addAll(pageable);
         Aggregation aggregation = Aggregation.newAggregation(operations);
 
-        AggregationResults results = mongoTemplate.aggregate(aggregation, "product_comment", entityClass);
+        AggregationResults results = mongoTemplate.aggregate(aggregation, collectionName, entityClass);
         List list = results.getMappedResults();
 
         //分页
@@ -104,7 +106,28 @@ public class MongoComponent {
     }
 
     /**
-     * 分页对象
+     * 封装分页参数
+     *
+     * @param mongoPage
+     * @return
+     */
+    private List<AggregationOperation> fillPageable(MongoPage mongoPage) {
+        List<AggregationOperation> operations = new ArrayList<>();
+
+        //排序
+        if (StringUtils.isNotBlank(mongoPage.getSort())) {
+            Sort sort = Sort.by(mongoPage.getSortType(), mongoPage.getSort());
+            operations.add(Aggregation.sort(sort));
+        }
+
+        //分页参数
+        operations.add(Aggregation.skip((long) mongoPage.getCurrentMinusOne() * mongoPage.getSize()));
+        operations.add(Aggregation.limit(mongoPage.getSize()));
+        return operations;
+    }
+
+    /**
+     * 封装分页结果对象
      *
      * @param current
      * @param size
