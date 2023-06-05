@@ -21,4 +21,12 @@ public interface ProductCommentService {
      * @return
      */
     IPage<ProductCommentDTO> page(CommentQry qry);
+
+    /**
+     * 分页查询2
+     *
+     * @param qry
+     * @return
+     */
+    IPage<ProductCommentDTO> page2(CommentQry qry);
 }

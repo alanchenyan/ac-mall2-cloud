@@ -7,6 +7,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
@@ -40,9 +43,39 @@ public class MongoComponent {
         //当前页记录(带分页参数)
         List list = mongoTemplate.find(query.with(pageable), entityClass, collectionName);
 
-        IPage page = new Page(mongoPage.getCurrent(), mongoPage.getSize(), total);
-        page.setRecords(list);
-        return page;
+        //分页
+        return fillPage(mongoPage.getCurrent(), mongoPage.getSize(), total, list);
+    }
+
+    public <T> IPage<T> pageSearch(MongoPage mongoPage, List<AggregationOperation> operations, Class<T> entityClass, String collectionName) {
+        //分页参数
+        PageRequest pageable = this.pageRequest(mongoPage);
+
+        //总记录数(不用带分页参数)
+        long total = this.getTotal(operations, "product_comment", entityClass);
+
+        //当前页记录(带分页参数)
+        Aggregation aggregation = Aggregation.newAggregation(operations);
+
+        AggregationResults results = mongoTemplate.aggregate(aggregation, "product_comment", entityClass);
+        List list = results.getMappedResults();
+
+        //分页
+        return fillPage(mongoPage.getCurrent(), mongoPage.getSize(), total, list);
+    }
+
+    /**
+     * 查总记录数
+     *
+     * @param operations
+     * @param collectionName
+     * @param outputType
+     * @return
+     */
+    public long getTotal(List<AggregationOperation> operations, String collectionName, Class outputType) {
+        Aggregation aggregation = Aggregation.newAggregation(operations);
+        AggregationResults result = mongoTemplate.aggregate(aggregation, collectionName, outputType);
+        return result.getMappedResults().size();
     }
 
     /**
@@ -68,5 +101,18 @@ public class MongoComponent {
             return PageRequest.of(mongoPage.getCurrentMinusOne(), mongoPage.getSize(), sort);
         }
         return PageRequest.of(mongoPage.getCurrentMinusOne(), mongoPage.getSize());
+    }
+
+    /**
+     * 分页对象
+     *
+     * @param current
+     * @param size
+     * @param total
+     * @param records
+     * @return
+     */
+    private IPage fillPage(long current, long size, long total, List records) {
+        return new Page(current, size, total).setRecords(records);
     }
 }

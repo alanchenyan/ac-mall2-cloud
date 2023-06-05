@@ -31,4 +31,10 @@ public class ProductCommentController {
     public IPage<ProductCommentDTO> page(@Valid CommentQry qry) {
         return productCommentServiceImpl.page(qry);
     }
+
+    @ApiOperation(value = "分页查询2")
+    @GetMapping("page2")
+    public IPage<ProductCommentDTO> page2(@Valid CommentQry qry) {
+        return productCommentServiceImpl.page2(qry);
+    }
 }
