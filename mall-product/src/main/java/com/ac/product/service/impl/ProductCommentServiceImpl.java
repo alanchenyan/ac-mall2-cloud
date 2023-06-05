@@ -43,7 +43,7 @@ public class ProductCommentServiceImpl implements ProductCommentService {
         return page;
     }
 
-    private Long getTotal(Query query, String collectionName) {
+    private long getTotal(Query query, String collectionName) {
         return mongoTemplate.count(query, collectionName);
     }
 }
