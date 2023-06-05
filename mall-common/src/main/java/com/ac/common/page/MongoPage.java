@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class MongoPage {
 
     @ApiModelProperty(value = "当前页数", position = 1, dataType = "int", example = "1")
-    int current = 0;
+    int current = 1;
 
     @ApiModelProperty(value = "每页记录数", position = 1, dataType = "int", example = "10")
     int size = 10;
@@ -42,7 +42,12 @@ public class MongoPage {
         }
     }
 
-    public int getCurrent() {
+    /**
+     * 页码数减一
+     *
+     * @return
+     */
+    public int getCurrentMinusOne() {
         if (this.current > 0) {
             //重点：MongoDB分页查询，页数是从0开始的，所以页数要减1
             return current - 1;
