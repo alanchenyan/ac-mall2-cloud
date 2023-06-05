@@ -44,10 +44,20 @@ public class MongoComponent {
         //当前页记录(带分页参数)
         List list = mongoTemplate.find(query.with(pageable), entityClass, collectionName);
 
-        //分页
+        //分页结果
         return fillPage(mongoPage.getCurrent(), mongoPage.getSize(), total, list);
     }
 
+    /**
+     * 分页查询
+     *
+     * @param mongoPage
+     * @param operations
+     * @param entityClass
+     * @param collectionName
+     * @param <T>
+     * @return
+     */
     public <T> IPage<T> pageSearch(MongoPage mongoPage, List<AggregationOperation> operations, Class<T> entityClass, String collectionName) {
         //分页参数
         List<AggregationOperation> pageable = fillPageable(mongoPage);
@@ -62,7 +72,7 @@ public class MongoComponent {
         AggregationResults results = mongoTemplate.aggregate(aggregation, collectionName, entityClass);
         List list = results.getMappedResults();
 
-        //分页
+        //分页结果
         return fillPage(mongoPage.getCurrent(), mongoPage.getSize(), total, list);
     }
 
