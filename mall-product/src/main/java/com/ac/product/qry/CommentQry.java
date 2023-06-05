@@ -12,4 +12,7 @@ public class CommentQry extends MongoPage {
     @NotNull(message = "商品ID不能为空")
     @ApiModelProperty("商品ID")
     private Long productId;
+
+    @ApiModelProperty("评价人ID")
+    private Long memberId;
 }

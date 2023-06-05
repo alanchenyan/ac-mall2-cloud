@@ -34,6 +34,9 @@ public class ProductCommentServiceImpl implements ProductCommentService {
     public IPage<ProductCommentDTO> page(CommentQry qry) {
         Query query = new Query();
         query.addCriteria(Criteria.where("productId").is(qry.getProductId()));
+        if (qry.getMemberId() != null) {
+            query.addCriteria(Criteria.where("memberId").is(qry.getMemberId()));
+        }
 
         IPage<ProductCommentDTO> pageResult = mongoComponent.pageSearch(qry, query, ProductCommentDTO.class, "product_comment");
         return pageResult;
