@@ -36,6 +36,19 @@ spring:
       connection-timeout: 30000 #数据库连接超时时间,默认30秒，即30000
       connection-test-query: SELECT 1
 
+  data:
+    mongodb:
+      database: test
+      uri: mongodb://writeData:renwen1109@192.168.100.21:20001
+
+rocketmq:
+  name-server: 127.0.0.1:9876
+  producer:
+    group: group-${spring.profiles.active}
+    send-message-timeout: 3000 # 消息发送超时时长，默认3s
+    retry-times-when-send-failed: 3 # 同步发送消息失败重试次数，默认2
+    retry-times-when-send-async-failed: 3 # 异步发送消息失败重试次数，默认2
+
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
