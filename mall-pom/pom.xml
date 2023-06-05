@@ -47,6 +47,7 @@
         <redisson.version>3.20.1</redisson.version>
         <rocketmq.version>2.2.3</rocketmq.version>
         <xxljob.version>2.4.0</xxljob.version>
+        <mongodb.version>3.1.0</mongodb.version>
     </properties>
 
     <!-- 管理子类所有的jar包的版本，这样的目的是方便去统一升级和维护 -->
@@ -199,6 +200,12 @@
                 <version>${xxljob.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-mongodb</artifactId>
+                <version>${mongodb.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -329,6 +336,11 @@
         <dependency>
             <groupId>com.xuxueli</groupId>
             <artifactId>xxl-job-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
     </dependencies>
 
