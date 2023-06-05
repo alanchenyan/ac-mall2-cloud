@@ -31,7 +31,7 @@ public class ProductCommentServiceImpl implements ProductCommentService {
 
     @Override
     public IPage<ProductCommentDTO> page(CommentQry qry) {
-        PageRequest pageable = PageRequest.of(Integer.valueOf(qry.getCurrent() + ""), Integer.valueOf(qry.getSize() + ""));
+        PageRequest pageable = PageRequest.of(qry.getCurrent(), qry.getSize());
         Query query = new Query();
         query.addCriteria(Criteria.where("productId").is(qry.getProductId()));
 
