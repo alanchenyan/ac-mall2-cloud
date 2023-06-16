@@ -3,18 +3,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <modules>
-        <module>../mall-core</module>
-        <module>../mall-common</module>
-        <module>../mall-feign</module>
-        <module>../mall-member</module>
-        <module>../mall-product</module>
-        <module>../mall-order</module>
-        <module>../mall-search</module>
-        <module>../mall-gateway</module>
-        <module>../mall-auth</module>
-        <module>../mall-oauth2-module</module>
-    </modules>
+<!--    <modules>-->
+<!--        <module>../mall-core</module>-->
+<!--        <module>../mall-common</module>-->
+<!--        <module>../mall-feign</module>-->
+<!--        <module>../mall-member</module>-->
+<!--        <module>../mall-product</module>-->
+<!--        <module>../mall-order</module>-->
+<!--        <module>../mall-search</module>-->
+<!--        <module>../mall-gateway</module>-->
+<!--        <module>../mall-auth</module>-->
+<!--        <module>../mall-oauth2-module</module>-->
+<!--    </modules>-->
 
     <groupId>com.ac</groupId>
     <artifactId>mall-pom</artifactId>
@@ -22,6 +22,14 @@
     <name>mall-pom</name>
     <packaging>pom</packaging>
     <description>基础pom依赖包</description>
+
+<!--    <distributionManagement>-->
+<!--        <repository>-->
+<!--            <id>maven-public</id>-->
+<!--            <name>maven-public</name>-->
+<!--            <url>http://localhost:8082/repository/maven-public/</url>-->
+<!--        </repository>-->
+<!--    </distributionManagement>-->
 
     <!-- lombok要与mapstruct版本匹配，用同一时间的版本,不然会出现各种问题 -->
     <properties>
