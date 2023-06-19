@@ -3,18 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-<!--    <modules>-->
-<!--        <module>../mall-core</module>-->
-<!--        <module>../mall-common</module>-->
-<!--        <module>../mall-feign</module>-->
-<!--        <module>../mall-member</module>-->
-<!--        <module>../mall-product</module>-->
-<!--        <module>../mall-order</module>-->
-<!--        <module>../mall-search</module>-->
-<!--        <module>../mall-gateway</module>-->
-<!--        <module>../mall-auth</module>-->
-<!--        <module>../mall-oauth2-module</module>-->
-<!--    </modules>-->
 
     <groupId>com.ac</groupId>
     <artifactId>mall-pom</artifactId>
